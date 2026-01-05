@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — The Vintage Realtors</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* =========================
+           Testimonial Styles – Premium Look
+           ========================= */
+        .testimonial-section {
+            padding: 80px 5%;
+            background: #f8f8fb;
+            text-align: center;
+        }
+        .testimonial-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            margin-bottom: 36px;
+            color: #333;
+        }
+        .testimonial-slider-wrapper {
+            position: relative;
+            max-width: 1000px;
+            margin: auto;
+        }
+        .testimonial-slider {
+            display: flex;
+            gap: 24px;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .testimonial-card {
+            min-width: 320px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 28px 24px;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.12);
+            flex-shrink: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 44px rgba(0,0,0,0.15);
+        }
+        .testimonial-card::before {
+            content: "“";
+            font-size: 3rem;
+            position: absolute;
+            top: 12px;
+            left: 18px;
+            color: var(--purple);
+            font-family: 'Playfair Display', serif;
+        }
+        .testimonial-card p {
+            font-size: 1rem;
+            font-style: italic;
+            color: #444;
+            margin-bottom: 16px;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+        .testimonial-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 6px;
+        }
+        .testimonial-stars {
+            color: #f5b50a;
+            margin-bottom: 8px;
+        }
+        .testimonial-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.65);
+            color: #fff;
+            border: none;
+            font-size: 1.5rem;
+            padding: 10px 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .testimonial-btn.left { left: -20px; }
+        .testimonial-btn.right { right: -20px; }
+
+        @media (max-width: 600px) {
+            .testimonial-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo-container">
+            <img src="images/logo.png.png" alt="The Vintage Realtors logo" class="logo-img">
+        </a>
+        <div class="site-title">THE VINTAGE <span>REALTORS</span></div>
+        <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Menu Drawer (shared) -->
+    <div id="menu" class="menu-drawer" aria-hidden="true">
+        <button class="close" aria-label="Close menu">&times;</button>
+        <nav class="drawer-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="properties.html">Properties</a></li>
+                <li><a href="collaborators.html">Collaborators</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="menu-overlay"></div>
+
+    <main style="padding:60px 5%; max-width:1000px; margin:0 auto;">
+        <h1>About The Vintage Realtors</h1>
+        <p style="color:#333; line-height:1.7;">The Vintage Realtors is a Nairobi-based real estate company focused on bringing professional marketing, trusted developer partnerships, and curated property listings to the Kenyan market. We specialise in residential, commercial and mixed-use developments and work closely with clients from concept to completion.</p>
+        <h2>Our Approach</h2>
+        <p style="color:#333; line-height:1.7;">We combine local market expertise, curated presentation and targeted visibility to deliver results for developers and property owners. Our work includes marketing campaigns, virtual tours, and high-quality listing presentation.</p>
+        <h2>Contact</h2>
+        <p style="color:#333; line-height:1.7;">Email: info@thevintagerealtors.example | Phone: +254 700 000000</p>
+    </main>
+
+    <!-- Testimonial Section -->
+    <section class="testimonial-section">
+        <h2>What Our Clients Say</h2>
+        <div class="testimonial-slider-wrapper">
+            <button class="testimonial-btn left" aria-label="Previous testimonial">&#10094;</button>
+            <div class="testimonial-slider" id="testimonialSlider">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"Working with The Vintage Realtors made selling my property effortless. Highly professional!"</p>
+                    <h4>Jane Mwangi</h4>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"Their team helped me find my dream home in Nairobi quickly. Excellent service!"</p>
+                    <h4>David Otieno</h4>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"I trust The Vintage Realtors with all my investment properties. Reliable and thorough."</p>
+                    <h4>Fatuma Hassan</h4>
+                </div>
+            </div>
+            <button class="testimonial-btn right" aria-label="Next testimonial">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- Infinite Testimonial JS -->
+    <script>
+        const testimonialSlider = document.getElementById("testimonialSlider");
+        const testimonialCards = testimonialSlider.children;
+        const testimonialRight = document.querySelector(".testimonial-btn.right");
+        const testimonialLeft = document.querySelector(".testimonial-btn.left");
+        let slideWidth = testimonialCards[0].offsetWidth + 24;
+        let index = 0;
+        let testimonialTimer;
+
+        // Clone first and last for infinite loop
+        testimonialSlider.appendChild(testimonialCards[0].cloneNode(true));
+        testimonialSlider.insertBefore(testimonialCards[testimonialCards.length-2].cloneNode(true), testimonialCards[0]);
+
+        testimonialSlider.scrollLeft = slideWidth;
+
+        function nextTestimonial() {
+            index++;
+            testimonialSlider.scrollBy({ left: slideWidth, behavior: "smooth" });
+            if (index >= testimonialCards.length - 2) {
+                setTimeout(() => {
+                    testimonialSlider.scrollLeft = slideWidth;
+                    index = 0;
+                }, 500);
+            }
+        }
+
+        function prevTestimonial() {
+            index--;
+            testimonialSlider.scrollBy({ left: -slideWidth, behavior: "smooth" });
+            if (index < 0) {
+                setTimeout(() => {
+                    testimonialSlider.scrollLeft = slideWidth * (testimonialCards.length - 3);
+                    index = testimonialCards.length - 3;
+                }, 500);
+            }
+        }
+
+        testimonialRight.onclick = () => { nextTestimonial(); resetTimer(); };
+        testimonialLeft.onclick = () => { prevTestimonial(); resetTimer(); };
+
+        function resetTimer() {
+            clearInterval(testimonialTimer);
+            testimonialTimer = setInterval(nextTestimonial, 7000);
+        }
+
+        testimonialTimer = setInterval(nextTestimonial, 7000);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

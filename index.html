@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vintage Realtors</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+   <!-- Navigation -->
+<nav>
+    <a href="index.html" class="logo-container">
+        <img src="images/logo.png.png" alt="Vintage Realtors Logo" class="logo-img">
+    </a>
+
+    <div class="site-title">
+        <span>The Vintage Realtors</span>
+    </div>
+
+    <div class="contact-phone">
+        <a href="tel:+254722865306">
+            <img src="images/phone-icon.png" alt="Phone" class="phone-icon">
+            <span class="phone-number">+254722865306</span>
+        </a>
+    </div>
+
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</nav>
+
+<!-- Menu Drawer -->
+<div id="menu" class="menu-drawer" aria-hidden="true">
+    <button class="close" aria-label="Close menu">&times;</button>
+    <nav class="drawer-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="properties.html">Properties</a></li>
+            <li><a href="collaborators.html">Collaborators</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="menu-overlay"></div>
+
+    <header class="hero">
+        <div class="slideshow" aria-hidden="true">
+            <div class="slide" data-overlay="linear-gradient(180deg, rgba(75,0,130,0.45), rgba(0,0,0,0.25))" style="background-image: url('images/background.png')"></div>
+            <div class="slide" data-overlay="linear-gradient(180deg, rgba(48,25,52,0.5), rgba(0,0,0,0.28))" style="background-image: url('images/background2.png')"></div>
+            <div class="slide" data-overlay="linear-gradient(180deg, rgba(20,40,80,0.45), rgba(0,0,0,0.25))" style="background-image: url('images/background3.png')"></div>
+            <div class="slide" data-overlay="linear-gradient(180deg, rgba(80,30,90,0.45), rgba(0,0,0,0.3))" style="background-image: url('images/background4.png')"></div>
+            <div class="slide" data-overlay="linear-gradient(180deg, rgba(35,0,60,0.5), rgba(0,0,0,0.28))" style="background-image: url('images/background5.png')"></div>
+            <div class="slide" data-overlay="linear-gradient(180deg, rgba(30,20,60,0.45), rgba(0,0,0,0.28))" style="background-image: url('images/background6.avif')"></div>
+        </div>
+        <div class="overlay" aria-hidden="true"></div>
+
+        <div class="hero-content">
+            <div class="hero-title">
+                <h1>If you build it, <br> we will list it.</h1>
+                <p>Real Estate Excellence in Nairobi</p>
+            </div>
+        </div>
+        <div class="slideshow-controls" aria-hidden="false">
+            <button class="prev" aria-label="Previous slide">‹</button>
+            <div class="dots" role="tablist" aria-label="Slideshow dots"></div>
+            <button class="next" aria-label="Next slide">›</button>
+        </div>
+    </header>
+
+    <script>
+        (function(){
+            const slides = document.querySelectorAll('.slide');
+            const overlay = document.querySelector('.overlay');
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+            const dotsContainer = document.querySelector('.dots');
+    
+            if(!slides.length) return;
+
+            let current = 0;
+            let timer;
+
+            // build dots
+            slides.forEach((s, i)=>{
+                const btn = document.createElement('button');
+                btn.className = 'dot';
+                btn.setAttribute('aria-label', 'Go to slide ' + (i+1));
+                btn.addEventListener('click', ()=>{ show(i); resetTimer(); });
+                dotsContainer.appendChild(btn);
+            });
+            const dots = dotsContainer.querySelectorAll('.dot');
+
+            function show(i){
+                slides.forEach((s,idx)=> s.classList.toggle('active', idx===i));
+                dots.forEach((d,idx)=> d.classList.toggle('active', idx===i));
+                const ov = slides[i].dataset.overlay || 'transparent';
+                // fade overlay out, switch background, then fade in for smooth transition
+                overlay.style.opacity = 0;
+                setTimeout(()=>{
+                    overlay.style.background = ov;
+                    overlay.style.opacity = 1;
+                }, 180);
+                current = i;
+            }
+
+            function next(){ show((current+1)%slides.length); }
+            function prev(){ show((current-1+slides.length)%slides.length); }
+
+            nextBtn.addEventListener('click', ()=>{ next(); resetTimer(); });
+            prevBtn.addEventListener('click', ()=>{ prev(); resetTimer(); });
+
+            function resetTimer(){ clearInterval(timer); timer = setInterval(next, 8000); }
+
+            // start
+            show(0);
+            timer = setInterval(next, 8000);
+        })();
+        </script>
+
+    <section class="about-section unique">
+    <div class="about-container">
+        <div class="about-text">
+            <h2>Who We Are</h2>
+            <p class="lead">The Vintage Realtors is a Nairobi-based real estate marketing and listing firm specialising in residential, commercial, and mixed-use developments. We work with developers, investors, and property owners to professionally present properties through curated listings, strategic exposure, and market-driven insights.
+</p>
+            <a href="about.html" class="btn-secondary">Read More</a>
+        </div>
+
+        <div class="about-image small">
+            <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop" alt="Exterior of modern residential building">
+        </div>
+    </div>
+</section>
+
+<section class="featured-section" id="featured">
+    <div class="section-header">
+        <h2>Featured Properties</h2>
+        <p class="section-subtitle">Sample listings — real properties will be added</p>
+    </div>
+
+    <div class="featured-wrapper">
+        <button class="slide-btn left" aria-label="Previous">&#10094;</button>
+
+        <div class="property-slider" id="propertySlider">
+
+            <!-- Property 1 -->
+
+<script>
+// Hide header on scroll (shows when scrolling up)
+(function(){
+    const nav = document.querySelector('nav');
+    if(!nav) return;
+    let last = window.scrollY;
+    let ticking = false;
+    const threshold = 20; // minimum px change to trigger
+
+    function onScroll(){
+        const current = window.scrollY;
+        if(Math.abs(current - last) < threshold){
+            ticking = false;
+            return;
+        }
+
+        if(current > last && current > 80){
+            nav.classList.add('nav-hide');
+        } else {
+            nav.classList.remove('nav-hide');
+        }
+        last = current <= 0 ? 0 : current;
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', ()=>{
+        if(!ticking){
+            window.requestAnimationFrame(onScroll);
+            ticking = true;
+        }
+    }, { passive: true });
+})();
+</script>
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status sale">For Sale</span>
+                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb" alt="Apartment building Nairobi">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 38,500,000</p>
+                    <h3>3 Bedroom Apartment</h3>
+                    <p class="property-location">Westlands, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 3 Beds</span>
+                        <span>🛁 2 Baths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 2 (UPDATED – Nairobi-style townhouse) -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status rent">To Let</span>
+                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop" alt="Modern townhouse interior">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 180,000 / month</p>
+                    <h3>4 Bedroom Townhouse</h3>
+                    <p class="property-location">Lavington, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 4 Beds</span>
+                        <span>🛁 3 Baths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 3 (UPDATED – Office building / Upper Hill vibe) -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status sale">For Sale</span>
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" alt="Office building Nairobi">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 95,000,000</p>
+                    <h3>Office Space</h3>
+                    <p class="property-location">Upper Hill, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🏢 Commercial</span>
+                        <span>📐 350 m²</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 4 (UPDATED – Modern apartment interior/exterior) -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status rent">To Let</span>
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop" alt="Modern apartment interior">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 120,000 / month</p>
+                    <h3>2 Bedroom Apartment</h3>
+                    <p class="property-location">Kilimani, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 2 Beds</span>
+                        <span>🛁 2 Baths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 5 -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status sale">For Sale</span>
+                    <img src="https://images.unsplash.com/photo-1599423300746-b62533397364" alt="">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 62,000,000</p>
+                    <h3>5 Bedroom Villa</h3>
+                    <p class="property-location">Karen, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 5 Beds</span>
+                        <span>🛁 4 Baths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 6 -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status rent">To Let</span>
+                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85" alt="">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 95,000 / month</p>
+                    <h3>1 Bedroom Apartment</h3>
+                    <p class="property-location">Kileleshwa, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 1 Bed</span>
+                        <span>🛁 1 Bath</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 7 -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status sale">For Sale</span>
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c" alt="">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 140,000,000</p>
+                    <h3>Warehouse & Office Complex</h3>
+                    <p class="property-location">Industrial Area, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🏭 Warehouse</span>
+                        <span>📐 1,200 m²</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="slide-btn right" aria-label="Next">&#10095;</button>
+    </div>
+</section>
+
+
+
+</section>
+
+<section class="services-section">
+    <div class="section-header">
+        <h2>Services Offered</h2>
+        <p class="section-subtitle">How we help you buy, sell and manage property</p>
+    </div>
+
+    <div class="services-grid">
+        <div class="service-card" tabindex="0">
+            <div class="icon">🏠</div>
+            <div class="service-content">
+                <h3>Property Listings &amp; Marketing</h3>
+                <p>Professionally showcasing residential, commercial, and mixed-use properties.</p>
+            </div>
+        </div>
+
+        <div class="service-card" tabindex="0">
+            <div class="icon">📊</div>
+            <div class="service-content">
+                <h3>Property Valuation</h3>
+                <p>Helping clients determine accurate market prices for buying or selling.</p>
+            </div>
+        </div>
+
+        <div class="service-card" tabindex="0">
+            <div class="icon">🔧</div>
+            <div class="service-content">
+                <h3>Property Management</h3>
+                <p>Managing rental properties, including tenant communication and maintenance.</p>
+            </div>
+        </div>
+
+        <div class="service-card" tabindex="0">
+            <div class="icon">💼</div>
+            <div class="service-content">
+                <h3>Consultation &amp; Advisory</h3>
+                <p>Guidance on property investment decisions, market trends, and development opportunities.</p>
+            </div>
+        </div>
+
+        <div class="service-card" tabindex="0">
+            <div class="icon">📷</div>
+            <div class="service-content">
+                <h3>Virtual Tours &amp; Photography</h3>
+                <p>High-quality photos, videos, and virtual tours for online listings.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+(function(){
+    const slider = document.getElementById("propertySlider");
+    const nextBtn = document.querySelector('.slide-btn.right');
+    const prevBtn = document.querySelector('.slide-btn.left');
+    if(!slider) return;
+
+    function pageScroll(direction = 1){
+        const pageWidth = slider.clientWidth;
+        slider.scrollBy({ left: pageWidth * direction, behavior: 'smooth' });
+    }
+
+    nextBtn?.addEventListener('click', ()=> pageScroll(1));
+    prevBtn?.addEventListener('click', ()=> pageScroll(-1));
+})();
+</script>
+
+<!-- Testimonials (copied from about.html) -->
+<section class="testimonial-section">
+    <h2>What Our Clients Say</h2>
+    <div class="testimonial-slider-wrapper">
+        <button class="testimonial-btn left" aria-label="Previous testimonial">&#10094;</button>
+        <div class="testimonial-slider" id="testimonialSlider">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"Working with The Vintage Realtors made selling my property effortless. Highly professional!"</p>
+                <h4>Jane Mwangi</h4>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"Their team helped me find my dream home in Nairobi quickly. Excellent service!"</p>
+                <h4>David Otieno</h4>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"I trust The Vintage Realtors with all my investment properties. Reliable and thorough."</p>
+                <h4>Fatuma Hassan</h4>
+            </div>
+        </div>
+        <button class="testimonial-btn right" aria-label="Next testimonial">&#10095;</button>
+    </div>
+</section>
+
+<script>
+    const testimonialSlider = document.getElementById("testimonialSlider");
+    const testimonialCards = testimonialSlider.children;
+    const testimonialRight = document.querySelector(".testimonial-btn.right");
+    const testimonialLeft = document.querySelector(".testimonial-btn.left");
+    let slideWidth = 0;
+    let index = 0;
+    let testimonialTimer;
+
+    function calcSlideWidth() {
+        if (!testimonialCards[0]) return;
+        slideWidth = testimonialCards[0].offsetWidth + 24;
+    }
+
+    // Clone first and last for infinite loop
+    if (testimonialCards.length >= 2) {
+        testimonialSlider.appendChild(testimonialCards[0].cloneNode(true));
+        testimonialSlider.insertBefore(testimonialCards[testimonialCards.length-2].cloneNode(true), testimonialCards[0]);
+    }
+
+    // Initial measurements
+    calcSlideWidth();
+    testimonialSlider.scrollLeft = slideWidth;
+
+    window.addEventListener('resize', () => {
+        calcSlideWidth();
+        // keep position in sync after resize
+        testimonialSlider.scrollLeft = slideWidth * (index + 1);
+    });
+
+    function nextTestimonial() {
+        index++;
+        testimonialSlider.scrollBy({ left: slideWidth, behavior: "smooth" });
+        if (index >= testimonialCards.length - 2) {
+            setTimeout(() => {
+                testimonialSlider.scrollLeft = slideWidth;
+                index = 0;
+            }, 500);
+        }
+    }
+
+    function prevTestimonial() {
+        index--;
+        testimonialSlider.scrollBy({ left: -slideWidth, behavior: "smooth" });
+        if (index < 0) {
+            setTimeout(() => {
+                testimonialSlider.scrollLeft = slideWidth * (testimonialCards.length - 3);
+                index = testimonialCards.length - 3;
+            }, 500);
+        }
+    }
+
+    testimonialRight.onclick = () => { nextTestimonial(); resetTimer(); };
+    testimonialLeft.onclick = () => { prevTestimonial(); resetTimer(); };
+
+    function resetTimer() {
+        clearInterval(testimonialTimer);
+        testimonialTimer = setInterval(nextTestimonial, 5000);
+    }
+
+    testimonialTimer = setInterval(nextTestimonial, 5000);
+</script>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="images/FOOTER%20LOGO.jpg" alt="Footer logo">
+        </div>
+
+        <div class="footer-about">
+            <h3>The Vintage Realtors</h3>
+            <p>If you build it, we will list it.</p>
+            <p>Nairobi, Kenya</p>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Contact</h4>
+            <p>Email: <a href="mailto:sales@vintagerealtors.co.ke">sales@vintagerealtors.co.ke</a></p>
+            <p>Phone: <a href="tel:+254722865306">+254722865306</a></p>
+        </div>
+
+        <div class="footer-follow">
+            <h4>Follow Us</h4>
+            <p><span class="icon instagram" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg></span> Instagram: @realtorvintage</p>
+            <p><span class="icon tiktok" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v9.5a3.5 3.5 0 1 0 3.5 3.5V9.5h2.5V7h-2.5V3h-3.5z" fill="currentColor"/></svg></span> TikTok: @the.realtors7</p>
+            <p><span class="icon facebook" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M22 12.07C22 6.52 17.52 2 12 2S2 6.52 2 12.07c0 4.98 3.66 9.05 8.47 9.95v-7.05H8.07v-2.9h2.4V9.41c0-2.35 1.39-3.64 3.51-3.64 1.02 0 2.09.18 2.09.18v2.3h-1.18c-1.16 0-1.52.72-1.52 1.46v1.75h2.6l-.42 2.9h-2.18v7.05C18.34 21.12 22 17.05 22 12.07z"/></svg></span> Facebook: The Vintage Realtors</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 The Vintage Realtors — All rights reserved.</p>
+        <nav class="footer-links" aria-label="Footer legal links">
+            <a href="privacy.html">Privacy</a>
+            <a href="legal.html">Legal</a>
+            <a href="termsandconditions.html">Terms &amp; Conditions</a>
+        </nav>
+    </div>
+</footer>
+
+    <!-- Floating WhatsApp button -->
+    <a href="https://wa.me/254722865306" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <img src="images/whatsapp.png" alt="Chat on WhatsApp" class="whatsapp-icon">
+    </a>
+
+
+
+<script src="script.js"></script>
+
+
+
+
+
+</body>
+</html>
