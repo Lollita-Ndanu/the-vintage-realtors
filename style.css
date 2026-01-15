@@ -15,8 +15,8 @@ body {
     font-family: 'Montserrat', sans-serif;
     overflow-x: hidden;
     width: 100%;
-    /* leave space at the bottom so the fixed WhatsApp button won't overlap footer content */
-    padding-bottom: 96px;
+    /* remove extra space at page bottom; WhatsApp button will float over content */
+    padding-bottom: 0;
 }
 
 /* --- 2. NAVIGATION BAR --- */
@@ -589,6 +589,6 @@ nav.nav-hide {
     .footer-bottom .footer-links { gap: 6px; }
     .footer-bottom .footer-links a { color: #333333; border-left: 1px solid rgba(0,0,0,0.06); }
     .footer-bottom p { color: #333333; }
-    body { padding-bottom: 84px; }
+    body { padding-bottom: 0; }
 }
 
