@@ -563,13 +563,40 @@ nav.nav-hide {
 }
 
 @media (max-width: 600px) {
-    .site-footer { padding: 28px 4% 14px; }
-    .site-footer .footer-content { flex-direction: column; align-items: center; text-align: center; }
-    .footer-about, .footer-contact, .footer-follow { min-width: 0; }
-    .footer-contact a { justify-content: center; }
+    /* Make footer compact but readable on small screens */
+    .site-footer { padding: 28px 4% 18px; }
+    .site-footer .footer-content { flex-direction: column; align-items: center; text-align: center; gap: 18px; }
+    .footer-about, .footer-contact, .footer-follow { min-width: 0; width: 100%; }
+    .footer-logo { flex-basis: 92px; }
+    .footer-logo img { width: 92px; height: auto; }
 
-    /* ensure footer-bottom has space for the floating button on small devices */
-    .footer-bottom { padding: 12px 4% calc(16px + 56px); }
+    /* Stack content with breathing room and clearer hierarchy */
+    .footer-about h3, .footer-contact h4, .footer-follow h4 { margin-bottom: 6px; }
+    .footer-about p, .footer-contact p, .footer-follow p { color: #444; font-size: 0.95rem; line-height: 1.5; }
+
+    /* Footer-bottom: clean stacked layout, larger tap targets for links */
+    .footer-bottom { padding: 16px 4% calc(18px + 56px); display: block; background: #ffffff; border-top: 1px solid rgba(16,16,16,0.04); box-shadow: 0 -6px 20px rgba(18,18,18,0.04); }
+    .footer-bottom-inner { flex-direction: column; gap: 10px; text-align: center; }
+    .footer-bottom p { color: #666; font-size: 0.95rem; }
+
+    .footer-bottom .footer-links { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    .footer-bottom .footer-links a {
+        color: var(--purple);
+        background: transparent;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.94rem;
+        font-weight: 700;
+        border-left: none;
+        transition: background 160ms ease, transform 120ms ease;
+    }
+    .footer-bottom .footer-links a:hover { background: rgba(75,0,130,0.06); transform: translateY(-2px); }
+
+    /* Ensure links are large enough to be tapped easily */
+    .footer-bottom .footer-links a { min-height: 40px; display: inline-flex; align-items: center; }
+
+    /* Ensure floating button has safe gap from footer content */
+    .whatsapp-float { bottom: 86px; }
 }
 
 /* Floating WhatsApp button (homepage) */
