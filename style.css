@@ -621,6 +621,14 @@ nav.nav-hide {
     .whatsapp-float { bottom: 86px; }
 }
 
+/* Hide specific large hero backgrounds on small screens to reduce clutter */
+@media (max-width: 600px) {
+    .slide[style*="background.avif"],
+    .slide[style*="background9.avif"] {
+        display: none !important;
+    }
+}
+
 /* Floating WhatsApp button (homepage) */
 .whatsapp-float {
     position: fixed;
