@@ -662,8 +662,9 @@ nav.nav-hide {
     box-shadow: 0 10px 28px rgba(18,18,18,0.06);
     transition: transform 220ms ease, box-shadow 220ms ease;
 }
-.filter-card img { width:100%; height:120px; object-fit:cover; display:block; }
-.filter-card .filter-label {
+.filter-media { position: relative; }
+.filter-media img { width:100%; height:120px; object-fit:cover; display:block; }
+.filter-media .filter-label {
     position: absolute;
     left: 12px;
     bottom: 12px;
