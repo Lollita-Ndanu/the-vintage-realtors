@@ -416,6 +416,28 @@ nav.nav-hide {
 @media (max-width: 1000px) { .property-card { flex: 0 0 calc((100% - 20px) / 2); } .slide-btn.left { left: 8px; } .slide-btn.right { right: 8px; } }
 @media (max-width: 480px) { .property-card { flex: 0 0 90%; } }
 
+/* Mobile / small screens: show whole property images (no cropping) */
+@media (max-width: 600px) {
+    .property-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafa;
+        padding: 8px;
+        border-radius: 10px;
+    }
+    .property-image img {
+        width: 100%;
+        height: auto;
+        max-height: 360px;
+        object-fit: contain;
+        display: block;
+        border-radius: 8px;
+    }
+    /* ensure card sizing flows with image height */
+    .property-card { align-items: stretch; }
+}
+
 /* --- TESTIMONIALS --- */
 .testimonial-section { padding: 72px 5%; background: #fff; }
 .testimonial-section h2 { font-family: 'Playfair Display', serif; font-size: 2.4rem; text-align: center; margin-bottom: 12px; }
