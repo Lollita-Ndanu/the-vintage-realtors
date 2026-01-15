@@ -1,40 +1,39 @@
 /* --- 1. GLOBAL RESET --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --purple: #4b0082; /* Your Royal Purple */
-    --black: #1a1a1a;
-    --white: #ffffff;
-}
-
-body {
-    font-family: 'Montserrat', sans-serif;
-    overflow-x: hidden;
-    width: 100%;
-    /* remove extra space at page bottom; WhatsApp button will float over content */
-    padding-bottom: 0;
-}
-
-/* --- 2. NAVIGATION BAR --- */
-nav {
+.filter-card {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 5%;
-    background: var(--white);
-    height: 90px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    transition: transform 300ms ease, box-shadow 220ms ease;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(18,18,18,0.06);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+    background: #fff;
 }
+.filter-card img { width:100%; height:160px; object-fit:cover; display:block; }
 
-.logo-img {
+/* meta bar sits below image, translucent black with subtle animation */
+.filter-meta {
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.46));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transform: translateY(8px);
+    opacity: 0;
+    transition: transform 320ms cubic-bezier(.2,.9,.2,1), opacity 320ms ease;
+}
+.filter-card:hover .filter-meta { transform: translateY(0); opacity: 1; }
+.filter-card .filter-label {
+    font-weight: 800;
+    font-size: 1rem;
+}
+.filter-card .filter-desc {
+    margin: 0;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.92rem;
+    line-height: 1.3;
+}
     height: 70px;
     width: auto;
 }
@@ -662,22 +661,34 @@ nav.nav-hide {
     box-shadow: 0 10px 28px rgba(18,18,18,0.06);
     transition: transform 220ms ease, box-shadow 220ms ease;
 }
-.filter-card img { width:100%; height:120px; object-fit:cover; display:block; border-top-left-radius:12px; border-top-right-radius:12px; }
-
-/* body under image to hold title + description */
-.filter-body {
-    background: #ffffff;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease;
+.filter-card img { width:100%; height:120px; object-fit:cover; display:block; }
+.filter-card .filter-label {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 700;
 }
-.filter-card:hover .filter-body { transform: translateY(-6px); box-shadow: 0 22px 56px rgba(18,18,18,0.08); }
-.filter-card .filter-label { color: var(--black); font-weight:800; font-size:1rem; }
-.filter-card .filter-desc { color: #666; font-size: 0.92rem; margin: 0; line-height: 1.35; }
+.filter-card .filter-desc {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 44px;
+    margin: 0;
+    color: #f3f3f3;
+    font-size: 0.88rem;
+    line-height: 1.2;
+    background: rgba(0,0,0,0.35);
+    padding: 8px 10px;
+    border-radius: 8px;
+    max-height: 56px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.filter-card:hover { transform: translateY(-6px); box-shadow: 0 22px 56px rgba(18,18,18,0.12); }
 
 .listings-overlay {
     position: fixed;
@@ -731,7 +742,7 @@ nav.nav-hide {
     .property-filters { grid-template-columns: 1fr; }
     .filter-card img { height: 160px; }
     .listings-panel { max-width: 100%; border-radius: 12px 12px 0 0; padding: 14px; }
-    .filter-body .filter-desc { font-size: 0.95rem; }
+    .filter-card .filter-desc { font-size: 0.95rem; }
 }
 
 /* Mobile-only fixes: hide header phone icon and ensure footer-bottom sits correctly */
