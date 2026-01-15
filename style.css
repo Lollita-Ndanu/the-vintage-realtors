@@ -17,14 +17,6 @@ body {
     width: 100%;
 }
 
-/* Ensure footer sits at the bottom of the viewport when content is short
-   and leave space so fixed elements (like the WhatsApp button) don't overlap. */
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
 /* --- 2. NAVIGATION BAR --- */
 nav {
     display: flex;
@@ -215,6 +207,18 @@ nav.nav-hide {
     font-size: 4rem; 
     font-family: 'Playfair Display', serif;
     line-height: 1.2;
+}
+
+/* Responsive adjustments: reduce hero title size on tablets and phones
+   but keep the desktop (4rem) size unchanged */
+@media (max-width: 1024px) {
+    .hero-title h1 { font-size: 3rem; }
+}
+@media (max-width: 768px) {
+    .hero-title h1 { font-size: 2.2rem; }
+}
+@media (max-width: 480px) {
+    .hero-title h1 { font-size: 1.6rem; }
 }
 
 /* Slideshow controls: center bottom with arrows and dots */
@@ -451,8 +455,7 @@ nav.nav-hide {
 .site-footer {
     background: #000000;
     color: #e6e6e6;
-    padding: 40px 5% 100px; /* extra bottom padding to clear the fixed whatsapp button */
-    margin-top: auto; /* push footer to bottom in a column flex layout */
+    padding: 40px 5% 20px;
 }
 .site-footer .footer-content {
     max-width: 1200px;
@@ -482,9 +485,17 @@ nav.nav-hide {
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    background: transparent;
-    color: #bdbdbd;
-    padding: 12px 0 18px;
+    /* Pin the white link bar to the bottom of the viewport */
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffffff;
+    color: #333333;
+    /* leave room on the right so it does not sit beneath the whatsapp button (20px + 56px + 20px gap) */
+    padding: 12px 96px 18px 5%;
+    z-index: 2100; /* below .whatsapp-float which uses 2200 */
+    box-shadow: 0 -6px 18px rgba(16,16,16,0.06);
 }
 .footer-bottom .footer-links { display: flex; align-items: center; gap: 0; }
 .footer-bottom .footer-links a {
@@ -511,6 +522,11 @@ nav.nav-hide {
 @media (max-width: 600px) {
     .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
     .footer-bottom .footer-links { order: 2; }
+}
+
+/* Make sure the right-side padding accounts for the smaller whatsapp button on narrow screens */
+@media (max-width: 480px) {
+    .footer-bottom { padding: 10px calc(12px + 48px + 12px) 12px 4%; }
 }
 
 @media (max-width: 900px) {
