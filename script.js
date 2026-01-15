@@ -10,6 +10,27 @@ function openMenu() {
     if (menuOverlay) menuOverlay.classList.add('active');
 }
 
+// Footer reveal on scroll: add 'in-view' when footer enters viewport
+(function(){
+    const footer = document.querySelector('.site-footer');
+    const footerBottom = document.querySelector('.footer-bottom');
+    const target = footerBottom || footer;
+    if(!target) return;
+
+    const onEnter = (entries, obs) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                if(footer) footer.classList.add('in-view');
+                if(footerBottom) footerBottom.classList.add('in-view');
+                obs.disconnect();
+            }
+        });
+    };
+
+    const io = new IntersectionObserver(onEnter, { threshold: 0.06 });
+    io.observe(target);
+})();
+
 function closeMenu() {
     menu.classList.remove('open');
     menu.setAttribute('aria-hidden', 'true');

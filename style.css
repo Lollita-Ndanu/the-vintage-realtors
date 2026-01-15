@@ -463,9 +463,11 @@ nav.nav-hide {
 
 /* --- FOOTER: professional dark theme --- */
 .site-footer {
-    background: #000000;
-    color: #e6e6e6;
-    padding: 40px 5% 20px;
+    /* unified, professional dark footer */
+    background: linear-gradient(180deg, #0b0b0d 0%, #0f0f11 100%);
+    color: #e9e9ea;
+    padding: 48px 5% 24px;
+    border-top: 1px solid rgba(255,255,255,0.03);
 }
 .site-footer .footer-content {
     max-width: 1200px;
@@ -490,12 +492,15 @@ nav.nav-hide {
 .footer-follow .icon { color: #d0d0d0; vertical-align: middle; transition: color 180ms ease; }
 .footer-follow p:hover .icon { color: var(--purple); }
 .footer-contact a { display: inline-flex; gap: 8px; align-items: center; }
+
+/* Make the bottom bar visually match the main footer (no stark white) */
 .footer-bottom {
     display: block;
-    background: #ffffff;
-    color: #333333;
-    padding: 12px 5% 18px;
-    box-shadow: 0 -6px 18px rgba(16,16,16,0.06);
+    background: transparent;
+    color: #cfcfcf;
+    padding: 14px 5% 20px;
+    box-shadow: none;
+    border-top: 1px solid rgba(255,255,255,0.04);
 }
 /* inner container keeps copyright left and links right aligned within centered width */
 .footer-bottom-inner {
@@ -508,14 +513,14 @@ nav.nav-hide {
 }
 .footer-bottom .footer-links { display: flex; align-items: center; gap: 0; }
 .footer-bottom .footer-links a {
-    color: #cfcfcf;
+    color: #dcdcdc;
     text-decoration: none;
     padding: 8px 12px;
     font-size: 0.92rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    border-left: 1px solid rgba(255,255,255,0.06);
+    border-left: 1px solid rgba(255,255,255,0.04);
     transition: color 180ms ease, background 160ms ease, transform 120ms ease;
 }
 .footer-bottom .footer-links a:first-child { border-left: none; padding-left: 0; }
@@ -526,7 +531,19 @@ nav.nav-hide {
 }
 
 /* Make the copyright a bit more subtle and vertically aligned */
-.footer-bottom p { margin: 0; color: #9e9e9e; font-size: 0.95rem; }
+.footer-bottom p { margin: 0; color: #bdbdbd; font-size: 0.95rem; }
+
+/* Reveal animation for footer when user scrolls to bottom */
+.site-footer, .footer-bottom {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 640ms cubic-bezier(.2,.9,.2,1), transform 640ms cubic-bezier(.2,.9,.2,1);
+    will-change: opacity, transform;
+}
+.site-footer.in-view, .footer-bottom.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 @media (max-width: 900px) {
     .footer-bottom-inner { flex-direction: column; gap: 8px; text-align: center; }
@@ -535,7 +552,8 @@ nav.nav-hide {
 
 /* Make sure the right-side padding accounts for the smaller whatsapp button on narrow screens */
 @media (max-width: 480px) {
-    .footer-bottom { padding: 10px calc(12px + 48px + 12px) 12px 4%; }
+    /* leave extra bottom padding so the floating WhatsApp button doesn't overlap footer links */
+    .footer-bottom { padding: 10px 4% calc(12px + 56px); }
 }
 
 @media (max-width: 900px) {
@@ -549,6 +567,9 @@ nav.nav-hide {
     .site-footer .footer-content { flex-direction: column; align-items: center; text-align: center; }
     .footer-about, .footer-contact, .footer-follow { min-width: 0; }
     .footer-contact a { justify-content: center; }
+
+    /* ensure footer-bottom has space for the floating button on small devices */
+    .footer-bottom { padding: 12px 4% calc(16px + 56px); }
 }
 
 /* Floating WhatsApp button (homepage) */
@@ -587,8 +608,8 @@ nav.nav-hide {
     .footer-bottom { padding: 10px 4% 14px; }
     .footer-bottom-inner { flex-direction: row; justify-content: space-between; align-items: center; }
     .footer-bottom .footer-links { gap: 6px; }
-    .footer-bottom .footer-links a { color: #333333; border-left: 1px solid rgba(0,0,0,0.06); }
-    .footer-bottom p { color: #333333; }
+    .footer-bottom .footer-links a { color: #e0e0e0; border-left: 1px solid rgba(255,255,255,0.03); }
+    .footer-bottom p { color: #d0d0d0; }
     body { padding-bottom: 0; }
 }
 
