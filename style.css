@@ -203,27 +203,30 @@ nav.nav-hide {
     box-shadow: none;
 }
 
-.hero-title h1 { 
-    font-size: 4rem; 
+.hero-title {
+    /* subtitle base size and derived headline size (headline = subtitle * 2.5)
+       Default values preserve the current desktop appearance: 1.6rem * 2.5 = 4rem */
+    --hero-sub: 1.6rem;
+    --hero-h1: calc(var(--hero-sub) * 2.5);
+}
+.hero-title h1 {
+    font-size: var(--hero-h1);
     font-family: 'Playfair Display', serif;
     line-height: 1.2;
 }
-/* Keep desktop headline at 4rem; subtitle slightly smaller by default */
-.hero-title p { font-size: 1.1rem; margin-top: 12px; }
+.hero-title p {
+    font-size: var(--hero-sub);
+}
 
-/* Responsive adjustments: scale headline down for narrower viewports
-   but keep it noticeably larger than the subtitle on each device. */
+/* Responsive: only change subtitle size on narrower viewports so headline scales to 2.5× */
 @media (max-width: 1024px) {
-    .hero-title h1 { font-size: 3.6rem; }
-    .hero-title p  { font-size: 1rem; }
+    .hero-title { --hero-sub: 1.2rem; }
 }
 @media (max-width: 768px) {
-    .hero-title h1 { font-size: 2.6rem; }
-    .hero-title p  { font-size: 0.98rem; }
+    .hero-title { --hero-sub: 1rem; }
 }
 @media (max-width: 480px) {
-    .hero-title h1 { font-size: 2rem; }
-    .hero-title p  { font-size: 0.95rem; }
+    .hero-title { --hero-sub: 0.9rem; }
 }
 
 /* Slideshow controls: center bottom with arrows and dots */
