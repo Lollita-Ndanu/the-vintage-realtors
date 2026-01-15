@@ -673,6 +673,22 @@ nav.nav-hide {
     border-radius: 8px;
     font-weight: 700;
 }
+.filter-card .filter-desc {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 44px;
+    margin: 0;
+    color: #f3f3f3;
+    font-size: 0.88rem;
+    line-height: 1.2;
+    background: rgba(0,0,0,0.35);
+    padding: 8px 10px;
+    border-radius: 8px;
+    max-height: 56px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .filter-card:hover { transform: translateY(-6px); box-shadow: 0 22px 56px rgba(18,18,18,0.12); }
 
 .listings-overlay {
@@ -727,6 +743,7 @@ nav.nav-hide {
     .property-filters { grid-template-columns: 1fr; }
     .filter-card img { height: 160px; }
     .listings-panel { max-width: 100%; border-radius: 12px 12px 0 0; padding: 14px; }
+    .filter-card .filter-desc { font-size: 0.95rem; bottom: 54px; }
 }
 
 /* Mobile-only fixes: hide header phone icon and ensure footer-bottom sits correctly */
