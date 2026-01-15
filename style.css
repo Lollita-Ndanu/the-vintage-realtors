@@ -17,6 +17,14 @@ body {
     width: 100%;
 }
 
+/* Ensure footer sits at the bottom of the viewport when content is short
+   and leave space so fixed elements (like the WhatsApp button) don't overlap. */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 /* --- 2. NAVIGATION BAR --- */
 nav {
     display: flex;
@@ -443,7 +451,8 @@ nav.nav-hide {
 .site-footer {
     background: #000000;
     color: #e6e6e6;
-    padding: 40px 5% 20px;
+    padding: 40px 5% 100px; /* extra bottom padding to clear the fixed whatsapp button */
+    margin-top: auto; /* push footer to bottom in a column flex layout */
 }
 .site-footer .footer-content {
     max-width: 1200px;
