@@ -37,8 +37,46 @@
 
 	<main style="max-width:900px;margin:60px auto;padding:24px;">
 		<h1>Properties</h1>
-		<p>List of properties will be displayed here. Replace this placeholder content with your actual property listings.</p>
-		<p><a href="index.html" class="btn-secondary">Return Home</a></p>
+		<p>Explore properties by type — tap a category to see listings.</p>
+
+		<section class="property-filters">
+			<div class="filter-card" data-type="houses">
+				<img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop" alt="Houses">
+				<div class="filter-label">Houses</div>
+			</div>
+			<div class="filter-card" data-type="apartments">
+				<img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop" alt="Apartments">
+				<div class="filter-label">Apartments</div>
+			</div>
+			<div class="filter-card" data-type="commercial">
+				<img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=1200&auto=format&fit=crop" alt="Commercial">
+				<div class="filter-label">Commercial</div>
+			</div>
+			<div class="filter-card" data-type="developments">
+				<img src="https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop" alt="Developments">
+				<div class="filter-label">Developments</div>
+			</div>
+			<div class="filter-card" data-type="farms">
+				<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="Farms">
+				<div class="filter-label">Farms & Land</div>
+			</div>
+			<div class="filter-card" data-type="warehouses">
+				<img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop" alt="Warehouses">
+				<div class="filter-label">Warehouses</div>
+			</div>
+		</section>
+
+		<p style="margin-top:18px;"><a href="index.html" class="btn-secondary">Return Home</a></p>
+
+		<!-- Listings overlay (hidden until a category is clicked) -->
+		<div id="listingsOverlay" class="listings-overlay" aria-hidden="true">
+			<div class="listings-panel" role="dialog" aria-modal="true" aria-labelledby="listingsTitle">
+				<button class="listings-close" aria-label="Close listings">×</button>
+				<h2 id="listingsTitle">Listings</h2>
+				<p class="listings-count"></p>
+				<div class="listings-grid"></div>
+			</div>
+		</div>
 	</main>
 
 	<footer class="site-footer">
@@ -83,6 +121,71 @@
 	<a href="https://wa.me/254722865306" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
 		<img src="images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
 	</a>
+
+	<script>
+// properties page: category filters -> overlay listings
+(function(){
+	const data = [
+		{ id:1, type:'apartments', title:'2 Bedroom Apartment — Kilimani', price:'KES 120,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2' },
+		{ id:2, type:'apartments', title:'3 Bedroom Apartment — Westlands', price:'KES 38,500,000', status:'sale', img:'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb' },
+		{ id:3, type:'houses', title:'4 Bedroom House — Lavington', price:'KES 85,000,000', status:'sale', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511' },
+		{ id:4, type:'houses', title:'5 Bedroom Villa — Karen', price:'KES 62,000,000', status:'sale', img:'https://images.unsplash.com/photo-1599423300746-b62533397364' },
+		{ id:5, type:'commercial', title:'Office Space — Upper Hill', price:'KES 95,000,000', status:'sale', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267' },
+		{ id:6, type:'developments', title:'New Development — Ruaka', price:'From KES 18,000,000', status:'sale', img:'https://images.unsplash.com/photo-1494526585095-c41746248156' },
+		{ id:7, type:'farms', title:'2 Acre Farm — Kiambu', price:'KES 6,000,000', status:'sale', img:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' },
+		{ id:8, type:'warehouses', title:'Warehouse — Industrial Area', price:'KES 140,000,000', status:'sale', img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994' }
+	];
+
+	const filters = document.querySelectorAll('.filter-card');
+	const overlay = document.getElementById('listingsOverlay');
+	const panel = overlay && overlay.querySelector('.listings-panel');
+	const grid = overlay && overlay.querySelector('.listings-grid');
+	const countEl = overlay && overlay.querySelector('.listings-count');
+	const closeBtn = overlay && overlay.querySelector('.listings-close');
+
+	function openOverlay(type, label){
+		const items = data.filter(d => d.type === type);
+		if(!grid) return;
+		grid.innerHTML = '';
+		countEl.textContent = items.length + ' listing' + (items.length!==1 ? 's' : '') + ' — ' + label;
+		items.forEach(it => {
+			const card = document.createElement('article');
+			card.className = 'listing-card';
+			card.innerHTML = `
+				<div class="listing-image"><img src="${it.img}" alt="${it.title}"></div>
+				<div class="listing-info">
+					<h3>${it.title}</h3>
+					<p class="listing-price">${it.price}</p>
+					<span class="listing-status ${it.status}">${it.status === 'sale' ? 'For Sale' : 'To Let'}</span>
+				</div>
+			`;
+			grid.appendChild(card);
+		});
+
+		overlay.setAttribute('aria-hidden','false');
+		requestAnimationFrame(()=> overlay.classList.add('open'));
+		document.body.style.overflow = 'hidden';
+	}
+
+	function closeOverlay(){
+		overlay.classList.remove('open');
+		overlay.setAttribute('aria-hidden','true');
+		document.body.style.overflow = '';
+	}
+
+	filters.forEach(f => {
+		f.addEventListener('click', ()=>{
+			const type = f.dataset.type;
+			const label = f.querySelector('.filter-label')?.textContent || type;
+			openOverlay(type, label);
+		});
+	});
+
+	closeBtn?.addEventListener('click', closeOverlay);
+	overlay?.addEventListener('click', (e)=>{ if(e.target === overlay) closeOverlay(); });
+	document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeOverlay(); });
+})();
+	</script>
 
 	<script src="script.js"></script>
 </body>

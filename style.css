@@ -647,6 +647,84 @@ nav.nav-hide {
     .whatsapp-float { right: 12px; bottom: 12px; width: 48px; height: 48px; }
 }
 
+/* --- PROPERTIES PAGE: category filters & listings overlay --- */
+.property-filters {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+}
+.filter-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(18,18,18,0.06);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.filter-card img { width:100%; height:120px; object-fit:cover; display:block; }
+.filter-card .filter-label {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+.filter-card:hover { transform: translateY(-6px); box-shadow: 0 22px 56px rgba(18,18,18,0.12); }
+
+.listings-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(0,0,0,0.38);
+    z-index: 3000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 260ms ease;
+}
+.listings-overlay.open { opacity: 1; pointer-events: auto; }
+.listings-panel {
+    background: #fff;
+    width: 100%;
+    max-width: 1000px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    box-shadow: 0 -12px 48px rgba(18,18,18,0.12);
+    padding: 18px;
+    transform: translateY(18px);
+    transition: transform 320ms cubic-bezier(.2,.9,.2,1);
+}
+.listings-overlay.open .listings-panel { transform: translateY(0); }
+.listings-panel h2 { margin: 0 0 6px; }
+.listings-count { color: #666; margin-bottom: 12px; }
+.listings-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; max-height: 60vh; overflow:auto; padding-bottom: 8px; }
+.listing-card { display: flex; gap: 10px; background: #fafafa; border-radius: 10px; overflow: hidden; align-items: stretch; }
+.listing-image img { width: 140px; height: 100%; object-fit: cover; display:block; }
+.listing-info { padding: 10px; flex:1; }
+.listing-info h3 { margin: 0 0 6px; font-size: 1rem; }
+.listing-price { color: var(--purple); font-weight:800; margin-bottom:6px; }
+.listing-status { display:inline-block; padding:6px 8px; border-radius:8px; font-weight:700; font-size:0.8rem; }
+.listing-status.sale { background: rgba(75,0,130,0.08); color: var(--purple); }
+.listing-status.rent { background: rgba(0,120,120,0.08); color: #0a8b8b; }
+.listings-close { position: absolute; right: 18px; top: 10px; background: transparent; border: none; font-size: 1.6rem; cursor: pointer; }
+
+@media (max-width: 900px) {
+    .property-filters { grid-template-columns: repeat(2, 1fr); }
+    .listings-grid { grid-template-columns: 1fr; }
+    .listing-image img { width: 120px; }
+}
+
+@media (max-width: 480px) {
+    .property-filters { grid-template-columns: 1fr; }
+    .filter-card img { height: 160px; }
+    .listings-panel { max-width: 100%; border-radius: 12px 12px 0 0; padding: 14px; }
+}
+
 /* Mobile-only fixes: hide header phone icon and ensure footer-bottom sits correctly */
 @media (max-width: 600px) {
     /* remove phone in header on phones only */
