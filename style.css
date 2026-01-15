@@ -679,7 +679,8 @@ nav.nav-hide {
     position: fixed;
     inset: 0;
     display: flex;
-    align-items: flex-end;
+    /* center the panel so it covers more vertical space instead of sitting at the very bottom */
+    align-items: center;
     justify-content: center;
     background: rgba(0,0,0,0.38);
     z-index: 3000;
@@ -692,17 +693,20 @@ nav.nav-hide {
     background: #fff;
     width: 100%;
     max-width: 1000px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    box-shadow: 0 -12px 48px rgba(18,18,18,0.12);
+    border-radius: 12px;
+    box-shadow: 0 12px 48px rgba(18,18,18,0.12);
     padding: 18px;
-    transform: translateY(18px);
-    transition: transform 320ms cubic-bezier(.2,.9,.2,1);
+    /* make the panel take at least half the viewport height and be scrollable up to a sensible max */
+    min-height: 50vh;
+    max-height: 90vh;
+    overflow: auto;
+    transform: translateY(8px) scale(.995);
+    transition: transform 320ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
 }
-.listings-overlay.open .listings-panel { transform: translateY(0); }
+.listings-overlay.open .listings-panel { transform: translateY(0) scale(1); }
 .listings-panel h2 { margin: 0 0 6px; }
 .listings-count { color: #666; margin-bottom: 12px; }
-.listings-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; max-height: 60vh; overflow:auto; padding-bottom: 8px; }
+.listings-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; max-height: calc(80vh - 160px); overflow:auto; padding-bottom: 8px; }
 .listing-card { display: flex; gap: 10px; background: #fafafa; border-radius: 10px; overflow: hidden; align-items: stretch; }
 .listing-image img { width: 140px; height: 100%; object-fit: cover; display:block; }
 .listing-info { padding: 10px; flex:1; }
