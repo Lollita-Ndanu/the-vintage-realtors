@@ -367,8 +367,7 @@ nav.nav-hide {
     /* Align phone icon top/bottom with hamburger dashes (3 x 3px with 6px gaps = 21px total) */
     .hamburger { height: 21px; }
     .contact-phone { position: relative; right: auto; top: auto; margin-left: auto; margin-right: 8px; display: inline-flex; align-items: center; transform: none; }
-    /* hide the phone icon on small/mobile screens */
-    .phone-icon { width: auto; height: 21px; display: none; }
+    .phone-icon { width: auto; height: 21px; display: block; }
 }
 
 /* --- FEATURED PROPERTIES (Carousel) --- */
@@ -536,20 +535,7 @@ nav.nav-hide {
 
 /* Make sure the right-side padding accounts for the smaller whatsapp button on narrow screens */
 @media (max-width: 480px) {
-    /* simplify mobile padding and center the bar so it aligns with main content */
-    .footer-bottom { padding: 12px 4% 12px; }
-    .footer-bottom-inner { align-items: center; text-align: center; }
-    /* stack links under copyright and remove vertical separators for clarity */
-    .footer-bottom .footer-links { gap: 8px; }
-    .footer-bottom .footer-links a { border-left: none; padding: 6px 8px; }
-}
-
-@media (max-width: 600px) {
-    /* keep mobile layout tidy on slightly larger phones/tablets */
-    .footer-bottom { padding: 12px 4% 14px; }
-    .footer-bottom-inner { flex-direction: column; gap: 8px; }
-    .footer-bottom .footer-links { order: 2; }
-    .footer-bottom .footer-links a { border-left: none; padding: 6px 8px; }
+    .footer-bottom { padding: 10px calc(12px + 48px + 12px) 12px 4%; }
 }
 
 @media (max-width: 900px) {
@@ -589,5 +575,20 @@ nav.nav-hide {
 
 @media (max-width: 480px) {
     .whatsapp-float { right: 12px; bottom: 12px; width: 48px; height: 48px; }
+}
+
+/* Mobile-only fixes: hide header phone icon and ensure footer-bottom sits correctly */
+@media (max-width: 600px) {
+    /* remove phone in header on phones only */
+    .contact-phone { display: none !important; }
+
+    /* keep footer-bottom inner row-aligned so copyright stays left and links right
+       while avoiding overlapping/stacking issues on small screens */
+    .footer-bottom { padding: 10px 4% 14px; }
+    .footer-bottom-inner { flex-direction: row; justify-content: space-between; align-items: center; }
+    .footer-bottom .footer-links { gap: 6px; }
+    .footer-bottom .footer-links a { color: #333333; border-left: 1px solid rgba(0,0,0,0.06); }
+    .footer-bottom p { color: #333333; }
+    body { padding-bottom: 84px; }
 }
 
