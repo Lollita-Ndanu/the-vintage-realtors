@@ -489,20 +489,23 @@ nav.nav-hide {
 .footer-follow p:hover .icon { color: var(--purple); }
 .footer-contact a { display: inline-flex; gap: 8px; align-items: center; }
 .footer-bottom {
+    /* full-width container that holds the centered white bar */
+    width: 100%;
+    background: transparent;
+    padding: 8px 0 0; /* small top gap from footer content */
+}
+
+.footer-bottom-inner {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    /* Pin the white link bar to the bottom of the viewport */
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background: #ffffff;
     color: #333333;
-    /* leave room on the right so it does not sit beneath the whatsapp button (20px + 56px + 20px gap) */
+    /* leave room on the right so it does not sit beneath the whatsapp button when visible */
     padding: 12px 96px 18px 5%;
-    z-index: 2100; /* below .whatsapp-float which uses 2200 */
     box-shadow: 0 -6px 18px rgba(16,16,16,0.06);
 }
 .footer-bottom .footer-links { display: flex; align-items: center; gap: 0; }
