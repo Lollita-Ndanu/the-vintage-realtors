@@ -77,73 +77,69 @@
 
     <script>
         (function(){
-            const slidesAll = Array.from(document.querySelectorAll('.slide'));
+            // collect slides as an array so we can mutate on small screens
+            let slides = Array.from(document.querySelectorAll('.slide'));
             const overlay = document.querySelector('.overlay');
             const prevBtn = document.querySelector('.prev');
             const nextBtn = document.querySelector('.next');
             const dotsContainer = document.querySelector('.dots');
 
-            if(!slidesAll.length) return;
+            // On mobile/smaller screens remove specific background slides so they never display
+            try {
+                if (window.matchMedia && window.matchMedia('(max-width:600px)').matches) {
+                    slides.forEach(s => {
+                        const bg = (s.style && s.style.backgroundImage) ? s.style.backgroundImage : '';
+                        if (bg.includes('background.avif') || bg.includes('background9.avif')) {
+                            s.remove();
+                        }
+                    });
+                    slides = Array.from(document.querySelectorAll('.slide'));
+                }
+            } catch (e) {
+                // fail silently
+            }
 
-            let visible = [];
-            let dots = [];
+            if(!slides.length) return;
+
             let current = 0;
             let timer;
 
-            function build() {
-                // determine which slides are visible (CSS may hide some on small screens)
-                visible = slidesAll.filter(s => getComputedStyle(s).display !== 'none');
-
-                // rebuild dots
-                dotsContainer.innerHTML = '';
-                visible.forEach((s,i)=>{
-                    const btn = document.createElement('button');
-                    btn.className = 'dot';
-                    btn.setAttribute('aria-label', 'Go to slide ' + (i+1));
-                    btn.addEventListener('click', ()=>{ show(i); resetTimer(); });
-                    dotsContainer.appendChild(btn);
-                });
-                dots = Array.from(dotsContainer.querySelectorAll('.dot'));
-
-                if(visible.length === 0) return;
-
-                // ensure current is within bounds
-                if(current >= visible.length) current = 0;
-                show(current);
-            }
+            // build dots
+            slides.forEach((s, i)=>{
+                const btn = document.createElement('button');
+                btn.className = 'dot';
+                btn.setAttribute('aria-label', 'Go to slide ' + (i+1));
+                btn.addEventListener('click', ()=>{ show(i); resetTimer(); });
+                dotsContainer.appendChild(btn);
+            });
+            const dots = dotsContainer.querySelectorAll('.dot');
 
             function show(i){
-                visible.forEach((s,idx)=> s.classList.toggle('active', idx===i));
+                slides.forEach((s,idx)=> s.classList.toggle('active', idx===i));
                 dots.forEach((d,idx)=> d.classList.toggle('active', idx===i));
-                const ov = visible[i].dataset.overlay || 'transparent';
-                overlay.style.opacity = 0;
+                const ov = slides[i].dataset.overlay || 'transparent';
+                // fade overlay out, switch background, then fade in for smooth transition
+                if (overlay) overlay.style.opacity = 0;
                 setTimeout(()=>{
-                    overlay.style.background = ov;
-                    overlay.style.opacity = 1;
+                    if (overlay) overlay.style.background = ov;
+                    if (overlay) overlay.style.opacity = 1;
                 }, 180);
                 current = i;
             }
 
-            function next(){ if(visible.length) show((current+1)%visible.length); }
-            function prev(){ if(visible.length) show((current-1+visible.length)%visible.length); }
+            function next(){ show((current+1)%slides.length); }
+            function prev(){ show((current-1+slides.length)%slides.length); }
 
             nextBtn?.addEventListener('click', ()=>{ next(); resetTimer(); });
             prevBtn?.addEventListener('click', ()=>{ prev(); resetTimer(); });
 
             function resetTimer(){ clearInterval(timer); timer = setInterval(next, 8000); }
 
-            // initial build
-            build();
+            // start
+            show(0);
             timer = setInterval(next, 8000);
-
-            // rebuild on resize (debounced) because CSS hiding may change
-            let rtid;
-            window.addEventListener('resize', ()=>{
-                clearTimeout(rtid);
-                rtid = setTimeout(()=> build(), 220);
-            });
         })();
-    </script>
+        </script>
 
     <section class="about-section unique">
     <div class="about-container">
