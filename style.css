@@ -15,6 +15,8 @@ body {
     font-family: 'Montserrat', sans-serif;
     overflow-x: hidden;
     width: 100%;
+    /* leave space at the bottom so the fixed WhatsApp button won't overlap footer content */
+    padding-bottom: 96px;
 }
 
 /* --- 2. NAVIGATION BAR --- */
@@ -489,24 +491,20 @@ nav.nav-hide {
 .footer-follow p:hover .icon { color: var(--purple); }
 .footer-contact a { display: inline-flex; gap: 8px; align-items: center; }
 .footer-bottom {
-    /* full-width container that holds the centered white bar */
-    width: 100%;
-    background: transparent;
-    padding: 8px 0 0; /* small top gap from footer content */
+    display: block;
+    background: #ffffff;
+    color: #333333;
+    padding: 12px 5% 18px;
+    box-shadow: 0 -6px 18px rgba(16,16,16,0.06);
 }
-
+/* inner container keeps copyright left and links right aligned within centered width */
 .footer-bottom-inner {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     gap: 16px;
-    background: #ffffff;
-    color: #333333;
-    /* leave room on the right so it does not sit beneath the whatsapp button when visible */
-    padding: 12px 96px 18px 5%;
-    box-shadow: 0 -6px 18px rgba(16,16,16,0.06);
 }
 .footer-bottom .footer-links { display: flex; align-items: center; gap: 0; }
 .footer-bottom .footer-links a {
@@ -530,8 +528,8 @@ nav.nav-hide {
 /* Make the copyright a bit more subtle and vertically aligned */
 .footer-bottom p { margin: 0; color: #9e9e9e; font-size: 0.95rem; }
 
-@media (max-width: 600px) {
-    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+@media (max-width: 900px) {
+    .footer-bottom-inner { flex-direction: column; gap: 8px; text-align: center; }
     .footer-bottom .footer-links { order: 2; }
 }
 
