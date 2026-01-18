@@ -745,3 +745,76 @@ nav.nav-hide {
     body { padding-bottom: 0; }
 }
 
+/* --- PROPERTIES PAGE BACKGROUND & OVERLAY --- */
+.properties-page {
+    background-image: url('images/background4.avif');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #111;
+}
+
+.properties-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.24);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.properties-page nav,
+.properties-page .menu-drawer,
+.properties-page main,
+.properties-page .site-footer,
+.properties-page .footer-bottom,
+.properties-page #listingsOverlay {
+    position: relative;
+    z-index: 10;
+}
+
+.properties-page nav {
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.properties-page main {
+    background: rgba(255,255,255,0.72);
+    border-radius: 12px;
+    box-shadow: 0 18px 46px rgba(21,21,21,0.06);
+}
+
+.properties-page .filter-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+.properties-page .filter-media .filter-label {
+    background: rgba(0,0,0,0.6);
+}
+
+.properties-page .site-footer {
+    background: rgba(11,11,13,0.78);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: #eaeaea;
+}
+
+.properties-page .footer-bottom {
+    background: rgba(0,0,0,0.45);
+    color: #ddd;
+}
+
+.properties-page .listings-overlay {
+    background: rgba(0,0,0,0.45);
+    z-index: 3100;
+}
+
+.properties-page .listings-panel {
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 12px 48px rgba(18,18,18,0.16);
+}
+
