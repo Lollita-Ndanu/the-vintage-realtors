@@ -181,7 +181,8 @@
 					<div class="pi-right">
 						<div class="pi-title">${it.title}</div>
 						<div class="pi-price">${it.price}</div>
-						<div class="pi-status">${it.status === 'sale' ? 'For Sale' : 'To Let'}</div>
+						<div class="pi-meta">${it.type}</div>
+						<div class="pi-status ${it.status}">${it.status === 'sale' ? 'For Sale' : 'To Let'}</div>
 					</div>
 				`;
 				list.appendChild(item);

@@ -697,20 +697,23 @@ nav.nav-hide {
 
 /* All Properties grouping */
 .all-properties {
-    margin: 20px -6vw;
-    background: rgba(255,255,255,0.96);
-    padding: 18px 6vw;
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(15,15,15,0.06);
-    color: #111;
-}
-.all-properties-title {
-    margin: 0 0 14px;
-    font-size: 1.35rem;
-    font-weight: 800;
+    margin: 28px -10vw;
+    padding: 28px 10vw;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(10,10,20,0.06);
+    border: 1px solid rgba(10,10,20,0.03);
     color: #0b1220;
 }
-.property-group { margin-bottom: 22px; }
+.all-properties-title {
+    margin: 0 0 18px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0b1220;
+    letter-spacing: -0.2px;
+}
+.property-group { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid rgba(15,15,15,0.04); }
+.property-group:last-child { border-bottom: none; padding-bottom: 0; }
 .group-title {
     margin: 0 0 12px;
     font-size: 1.05rem;
@@ -718,22 +721,26 @@ nav.nav-hide {
     font-weight: 700;
     border-left: 4px solid var(--purple);
     padding-left: 10px;
+    text-transform: none;
 }
 .property-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .property-item {
     display: flex;
     gap: 14px;
-    align-items: center;
-    padding: 12px;
-    background: #fff;
+    align-items: flex-start;
+    padding: 14px;
+    background: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 6px 18px rgba(15,15,15,0.06);
-    border: 1px solid rgba(15,15,15,0.04);
+    box-shadow: 0 8px 22px rgba(10,10,20,0.04);
+    border: 1px solid rgba(10,10,20,0.04);
+    transition: transform 180ms ease, box-shadow 180ms ease;
 }
-.property-item img { width: 140px; height: 96px; object-fit: cover; border-radius: 8px; }
+.property-item:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(10,10,20,0.08); }
+.property-item img { width: 160px; height: 104px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
 .pi-right { flex: 1; }
 .pi-title { font-weight: 700; color: #111; font-size: 1rem; margin-bottom: 6px; }
-.pi-price { color: var(--purple); font-weight: 800; margin-bottom: 6px; }
+.pi-price { color: var(--purple); font-weight: 800; margin-bottom: 8px; }
+.pi-meta { color: rgba(10,10,10,0.55); font-size: 0.92rem; margin-bottom: 8px; }
 .pi-status { font-size: 0.85rem; padding: 6px 10px; border-radius: 999px; display: inline-block; font-weight: 700; }
 .pi-status.sale { background: rgba(75,0,130,0.1); color: var(--purple); }
 .pi-status.rent { background: rgba(10,139,139,0.08); color: #0a8b8b; }
