@@ -164,6 +164,8 @@
 
 			const section = document.createElement('section');
 			section.className = 'property-group';
+			section.id = `group-${cat.key}`;
+			section.setAttribute('tabindex','-1');
 			section.innerHTML = `<h3 class="group-title">${cat.label}</h3>`;
 
 			const list = document.createElement('div');
@@ -187,6 +189,20 @@
 
 			section.appendChild(list);
 			container.appendChild(section);
+		});
+
+		// Attach click handlers to top filters to smooth-scroll to groups
+		const filters = document.querySelectorAll('.filter-card[data-type]');
+		filters.forEach(f => {
+			f.addEventListener('click', (e) => {
+				const type = f.dataset.type;
+				const target = document.getElementById('group-' + type);
+				if (!target) return;
+				// smooth scroll to the group's top
+				target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				// focus for accessibility after a short delay (allow scroll to complete)
+				setTimeout(() => { try { target.focus(); } catch (err){} }, 500);
+			});
 		});
 	})();
 	</script>

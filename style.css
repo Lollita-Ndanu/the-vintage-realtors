@@ -697,9 +697,9 @@ nav.nav-hide {
 
 /* All Properties grouping */
 .all-properties {
-    margin-top: 20px;
+    margin: 20px -6vw;
     background: rgba(255,255,255,0.96);
-    padding: 18px;
+    padding: 18px 6vw;
     border-radius: 12px;
     box-shadow: 0 12px 30px rgba(15,15,15,0.06);
     color: #111;
@@ -741,6 +741,10 @@ nav.nav-hide {
 @media (max-width: 900px) {
     .property-list { grid-template-columns: 1fr; }
     .property-item img { width: 120px; height: 84px; }
+}
+
+@media (max-width: 640px) {
+    .all-properties { margin: 18px -16px; padding: 14px 16px; border-radius: 10px; }
 }
 
 /* Mobile-only fixes: hide header phone icon and ensure footer-bottom sits correctly */
