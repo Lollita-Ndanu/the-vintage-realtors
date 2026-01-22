@@ -676,49 +676,7 @@ nav.nav-hide {
 }
 .filter-card:hover { transform: translateY(-6px); box-shadow: 0 22px 56px rgba(18,18,18,0.12); }
 
-.listings-overlay {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(0,0,0,0.38);
-    z-index: 3000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 260ms ease;
-}
-.listings-overlay.open { opacity: 1; pointer-events: auto; }
-.listings-panel {
-    background: #fff;
-    width: 100%;
-    max-width: 1000px;
-    border-radius: 12px;
-    box-shadow: 0 12px 48px rgba(18,18,18,0.12);
-    padding: 18px;
-    /* make the panel take at least half the viewport height and be scrollable up to a sensible max */
-    min-height: 50vh;
-    max-height: 90vh;
-    overflow: auto;
-    /* start off-screen (below) and slightly smaller/faded */
-    transform: translateY(60vh) scale(.98);
-    opacity: 0;
-    transition: transform 420ms cubic-bezier(.2,.9,.2,1), opacity 320ms ease;
-}
-.listings-overlay.open .listings-panel { transform: translateY(0) scale(1); opacity: 1; }
-.listings-panel h2 { margin: 0 0 6px; }
-.listings-count { color: #666; margin-bottom: 12px; }
-.listings-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; max-height: calc(80vh - 160px); overflow:auto; padding-bottom: 8px; }
-.listing-card { display: flex; gap: 10px; background: #fafafa; border-radius: 10px; overflow: hidden; align-items: stretch; }
-.listing-image img { width: 140px; height: 100%; object-fit: cover; display:block; }
-.listing-info { padding: 10px; flex:1; }
-.listing-info h3 { margin: 0 0 6px; font-size: 1rem; }
-.listing-price { color: var(--purple); font-weight:800; margin-bottom:6px; }
-.listing-status { display:inline-block; padding:6px 8px; border-radius:8px; font-weight:700; font-size:0.8rem; }
-.listing-status.sale { background: rgba(75,0,130,0.08); color: var(--purple); }
-.listing-status.rent { background: rgba(0,120,120,0.08); color: #0a8b8b; }
-.listings-close { position: absolute; right: 18px; top: 10px; background: transparent; border: none; font-size: 1.6rem; cursor: pointer; }
+/* Listing overlay removed — styles cleared */
 
 @media (max-width: 900px) {
     .property-filters { grid-template-columns: repeat(2, 1fr); }
@@ -735,6 +693,22 @@ nav.nav-hide {
     .property-filters { grid-template-columns: 1fr; }
     .filter-media img { height: 140px; }
     .listings-panel { max-width: 100%; border-radius: 12px 12px 0 0; padding: 14px; }
+}
+
+/* All Properties grouping */
+.all-properties { margin-top: 20px; }
+.all-properties-title { margin: 8px 0 14px; font-size: 1.25rem; }
+.property-group { margin-bottom: 18px; }
+.group-title { margin: 0 0 10px; font-size: 1.1rem; color: var(--purple); }
+.property-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.property-item { display: flex; gap: 12px; align-items: center; padding: 10px; background: rgba(255,255,255,0.06); border-radius: 10px; }
+.property-item img { width: 120px; height: 80px; object-fit: cover; border-radius: 6px; }
+.pi-title { font-weight: 700; margin-bottom: 6px; }
+.pi-price { color: var(--purple); font-weight: 800; margin-bottom: 6px; }
+.pi-status { font-size: 0.85rem; padding: 6px 8px; border-radius: 8px; display: inline-block; background: rgba(0,0,0,0.06); }
+
+@media (max-width: 900px) {
+    .property-list { grid-template-columns: 1fr; }
 }
 
 /* Mobile-only fixes: hide header phone icon and ensure footer-bottom sits correctly */
@@ -814,13 +788,6 @@ nav.nav-hide {
     color: #ddd;
 }
 
-.properties-page .listings-overlay {
-    background: rgba(0,0,0,0.45);
-    z-index: 3100;
-}
-
-.properties-page .listings-panel {
-    background: rgba(255,255,255,0.9);
-    box-shadow: 0 12px 48px rgba(18,18,18,0.16);
-}
+.properties-page .listings-overlay { display:none; }
+.properties-page .listings-panel { display:none; }
 
