@@ -557,15 +557,11 @@ nav.nav-hide {
 
 /* Reveal animation for footer when user scrolls to bottom */
 .site-footer, .footer-bottom {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 640ms cubic-bezier(.2,.9,.2,1), transform 640ms cubic-bezier(.2,.9,.2,1);
-    will-change: opacity, transform;
-}
-.site-footer.in-view, .footer-bottom.in-view {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+    transition: none;
 }
+.site-footer.in-view, .footer-bottom.in-view { /* no-op kept for compatibility */ }
 
 @media (max-width: 900px) {
     .footer-bottom-inner { flex-direction: column; gap: 8px; text-align: center; }
