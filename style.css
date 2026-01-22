@@ -696,19 +696,51 @@ nav.nav-hide {
 }
 
 /* All Properties grouping */
-.all-properties { margin-top: 20px; }
-.all-properties-title { margin: 8px 0 14px; font-size: 1.25rem; }
-.property-group { margin-bottom: 18px; }
-.group-title { margin: 0 0 10px; font-size: 1.1rem; color: var(--purple); }
-.property-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.property-item { display: flex; gap: 12px; align-items: center; padding: 10px; background: rgba(255,255,255,0.06); border-radius: 10px; }
-.property-item img { width: 120px; height: 80px; object-fit: cover; border-radius: 6px; }
-.pi-title { font-weight: 700; margin-bottom: 6px; }
+.all-properties {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.96);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(15,15,15,0.06);
+    color: #111;
+}
+.all-properties-title {
+    margin: 0 0 14px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0b1220;
+}
+.property-group { margin-bottom: 22px; }
+.group-title {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    color: #2a2a2a;
+    font-weight: 700;
+    border-left: 4px solid var(--purple);
+    padding-left: 10px;
+}
+.property-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.property-item {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 12px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(15,15,15,0.06);
+    border: 1px solid rgba(15,15,15,0.04);
+}
+.property-item img { width: 140px; height: 96px; object-fit: cover; border-radius: 8px; }
+.pi-right { flex: 1; }
+.pi-title { font-weight: 700; color: #111; font-size: 1rem; margin-bottom: 6px; }
 .pi-price { color: var(--purple); font-weight: 800; margin-bottom: 6px; }
-.pi-status { font-size: 0.85rem; padding: 6px 8px; border-radius: 8px; display: inline-block; background: rgba(0,0,0,0.06); }
+.pi-status { font-size: 0.85rem; padding: 6px 10px; border-radius: 999px; display: inline-block; font-weight: 700; }
+.pi-status.sale { background: rgba(75,0,130,0.1); color: var(--purple); }
+.pi-status.rent { background: rgba(10,139,139,0.08); color: #0a8b8b; }
 
 @media (max-width: 900px) {
     .property-list { grid-template-columns: 1fr; }
+    .property-item img { width: 120px; height: 84px; }
 }
 
 /* Mobile-only fixes: hide header phone icon and ensure footer-bottom sits correctly */
