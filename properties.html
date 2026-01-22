@@ -86,16 +86,6 @@
 			<div id="propertiesContainer"></div>
 		</section>
 
-		<!-- Our Locations: Kenya map with clickable dots -->
-		<section id="ourLocations" class="our-locations">
-			<h2 class="locations-heading">Our Locations</h2>
-			<div class="map-container" id="kenyaMap">
-				<img class="kenya-map" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Kenya_location_map.svg" alt="Map of Kenya">
-				<!-- Example dots (positions are approximate) -->
-				<button class="map-dot" data-county="nairobi" aria-label="Nairobi" style="left:51%;top:44%"></button>
-				<!-- Add more dots as needed with data-county keys matching the JS data -->
-			</div>
-		</section>
 
 	</main>
 
@@ -216,68 +206,6 @@
 				setTimeout(() => { try { target.focus(); } catch (err){} }, 500);
 			});
 		});
-	})();
-	</script>
-
-	<!-- Locations map script -->
-	<script>
-	(function(){
-		const locations = {
-			nairobi: {
-				title: 'Nairobi County',
-				areas: [
-					{ name: 'Karen', img: 'https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=800&auto=format&fit=crop' },
-					{ name: 'Westlands', img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop' }
-				]
-			}
-		};
-
-		// overlay DOM
-		const overlayHtml = `<div id="locationsOverlay" class="locations-overlay" aria-hidden="true">
-			<div class="locations-panel" role="dialog" aria-modal="true">
-				<button class="locations-close" aria-label="Close locations">×</button>
-				<h3 class="locations-title"></h3>
-				<div class="locations-grid"></div>
-			</div>
-		</div>`;
-
-		document.body.insertAdjacentHTML('beforeend', overlayHtml);
-
-		const dots = document.querySelectorAll('.map-dot');
-		const overlay = document.getElementById('locationsOverlay');
-		const titleEl = overlay.querySelector('.locations-title');
-		const grid = overlay.querySelector('.locations-grid');
-		const closeBtn = overlay.querySelector('.locations-close');
-
-		dots.forEach(dot => {
-			dot.addEventListener('click', () => {
-				const key = dot.dataset.county;
-				const data = locations[key];
-				if(!data) return;
-
-				titleEl.textContent = data.title;
-				grid.innerHTML = '';
-				data.areas.forEach(a => {
-					const el = document.createElement('div');
-					el.className = 'location-card';
-					el.innerHTML = `<img src="${a.img}" alt="${a.name}"><div class="location-name">${a.name}</div>`;
-					grid.appendChild(el);
-				});
-
-				overlay.setAttribute('aria-hidden','false');
-				overlay.classList.add('open');
-				document.body.style.overflow = 'hidden';
-			});
-		});
-
-		function closeOverlay(){
-			overlay.classList.remove('open');
-			overlay.setAttribute('aria-hidden','true');
-			document.body.style.overflow = '';
-		}
-
-		closeBtn.addEventListener('click', closeOverlay);
-		overlay.addEventListener('click', (e)=> { if(e.target === overlay) closeOverlay(); });
 	})();
 	</script>
 
