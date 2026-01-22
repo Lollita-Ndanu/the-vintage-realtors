@@ -680,14 +680,15 @@ nav.nav-hide {
     position: fixed;
     inset: 0;
     display: flex;
-    /* center the panel so it covers more vertical space instead of sitting at the very bottom */
-    align-items: center;
+    /* position panel near the top-center on wide screens while remaining centered on small screens */
+    align-items: flex-start;
     justify-content: center;
+    padding: 48px 20px;
     background: rgba(0,0,0,0.38);
     z-index: 3000;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 260ms ease;
+    transition: opacity 260ms ease, transform 160ms ease;
 }
 .listings-overlay.open { opacity: 1; pointer-events: auto; }
 .listings-panel {
@@ -724,9 +725,14 @@ nav.nav-hide {
     .listing-image img { width: 120px; }
 }
 
+@media (max-width: 900px) {
+    .property-filters { grid-template-columns: repeat(2, 1fr); }
+    .filter-media img { height: 160px; }
+}
+
 @media (max-width: 480px) {
     .property-filters { grid-template-columns: 1fr; }
-    .filter-card img { height: 220px; }
+    .filter-media img { height: 140px; }
     .listings-panel { max-width: 100%; border-radius: 12px 12px 0 0; padding: 14px; }
 }
 
@@ -788,7 +794,7 @@ nav.nav-hide {
 
 .properties-page .filter-card {
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.06);
+    border: none;
 }
 
 .properties-page .filter-media .filter-label {
