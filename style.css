@@ -750,6 +750,27 @@ nav.nav-hide {
     .all-properties { margin: 18px -16px; padding: 14px 16px; border-radius: 10px; }
 }
 
+/* Our Locations map styles */
+.our-locations { margin-top: 28px; }
+.locations-heading { font-size: 1.35rem; margin-bottom: 12px; color: #fff; text-shadow: 0 4px 18px rgba(0,0,0,0.45); }
+.map-container { position: relative; max-width: 1100px; margin: 0 auto; background: rgba(255,255,255,0.04); padding: 14px; border-radius: 12px; }
+.kenya-map { width: 100%; height: auto; display: block; filter: saturate(0.95) contrast(0.95); }
+.map-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #e53935; border: 2px solid #fff; box-shadow: 0 6px 18px rgba(229,57,53,0.18); cursor: pointer; transform: translate(-50%, -50%); z-index: 10; animation: ping 1.4s infinite ease-in-out; }
+@keyframes ping { 0% { transform: translate(-50%,-50%) scale(1); opacity: 1; } 50% { transform: translate(-50%,-50%) scale(1.6); opacity: 0.25; } 100% { transform: translate(-50%,-50%) scale(1); opacity: 1; } }
+
+/* Locations overlay modal */
+.locations-overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 28px; background: rgba(0,0,0,0.48); z-index: 4000; opacity: 0; pointer-events: none; transition: opacity 220ms ease; }
+.locations-overlay.open { opacity: 1; pointer-events: auto; }
+.locations-panel { background: #fff; width: 100%; max-width: 920px; border-radius: 12px; padding: 18px; box-shadow: 0 18px 48px rgba(10,10,20,0.12); }
+.locations-close { position: absolute; right: 28px; top: 20px; background: transparent; border: none; font-size: 1.6rem; cursor: pointer; }
+.locations-title { margin: 0 0 12px; font-size: 1.15rem; color: #111; }
+.locations-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+.location-card { background: #f8f8fb; padding: 10px; border-radius: 8px; display:flex; gap:10px; align-items:center; }
+.location-card img { width: 120px; height: 80px; object-fit: cover; border-radius: 6px; }
+.location-name { font-weight:700; color:#111; }
+
+@media (max-width: 720px) { .locations-grid { grid-template-columns: 1fr; } .map-container { padding: 8px; } .map-dot { width: 12px; height:12px; } }
+
 /* Mobile-only fixes: hide header phone icon and ensure footer-bottom sits correctly */
 @media (max-width: 600px) {
     /* remove phone in header on phones only */
