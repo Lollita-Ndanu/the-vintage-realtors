@@ -137,14 +137,14 @@
 	// Render all properties grouped by category (read-only)
 	(function(){
 		const data = [
-			{ id:1, type:'apartments', title:'2 Bedroom Apartment — Kilimani', price:'KES 120,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2' },
-			{ id:2, type:'apartments', title:'3 Bedroom Apartment — Westlands', price:'KES 38,500,000', status:'sale', img:'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb' },
-			{ id:3, type:'houses', title:'4 Bedroom House — Lavington', price:'KES 85,000,000', status:'sale', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511' },
-			{ id:4, type:'houses', title:'5 Bedroom Villa — Karen', price:'KES 62,000,000', status:'sale', img:'https://images.unsplash.com/photo-1599423300746-b62533397364' },
-			{ id:5, type:'commercial', title:'Office Space — Upper Hill', price:'KES 95,000,000', status:'sale', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267' },
-			{ id:7, type:'farms', title:'2 Acre Farm — Kiambu', price:'KES 6,000,000', status:'sale', img:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' },
-			{ id:8, type:'warehouses', title:'Warehouse — Industrial Area', price:'KES 140,000,000', status:'sale', img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994' },
-			{ id:9, type:'offices', title:'Serviced Office — Westlands', price:'From KES 45,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511' }
+			{ id:1, type:'apartments', title:'2 Bedroom Apartment — Kilimani', price:'KES 120,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2', beds:2, baths:1, area:'95 m²' },
+			{ id:2, type:'apartments', title:'3 Bedroom Apartment — Westlands', price:'KES 38,500,000', status:'sale', img:'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb', beds:3, baths:2, area:'140 m²' },
+			{ id:3, type:'houses', title:'4 Bedroom House — Lavington', price:'KES 85,000,000', status:'sale', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511', beds:4, baths:3, area:'320 m²' },
+			{ id:4, type:'houses', title:'5 Bedroom Villa — Karen', price:'KES 62,000,000', status:'sale', img:'https://images.unsplash.com/photo-1599423300746-b62533397364', beds:5, baths:4, area:'480 m²' },
+			{ id:5, type:'commercial', title:'Office Space — Upper Hill', price:'KES 95,000,000', status:'sale', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267', beds:null, baths:2, area:'1500 m²' },
+			{ id:7, type:'farms', title:'2 Acre Farm — Kiambu', price:'KES 6,000,000', status:'sale', img:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee', beds:null, baths:null, area:'2 acres' },
+			{ id:8, type:'warehouses', title:'Warehouse — Industrial Area', price:'KES 140,000,000', status:'sale', img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994', beds:null, baths:1, area:'2400 m²' },
+			{ id:9, type:'offices', title:'Serviced Office — Westlands', price:'From KES 45,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511', beds:null, baths:1, area:'From 30 m²' }
 		];
 
 		const order = [
@@ -173,8 +173,10 @@
 			list.className = 'property-list';
 
 			items.forEach(it => {
-				const item = document.createElement('div');
-				item.className = 'property-item';
+				const item = document.createElement('a');
+				item.className = 'property-item property-link';
+				item.href = `contact.html?property=${it.id}`;
+				item.setAttribute('aria-label', `${it.title} — ${it.price}`);
 				item.innerHTML = `
 					<div class="pi-left">
 						<img src="${it.img}?q=60&w=800&auto=format&fit=crop" alt="${it.title}">
@@ -183,6 +185,11 @@
 						<div class="pi-title">${it.title}</div>
 						<div class="pi-price">${it.price}</div>
 						<div class="pi-meta">${it.type}</div>
+						<div class="pi-specs">
+							${it.beds !== null ? `<span class="spec"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 10v7a1 1 0 0 0 1 1h1v-6h14v6h1a1 1 0 0 0 1-1v-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="6" width="18" height="4" rx="1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="spec-text">${it.beds} bd</span></span>` : ''}
+							${it.baths !== null ? `<span class="spec"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 11c0-2.5 3-4 5-6 2 2 5 3.5 5 6 0 3-5 6-10 6S7 14 7 11z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="spec-text">${it.baths} ba</span></span>` : ''}
+							${it.area ? `<span class="spec"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 7v10a2 2 0 0 0 2 2h14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 7V5a2 2 0 0 0-2-2H7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="spec-text">${it.area}</span></span>` : ''}
+						</div>
 						<div class="pi-status ${it.status}">${it.status === 'sale' ? 'For Sale' : 'To Let'}</div>
 					</div>
 				`;
