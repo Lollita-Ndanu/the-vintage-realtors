@@ -95,7 +95,12 @@
         }
     </style>
 </head>
-<body class="about-page">
+<body>
+    <style>
+        .about-hero{position:relative;background-image:url('images/background10.avif');background-size:cover;background-position:center;display:block}
+        .about-hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,8,20,0.55), rgba(20,12,30,0.6));pointer-events:none}
+        .about-hero main,.about-hero .testimonial-section{position:relative;z-index:1}
+    </style>
     <nav>
         <a href="index.html" class="logo-container">
             <img src="images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
@@ -124,23 +129,25 @@
 
     <div class="menu-overlay"></div>
 
-    <main style="padding:60px 5%; max-width:1100px; margin:0 auto;">
+    <div class="about-hero">
+        <div class="overlay" aria-hidden="true"></div>
+        <main style="padding:60px 5%; max-width:1100px; margin:0 auto;">
         <section class="who-we-are">
             <h1 class="word-animate">Who we are — The Vintage Realtors</h1>
             <p class="lead">We are a Nairobi-based team specialising in premium property marketing and trusted partnerships across residential, commercial and mixed-use developments. Our approach combines market insight, beautiful presentation and strategic exposure to connect buyers and sellers.</p>
         </section>
 
         <section class="about-grid">
-            <div class="about-card word-animate">
-                <h3>Our Mission</h3>
+            <div class="about-card">
+                <h3 class="word-animate">Our Mission</h3>
                 <p>To present every property with integrity and craft, delivering measurable results for owners, investors and developers through outstanding marketing and service.</p>
             </div>
-            <div class="about-card word-animate">
-                <h3>Our Vision</h3>
+            <div class="about-card">
+                <h3 class="word-animate">Our Vision</h3>
                 <p>To be the first name in curated, high-quality property listings across Nairobi and beyond — where trust, design and performance meet.</p>
             </div>
-            <div class="about-card word-animate">
-                <h3>Our Strategy</h3>
+            <div class="about-card">
+                <h3 class="word-animate">Our Strategy</h3>
                 <p>Combine data-led market positioning, elevated listing presentation, and targeted campaigns to attract qualified buyers and tenants faster.</p>
             </div>
         </section>
@@ -152,38 +159,38 @@
             </div>
 
             <div class="services-grid">
-                <div class="service-card word-animate">
+                <div class="service-card">
                     <div class="icon">📸</div>
                     <div class="service-content">
-                        <h3>Photography & Virtual Tours</h3>
+                        <h3 class="word-animate">Photography & Virtual Tours</h3>
                         <p>High-quality photography, 360° tours and video walkthroughs to showcase each property's best assets.</p>
                     </div>
                 </div>
-                <div class="service-card word-animate">
+                <div class="service-card">
                     <div class="icon">🖥️</div>
                     <div class="service-content">
-                        <h3>Listing & Marketing</h3>
+                        <h3 class="word-animate">Listing & Marketing</h3>
                         <p>Targeted digital campaigns, property portals and curated outreach to the right buyers and tenants.</p>
                     </div>
                 </div>
-                <div class="service-card word-animate">
+                <div class="service-card">
                     <div class="icon">🔧</div>
                     <div class="service-content">
-                        <h3>Consultancy & Sales Support</h3>
+                        <h3 class="word-animate">Consultancy & Sales Support</h3>
                         <p>Market valuations, staging advice and sales support to speed up transactions and maximise value.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="contact-cta word-animate">
-            <h3>Ready to list or learn more?</h3>
+        <section class="contact-cta">
+            <h3 class="word-animate">Ready to list or learn more?</h3>
             <p>Contact our team for a tailored proposal. <a href="contact.html" class="btn-primary">Get in touch</a></p>
         </section>
-    </main>
+        </main>
 
-    <!-- Testimonial Section -->
-    <section class="testimonial-section">
+        <!-- Testimonial Section -->
+        <section class="testimonial-section">
         <h2>What Our Clients Say</h2>
         <div class="testimonial-slider-wrapper">
             <button class="testimonial-btn left" aria-label="Previous testimonial">&#10094;</button>
@@ -206,7 +213,8 @@
             </div>
             <button class="testimonial-btn right" aria-label="Next testimonial">&#10095;</button>
         </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Infinite Testimonial JS -->
     <script>
@@ -257,26 +265,17 @@
         testimonialTimer = setInterval(nextTestimonial, 7000);
     </script>
     <script>
-    // Word-splitting for headings only (non-fade 'word-pop' animation)
+    // Word-splitting and in-view trigger for non-fade 'word-pop' animation
     (function(){
         function splitWords(el){
-            if(!el) return;
             const text = el.textContent.trim();
             if(!text) return;
             const words = text.split(/\s+/);
             el.innerHTML = words.map((w,i)=>`<span class="word" style="--d:${i*70}ms">${w}&nbsp;</span>`).join('');
         }
 
-        // Only animate headings/titles inside elements marked for subtle entrance.
-        const containers = document.querySelectorAll('.word-animate');
-        const headings = [];
-        containers.forEach(c => {
-            // prefer a heading if present, else the container itself
-            const h = c.querySelector('h1,h2,h3');
-            const target = h || c;
-            headings.push(target);
-            splitWords(target);
-        });
+        const targets = document.querySelectorAll('.word-animate');
+        targets.forEach(t => splitWords(t));
 
         const io = new IntersectionObserver((entries)=>{
             entries.forEach(en => {
@@ -286,7 +285,7 @@
             });
         },{threshold:0.15});
 
-        headings.forEach(h => io.observe(h));
+        targets.forEach(t => io.observe(t));
     })();
     </script>
     <footer class="site-footer">

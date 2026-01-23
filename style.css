@@ -318,10 +318,10 @@ nav.nav-hide {
         grid-template-columns: 1fr 440px;
         gap: 36px;
         align-items: center;
-        background: #ffffff;
-        padding: 28px;
-        border-radius: 14px;
-        box-shadow: 0 18px 46px rgba(21,21,21,0.06);
+        background: linear-gradient(180deg, var(--vintage-paper) 0%, #fffaf3 100%);
+        padding: 34px;
+        border-radius: 16px;
+        box-shadow: 0 26px 70px rgba(16,12,8,0.06);
     }
     /* Slight typographic lift for the About title and lead */
     .about-text h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin-bottom: 12px; color: var(--black); }
@@ -338,11 +338,49 @@ nav.nav-hide {
 .btn-secondary {
     display: inline-block;
     padding: 12px 25px;
-    background: var(--purple);
+    background: var(--vintage-ochre);
     color: white;
     text-decoration: none;
     border-radius: 5px;
     margin-top: 20px;
+}
+
+/* Vintage / Classic styling for About page */
+.about-text h2 {
+    color: var(--vintage-ochre);
+    letter-spacing: 0.6px;
+    font-size: 3rem;
+    font-weight: 700;
+    text-transform: none;
+    font-variant: small-caps;
+}
+.about-text .lead { color: #2f2a23; max-width: 70ch; }
+
+.about-card {
+    background: linear-gradient(180deg, rgba(255,250,240,0.98), rgba(255,250,240,0.95));
+    border: 1px solid rgba(139,94,60,0.08);
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(16,12,8,0.04);
+}
+.about-card h3 { font-family: 'Playfair Display', serif; color: #3b2b21; margin-bottom: 8px; font-size: 1.25rem; }
+.about-card p { color: #4a4037; line-height: 1.65; }
+
+/* Decorative divider under section headings */
+.decor-sep { width: 86px; height: 4px; background: linear-gradient(90deg, rgba(139,94,60,0.95), rgba(139,94,60,0.35)); border-radius: 3px; margin: 12px 0 18px; }
+
+/* Services tweaks for a classic card look */
+.service-card { background: linear-gradient(180deg,#fffaf3,#fff8ef); border: 1px solid rgba(139,94,60,0.06); }
+.service-card .icon { background: none; color: var(--vintage-ochre); border: 2px solid rgba(139,94,60,0.12); box-shadow: none; font-size: 20px; }
+.service-card h3 { font-variant: small-caps; color: #3b2b21; font-weight:700; }
+
+/* Contact CTA refinement */
+.contact-cta { background: linear-gradient(180deg, rgba(75,0,130,0.02), rgba(139,94,60,0.02)); padding: 22px; border-radius: 12px; border: 1px solid rgba(107,91,75,0.04); }
+.contact-cta h3 { color: var(--vintage-ochre); font-family: 'Playfair Display', serif; }
+
+@media (max-width: 900px) {
+    .about-container { padding: 20px; gap: 20px; }
+    .about-text h2 { font-size: 2.4rem; }
 }
 
 /* Responsive improvements for About section - stack and refine on smaller screens */
@@ -1017,62 +1055,4 @@ nav.nav-hide {
 
 .properties-page .listings-overlay { display:none; }
 .properties-page .listings-panel { display:none; }
-
-/* --- ABOUT PAGE: vintage hero background & heading-only word-pop --- */
-.about-page {
-    background-image: url('images/background10.avif'), url('images/background9.avif');
-    background-size: cover, cover;
-    background-position: center center;
-    background-attachment: fixed;
-    min-height: 100vh;
-    color: #111;
-}
-
-.about-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(10,6,4,0.35), rgba(250,245,238,0.06));
-    z-index: 0;
-    pointer-events: none;
-}
-
-.about-page nav,
-.about-page main,
-.about-page .site-footer,
-.about-page .footer-bottom { position: relative; z-index: 10; }
-
-/* Make the interior about card more vintage and professional */
-.about-container {
-    background: linear-gradient(180deg, rgba(255,255,250,0.95), rgba(255,250,242,0.9));
-    border-radius: 14px;
-    padding: 28px;
-    box-shadow: 0 26px 70px rgba(10,8,6,0.08);
-    border: 1px solid rgba(107,91,75,0.06);
-}
-
-/* Heading-only word-pop rules (same behavior as previous but scoped)
-   Target headings produced by the script, which wraps words in .word */
-.heading-animate, .word-animate h1, .word-animate h2, .word-animate h3 { overflow: visible; }
-.heading-animate .word, .word-animate h1 .word, .word-animate h2 .word, .word-animate h3 .word {
-    display:inline-block;
-    transform: translateY(18px) rotateX(-8deg) scale(0.97);
-    transition: transform 480ms cubic-bezier(.22,.9,.35,1);
-    transition-delay: var(--d, 0ms);
-}
-.heading-animate.in .word, .word-animate h1.in .word, .word-animate h2.in .word, .word-animate h3.in .word {
-    transform: none;
-}
-
-/* Slight vintage color lift for section headings */
-.about-text h2, .services-section .section-header h2 { color: var(--vintage-ochre); }
-.services-section .service-card { background: linear-gradient(180deg,#fffef9,#fffaf3); border:1px solid rgba(107,91,75,0.04); }
-
-/* Make buttons slightly more reserved/professional */
-.btn-secondary { background: linear-gradient(135deg,var(--purple), #6a2db8); box-shadow: 0 8px 20px rgba(75,0,130,0.06); }
-
-@media (max-width: 900px) {
-    .about-container { padding: 20px; }
-    .about-text h2 { font-size: 2.2rem; }
-}
 
