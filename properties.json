@@ -1,0 +1,166 @@
+[
+  {
+    "id": 1,
+    "type": "apartments",
+    "title": "2 Bedroom Apartment — Kilimani",
+    "price": "KES 120,000 / month",
+    "status": "rent",
+    "img": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
+    "beds": 2,
+    "baths": 1,
+    "area": "95 m²",
+    "gallery": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1560184897-6a2a1e4f9c2f?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1598928506312-3d4cc2a2a6c3?q=80&w=1200&auto=format&fit=crop"
+    ],
+    "description": "Bright 2-bedroom apartment in Kilimani with open-plan living and balcony overlooking the gardens.",
+    "petsAllowed": true,
+    "pool": false,
+    "water24": true,
+    "security": true
+  },
+  {
+    "id": 2,
+    "type": "apartments",
+    "title": "3 Bedroom Apartment — Westlands",
+    "price": "KES 38,500,000",
+    "status": "sale",
+    "img": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb",
+    "beds": 3,
+    "baths": 2,
+    "area": "140 m²",
+    "gallery": [
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505692794403-36e6a7e7c0d7?q=80&w=1200&auto=format&fit=crop"
+    ],
+    "description": "Spacious 3-bedroom apartment close to shops and cafes, ideal for families.",
+    "petsAllowed": false,
+    "pool": true,
+    "water24": true,
+    "security": true
+  },
+  {
+    "id": 3,
+    "type": "houses",
+    "title": "4 Bedroom House — Lavington",
+    "price": "KES 85,000,000",
+    "status": "sale",
+    "img": "https://images.unsplash.com/photo-1505691938895-1758d7feb511",
+    "beds": 4,
+    "baths": 3,
+    "area": "320 m²",
+    "gallery": [
+      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1502673530728-f79b4cab31b1?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1502672023488-70e2580725f3?q=80&w=1200&auto=format&fit=crop"
+    ],
+    "description": "Elegant 4-bedroom family home with private garden, modern kitchen and generous living spaces.",
+    "petsAllowed": true,
+    "pool": true,
+    "water24": true,
+    "security": true
+  },
+  {
+    "id": 4,
+    "type": "houses",
+    "title": "5 Bedroom Villa — Karen",
+    "price": "KES 62,000,000",
+    "status": "sale",
+    "img": "https://images.unsplash.com/photo-1599423300746-b62533397364",
+    "beds": 5,
+    "baths": 4,
+    "area": "480 m²",
+    "gallery": [
+      "https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505691723518-36a1b61e6d5d?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505691723520-5d1b4b1f9d6b?q=80&w=1200&auto=format&fit=crop"
+    ],
+    "description": "Luxury 5-bedroom villa in Karen with expansive grounds and private pool.",
+    "petsAllowed": true,
+    "pool": true,
+    "water24": true,
+    "security": true
+  },
+  {
+    "id": 5,
+    "type": "commercial",
+    "title": "Office Space — Upper Hill",
+    "price": "KES 95,000,000",
+    "status": "sale",
+    "img": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
+    "beds": null,
+    "baths": 2,
+    "area": "1500 m²",
+    "gallery": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1200&auto=format&fit=crop"
+    ],
+    "description": "Well-located commercial property suited for corporate offices.",
+    "petsAllowed": false,
+    "pool": false,
+    "water24": true,
+    "security": true
+  },
+  {
+    "id": 7,
+    "type": "farms",
+    "title": "2 Acre Farm — Kiambu",
+    "price": "KES 6,000,000",
+    "status": "sale",
+    "img": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+    "beds": null,
+    "baths": null,
+    "area": "2 acres",
+    "gallery": [
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1502784444185-7c6d6a36b0a1?q=80&w=1200&auto=format&fit=crop"
+    ],
+    "description": "Productive 2-acre parcel suitable for small-scale farming.",
+    "petsAllowed": true,
+    "pool": false,
+    "water24": false,
+    "security": false
+  },
+  {
+    "id": 8,
+    "type": "warehouses",
+    "title": "Warehouse — Industrial Area",
+    "price": "KES 140,000,000",
+    "status": "sale",
+    "img": "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+    "beds": null,
+    "baths": 1,
+    "area": "2400 m²",
+    "gallery": [
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1540569014015-19a7be504e3f?q=80&w=1200&auto=format&fit=crop"
+    ],
+    "description": "Large warehouse with easy access to major transport routes.",
+    "petsAllowed": false,
+    "pool": false,
+    "water24": true,
+    "security": true
+  },
+  {
+    "id": 9,
+    "type": "offices",
+    "title": "Serviced Office — Westlands",
+    "price": "From KES 45,000 / month",
+    "status": "rent",
+    "img": "https://images.unsplash.com/photo-1505691938895-1758d7feb511",
+    "beds": null,
+    "baths": 1,
+    "area": "From 30 m²",
+    "gallery": [
+      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop"
+    ],
+    "description": "Flexible serviced office spaces with reception and meeting rooms.",
+    "petsAllowed": false,
+    "pool": false,
+    "water24": true,
+    "security": true
+  }
+]
