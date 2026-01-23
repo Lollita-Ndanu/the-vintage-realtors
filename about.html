@@ -95,7 +95,7 @@
         }
     </style>
 </head>
-<body>
+<body class="about-page">
     <nav>
         <a href="index.html" class="logo-container">
             <img src="images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
@@ -257,17 +257,26 @@
         testimonialTimer = setInterval(nextTestimonial, 7000);
     </script>
     <script>
-    // Word-splitting and in-view trigger for non-fade 'word-pop' animation
+    // Word-splitting for headings only (non-fade 'word-pop' animation)
     (function(){
         function splitWords(el){
+            if(!el) return;
             const text = el.textContent.trim();
             if(!text) return;
             const words = text.split(/\s+/);
             el.innerHTML = words.map((w,i)=>`<span class="word" style="--d:${i*70}ms">${w}&nbsp;</span>`).join('');
         }
 
-        const targets = document.querySelectorAll('.word-animate');
-        targets.forEach(t => splitWords(t));
+        // Only animate headings/titles inside elements marked for subtle entrance.
+        const containers = document.querySelectorAll('.word-animate');
+        const headings = [];
+        containers.forEach(c => {
+            // prefer a heading if present, else the container itself
+            const h = c.querySelector('h1,h2,h3');
+            const target = h || c;
+            headings.push(target);
+            splitWords(target);
+        });
 
         const io = new IntersectionObserver((entries)=>{
             entries.forEach(en => {
@@ -277,7 +286,7 @@
             });
         },{threshold:0.15});
 
-        targets.forEach(t => io.observe(t));
+        headings.forEach(h => io.observe(h));
     })();
     </script>
     <footer class="site-footer">

@@ -1018,3 +1018,61 @@ nav.nav-hide {
 .properties-page .listings-overlay { display:none; }
 .properties-page .listings-panel { display:none; }
 
+/* --- ABOUT PAGE: vintage hero background & heading-only word-pop --- */
+.about-page {
+    background-image: url('images/background10.avif'), url('images/background9.avif');
+    background-size: cover, cover;
+    background-position: center center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #111;
+}
+
+.about-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10,6,4,0.35), rgba(250,245,238,0.06));
+    z-index: 0;
+    pointer-events: none;
+}
+
+.about-page nav,
+.about-page main,
+.about-page .site-footer,
+.about-page .footer-bottom { position: relative; z-index: 10; }
+
+/* Make the interior about card more vintage and professional */
+.about-container {
+    background: linear-gradient(180deg, rgba(255,255,250,0.95), rgba(255,250,242,0.9));
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 26px 70px rgba(10,8,6,0.08);
+    border: 1px solid rgba(107,91,75,0.06);
+}
+
+/* Heading-only word-pop rules (same behavior as previous but scoped)
+   Target headings produced by the script, which wraps words in .word */
+.heading-animate, .word-animate h1, .word-animate h2, .word-animate h3 { overflow: visible; }
+.heading-animate .word, .word-animate h1 .word, .word-animate h2 .word, .word-animate h3 .word {
+    display:inline-block;
+    transform: translateY(18px) rotateX(-8deg) scale(0.97);
+    transition: transform 480ms cubic-bezier(.22,.9,.35,1);
+    transition-delay: var(--d, 0ms);
+}
+.heading-animate.in .word, .word-animate h1.in .word, .word-animate h2.in .word, .word-animate h3.in .word {
+    transform: none;
+}
+
+/* Slight vintage color lift for section headings */
+.about-text h2, .services-section .section-header h2 { color: var(--vintage-ochre); }
+.services-section .service-card { background: linear-gradient(180deg,#fffef9,#fffaf3); border:1px solid rgba(107,91,75,0.04); }
+
+/* Make buttons slightly more reserved/professional */
+.btn-secondary { background: linear-gradient(135deg,var(--purple), #6a2db8); box-shadow: 0 8px 20px rgba(75,0,130,0.06); }
+
+@media (max-width: 900px) {
+    .about-container { padding: 20px; }
+    .about-text h2 { font-size: 2.2rem; }
+}
+
