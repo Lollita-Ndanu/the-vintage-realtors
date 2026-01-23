@@ -221,7 +221,7 @@
 	})();
 	</script>
 
-	<!-- Typing animation for the hero heading -->
+	<!-- Typing animation for the hero heading (looping) -->
 	<script>
 	(function(){
 		const text = 'Your Next Space Awaits';
@@ -230,18 +230,35 @@
 		if(!el) return;
 		el.textContent = '';
 		let i = 0;
-		function type(){
-			if(i < text.length){
-				el.textContent += text.charAt(i);
-				i++;
-				setTimeout(type, 80 + Math.random()*80);
-			}else{
-				// keep cursor blinking
-				cursor.classList.add('blink');
+		let forward = true;
+
+		function step(){
+			// ensure cursor isn't blinking while typing/erasing
+			cursor.classList.remove('blink');
+			if(forward){
+				if(i < text.length){
+					el.textContent += text.charAt(i);
+					i++;
+					setTimeout(step, 70 + Math.random()*70);
+				}else{
+					// typed full text — pause, then start erasing
+					cursor.classList.add('blink');
+					setTimeout(()=>{ forward = false; setTimeout(step, 700); }, 900);
+				}
+			} else {
+				if(i > 0){
+					el.textContent = text.slice(0, i-1);
+					i--;
+					setTimeout(step, 40 + Math.random()*40);
+				}else{
+					// erased — small pause then start typing again
+					setTimeout(()=>{ forward = true; setTimeout(step, 300); }, 400);
+				}
 			}
 		}
-		// small delay then start
-		setTimeout(type, 350);
+
+		// start after a short delay
+		setTimeout(step, 350);
 	})();
 	</script>
 
