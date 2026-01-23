@@ -37,7 +37,10 @@
 	<div class="menu-overlay"></div>
 
 	<main style="max-width:900px;margin:60px auto;padding:24px;">
-		<h1>Your Next Space Awaits</h1>
+		<h1 class="typed-heading">
+			<span id="typedText" aria-hidden="false"></span><span class="typing-cursor" aria-hidden="true"></span>
+			<span class="sr-only">Your Next Space Awaits</span>
+		</h1>
 		<p class="subtitle">Explore a range of residential and commercial properties available for sale and rent.</p>
 
 		<section class="property-filters">
@@ -215,6 +218,30 @@
 				setTimeout(() => { try { target.focus(); } catch (err){} }, 500);
 			});
 		});
+	})();
+	</script>
+
+	<!-- Typing animation for the hero heading -->
+	<script>
+	(function(){
+		const text = 'Your Next Space Awaits';
+		const el = document.getElementById('typedText');
+		const cursor = document.querySelector('.typing-cursor');
+		if(!el) return;
+		el.textContent = '';
+		let i = 0;
+		function type(){
+			if(i < text.length){
+				el.textContent += text.charAt(i);
+				i++;
+				setTimeout(type, 80 + Math.random()*80);
+			}else{
+				// keep cursor blinking
+				cursor.classList.add('blink');
+			}
+		}
+		// small delay then start
+		setTimeout(type, 350);
 	})();
 	</script>
 
