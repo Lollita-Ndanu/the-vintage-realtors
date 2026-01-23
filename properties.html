@@ -82,8 +82,10 @@
 
 		<!-- All Properties (grouped by category) -->
 		<section id="allProperties" class="all-properties">
-			<h2 class="all-properties-title">All Properties</h2>
-			<div id="propertiesContainer"></div>
+			<div class="all-properties-inner">
+				<h2 class="all-properties-title">All Properties</h2>
+				<div id="propertiesContainer"></div>
+			</div>
 		</section>
 
 
@@ -175,7 +177,7 @@
 			items.forEach(it => {
 				const item = document.createElement('a');
 				item.className = 'property-item property-link';
-				item.href = `contact.html?property=${it.id}`;
+				item.href = `property.html?property=${it.id}`;
 				item.setAttribute('aria-label', `${it.title} — ${it.price}`);
 				item.innerHTML = `
 					<div class="pi-left">

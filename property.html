@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Property — The Vintage Realtors</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="property-page">
+    <nav>
+        <a href="index.html" class="logo-container">
+            <img src="images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
+        </a>
+        <div class="site-title"><span>THE VINTAGE REALTORS</span></div>
+        <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+
+    <main style="max-width:1100px;margin:60px auto;padding:24px;">
+        <div id="propertyDetail" class="property-detail">Loading…</div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-logo"><img src="images/FOOTER%20LOGO.avif" alt="Footer logo"></div>
+            <div class="footer-about"><h3>The Vintage Realtors</h3><p>If you build it, we will list it.</p><p>Nairobi, Kenya</p></div>
+            <div class="footer-contact"><h4>Contact</h4><p>Email: <a href="mailto:sales@vintagerealtors.co.ke">sales@vintagerealtors.co.ke</a></p><p>Phone: <a href="tel:+254722865306">+254722865306</a></p></div>
+        </div>
+    </footer>
+
+    <script>
+    (function(){
+        // Data (keep in sync with properties.html)
+        const data = [
+            { id:1, type:'apartments', title:'2 Bedroom Apartment — Kilimani', price:'KES 120,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2', beds:2, baths:1, area:'95 m²', gallery:[
+                'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1560184897-6a2a1e4f9c2f?q=80&w=1200&auto=format&fit=crop'
+            ], description:'Bright 2-bedroom apartment in Kilimani with open-plan living and balcony overlooking the gardens.', petsAllowed:true, pool:false, water24:true, security:true },
+            { id:2, type:'apartments', title:'3 Bedroom Apartment — Westlands', price:'KES 38,500,000', status:'sale', img:'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb', beds:3, baths:2, area:'140 m²', gallery:[
+                'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop'
+            ], description:'Spacious 3-bedroom apartment close to shops and cafes, ideal for families.', petsAllowed:false, pool:true, water24:true, security:true },
+            { id:3, type:'houses', title:'4 Bedroom House — Lavington', price:'KES 85,000,000', status:'sale', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511', beds:4, baths:3, area:'320 m²', gallery:[
+                'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1502673530728-f79b4cab31b1?q=80&w=1200&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1502672023488-70e2580725f3?q=80&w=1200&auto=format&fit=crop'
+            ], description:'Elegant 4-bedroom family home with private garden, modern kitchen and generous living spaces.', petsAllowed:true, pool:true, water24:true, security:true },
+            { id:4, type:'houses', title:'5 Bedroom Villa — Karen', price:'KES 62,000,000', status:'sale', img:'https://images.unsplash.com/photo-1599423300746-b62533397364', beds:5, baths:4, area:'480 m²', gallery:[
+                'https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1505691723518-36a1b61e6d5d?q=80&w=1200&auto=format&fit=crop'
+            ], description:'Luxury 5-bedroom villa in Karen with expansive grounds and private pool.', petsAllowed:true, pool:true, water24:true, security:true },
+            { id:5, type:'commercial', title:'Office Space — Upper Hill', price:'KES 95,000,000', status:'sale', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267', beds:null, baths:2, area:'1500 m²', gallery:[
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop'
+            ], description:'Well-located commercial property suited for corporate offices.', petsAllowed:false, pool:false, water24:true, security:true },
+            { id:7, type:'farms', title:'2 Acre Farm — Kiambu', price:'KES 6,000,000', status:'sale', img:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee', beds:null, baths:null, area:'2 acres', gallery:[
+                'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop'
+            ], description:'Productive 2-acre parcel suitable for small-scale farming.', petsAllowed:true, pool:false, water24:false, security:false },
+            { id:8, type:'warehouses', title:'Warehouse — Industrial Area', price:'KES 140,000,000', status:'sale', img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994', beds:null, baths:1, area:'2400 m²', gallery:[
+                'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop'
+            ], description:'Large warehouse with easy access to major transport routes.', petsAllowed:false, pool:false, water24:true, security:true },
+            { id:9, type:'offices', title:'Serviced Office — Westlands', price:'From KES 45,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511', beds:null, baths:1, area:'From 30 m²', gallery:[
+                'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop'
+            ], description:'Flexible serviced office spaces with reception and meeting rooms.', petsAllowed:false, pool:false, water24:true, security:true }
+        ];
+
+        function qs(key){
+            const params = new URLSearchParams(location.search);
+            return params.get(key);
+        }
+
+        const id = parseInt(qs('property'),10);
+        const container = document.getElementById('propertyDetail');
+        if(!id){ container.innerHTML = '<p>Property not specified. <a href="properties.html">View other properties</a></p>'; return; }
+        const it = data.find(d => d.id === id);
+        if(!it){ container.innerHTML = '<p>Property not found. <a href="properties.html">View other properties</a></p>'; return; }
+
+        function renderGallery(gallery){
+            if(!gallery || !gallery.length) return '';
+            return `
+                <div class="pd-gallery">
+                    <div class="pd-main"><img src="${gallery[0]}" alt="${it.title}"></div>
+                    <div class="pd-thumbs">${gallery.map(g => `<button class="thumb" data-src="${g}" aria-label="View image"><img src="${g}" alt="${it.title}"></button>`).join('')}</div>
+                </div>
+            `;
+        }
+
+        function amenityIcon(ok, label){
+            return `<div class="amenity ${ok? 'yes':'no'}"><span class="am-icon">${ok? '✓':'✕'}</span><span class="am-label">${label}</span></div>`;
+        }
+
+        container.innerHTML = `
+            <article class="pd-card">
+                ${renderGallery(it.gallery)}
+                <div class="pd-body">
+                    <h1 class="pd-title">${it.title}</h1>
+                    <div class="pd-meta"><span class="pd-price">${it.price}</span> · <span>${it.type}</span> · <span>${it.area || ''}</span></div>
+                    <p class="pd-desc">${it.description || ''}</p>
+                    <div class="pd-specs">
+                        ${it.beds ? `<strong>${it.beds} bd</strong>` : ''}
+                        ${it.baths ? `<strong>${it.baths} ba</strong>` : ''}
+                    </div>
+                    <div class="pd-amenities">
+                        ${amenityIcon(it.petsAllowed,'Pets allowed')}
+                        ${amenityIcon(it.pool,'Swimming pool')}
+                        ${amenityIcon(it.water24,'24/7 water')}
+                        ${amenityIcon(it.security,'Security')}
+                    </div>
+                    <div class="pd-actions">
+                        <a href="contact.html?property=${it.id}" class="btn-primary">Contact about this property</a>
+                        <a href="properties.html" class="btn-secondary">View other properties</a>
+                    </div>
+                </div>
+            </article>
+        `;
+
+        // gallery thumbnail click handling
+        const thumbs = container.querySelectorAll('.pd-thumbs .thumb');
+        const mainImg = container.querySelector('.pd-main img');
+        if(thumbs && mainImg){
+            thumbs.forEach(t => t.addEventListener('click', () => { mainImg.src = t.dataset.src; }));
+        }
+    })();
+    </script>
+</body>
+</html>
