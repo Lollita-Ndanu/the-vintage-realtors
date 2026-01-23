@@ -29,8 +29,31 @@
 /* Mobile-only: make the typed heading larger and reduce logo size on small devices */
 @media (max-width: 600px) {
     .typed-heading { font-size: 2.6rem; line-height: 1.02; }
-    .logo-img { height: 48px; }
+    .logo-img { height: 40px; }
+    /* Nudge the logo slightly to the left so it doesn't overlap the centered title */
+    .logo-container { position: relative; transform: translateX(-8px); }
 }
+
+/* About page: layout and word-pop animation */
+.who-we-are { text-align: left; margin-bottom: 18px; }
+.who-we-are .word-animate { font-family: 'Playfair Display', serif; font-size: 2.6rem; color: var(--black); margin-bottom: 8px; }
+.lead { color:#333; line-height:1.6; margin-bottom: 18px; }
+.about-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-bottom: 28px; }
+.about-card { background: linear-gradient(180deg,#fffef9,#fffaf3); padding:20px; border-radius:12px; box-shadow: 0 14px 38px rgba(16,12,8,0.06); border:1px solid rgba(107,91,75,0.06); }
+
+/* Services grid already styled, ensure cards match look */
+.services-section .service-card { min-height: 120px; }
+
+/* Word-pop animation (transform-only, staggered by --d). Not fading or typing. */
+.word-animate { overflow: visible; }
+.word-animate .word { display:inline-block; transform: translateY(18px) rotateX(-8deg) scale(0.97); transition: transform 480ms cubic-bezier(.22,.9,.35,1); transition-delay: var(--d, 0ms); }
+.word-animate.in .word { transform: none; }
+
+/* slight card pop for word-animate blocks */
+.word-animate.in .about-card, .word-animate.in .service-card { transform: translateY(0); }
+
+@media (max-width: 900px) { .about-grid { grid-template-columns: repeat(2,1fr); } .who-we-are .word-animate { font-size: 2.2rem; } }
+@media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } .who-we-are .word-animate { font-size: 1.9rem; } }
 
 body {
     font-family: 'Montserrat', sans-serif;
