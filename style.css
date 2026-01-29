@@ -327,9 +327,10 @@ nav.nav-hide {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(11,11,13,0.56), rgba(75,0,130,0.12));
+    /* Darker, subtle purple-tinted overlay to improve text contrast */
+    background: linear-gradient(180deg, rgba(0,0,0,0.56), rgba(75,0,130,0.36));
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
 }
 .about-hero-inner {
     position: relative;
