@@ -830,6 +830,33 @@ nav.nav-hide {
     border-radius: 2px;
 }
 
+/* looping white flash sweep under the title: left->right then right->left */
+.all-properties-title {
+    display: inline-block; /* confine pseudo-element width to title for a neat sweep */
+    overflow: visible;
+}
+.all-properties-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 100%;
+    /* place slightly below the decorative bar */
+    transform: translateY(14px) translateX(-110%);
+    width: 220%;
+    height: 8px;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0) 100%);
+    filter: blur(6px) saturate(120%);
+    border-radius: 6px;
+    animation: flash-sweep 2200ms ease-in-out infinite alternate;
+    opacity: 0.95;
+}
+
+@keyframes flash-sweep {
+    0% { transform: translateY(14px) translateX(-110%); }
+    100% { transform: translateY(14px) translateX(110%); }
+}
+
 /* Highlight animation when a property group is targeted from the top filters */
 .highlight-glow {
     animation: glow-purple 2200ms ease-in-out forwards;
