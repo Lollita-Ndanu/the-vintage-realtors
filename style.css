@@ -570,6 +570,16 @@ nav.nav-hide {
 .service-card h3 { margin: 0 0 6px; font-size: 1.05rem; color: var(--black); }
 .service-card p { margin: 0; color: #444; line-height: 1.6; font-size: 0.96rem; }
 
+/* About page: slightly larger service cards with refined spacing */
+.about-main .services-section { padding: 48px 0 0; background: transparent; }
+.about-main .services-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.about-main .service-card { padding: 20px; align-items: flex-start; }
+.about-main .service-card .icon { width:52px; height:52px; font-size:20px; }
+
+@media (max-width: 900px) {
+    .about-main .services-grid { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 1000px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } .services-section { padding: 40px 4%; } }
 
