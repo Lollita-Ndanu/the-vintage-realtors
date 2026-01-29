@@ -214,6 +214,20 @@
 				if (!target) return;
 				// smooth scroll to the group's top
 				target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+				// briefly highlight the target with a purple glow for visibility
+				try {
+					target.classList.remove('highlight-glow');
+					// force reflow so re-adding the class restarts the animation
+					// eslint-disable-next-line no-unused-expressions
+					void target.offsetWidth;
+					target.classList.add('highlight-glow');
+					// ensure the class is removed after the animation
+					setTimeout(() => { target.classList.remove('highlight-glow'); }, 2300);
+				} catch (err) {
+					// ignore if DOM not available
+				}
+
 				// focus for accessibility after a short delay (allow scroll to complete)
 				setTimeout(() => { try { target.focus(); } catch (err){} }, 500);
 			});

@@ -124,62 +124,13 @@
 
     <div class="menu-overlay"></div>
 
-    <main style="padding:60px 5%; max-width:1100px; margin:0 auto;">
-        <section class="who-we-are">
-            <h1 class="word-animate">Who we are — The Vintage Realtors</h1>
-            <p class="lead">We are a Nairobi-based team specialising in premium property marketing and trusted partnerships across residential, commercial and mixed-use developments. Our approach combines market insight, beautiful presentation and strategic exposure to connect buyers and sellers.</p>
-        </section>
-
-        <section class="about-grid">
-            <div class="about-card word-animate">
-                <h3>Our Mission</h3>
-                <p>To present every property with integrity and craft, delivering measurable results for owners, investors and developers through outstanding marketing and service.</p>
-            </div>
-            <div class="about-card word-animate">
-                <h3>Our Vision</h3>
-                <p>To be the first name in curated, high-quality property listings across Nairobi and beyond — where trust, design and performance meet.</p>
-            </div>
-            <div class="about-card word-animate">
-                <h3>Our Strategy</h3>
-                <p>Combine data-led market positioning, elevated listing presentation, and targeted campaigns to attract qualified buyers and tenants faster.</p>
-            </div>
-        </section>
-
-        <section class="services-section">
-            <div class="section-header">
-                <h2 class="word-animate">Services Offered</h2>
-                <p class="section-subtitle">A selection of services tailored for developers, investors and homeowners.</p>
-            </div>
-
-            <div class="services-grid">
-                <div class="service-card word-animate">
-                    <div class="icon">📸</div>
-                    <div class="service-content">
-                        <h3>Photography & Virtual Tours</h3>
-                        <p>High-quality photography, 360° tours and video walkthroughs to showcase each property's best assets.</p>
-                    </div>
-                </div>
-                <div class="service-card word-animate">
-                    <div class="icon">🖥️</div>
-                    <div class="service-content">
-                        <h3>Listing & Marketing</h3>
-                        <p>Targeted digital campaigns, property portals and curated outreach to the right buyers and tenants.</p>
-                    </div>
-                </div>
-                <div class="service-card word-animate">
-                    <div class="icon">🔧</div>
-                    <div class="service-content">
-                        <h3>Consultancy & Sales Support</h3>
-                        <p>Market valuations, staging advice and sales support to speed up transactions and maximise value.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="contact-cta word-animate">
-            <h3>Ready to list or learn more?</h3>
-            <p>Contact our team for a tailored proposal. <a href="contact.html" class="btn-primary">Get in touch</a></p>
-        </section>
+    <main style="padding:60px 5%; max-width:1000px; margin:0 auto;">
+        <h1>About The Vintage Realtors</h1>
+        <p style="color:#333; line-height:1.7;">The Vintage Realtors is a Nairobi-based real estate company focused on bringing professional marketing, trusted developer partnerships, and curated property listings to the Kenyan market. We specialise in residential, commercial and mixed-use developments and work closely with clients from concept to completion.</p>
+        <h2>Our Approach</h2>
+        <p style="color:#333; line-height:1.7;">We combine local market expertise, curated presentation and targeted visibility to deliver results for developers and property owners. Our work includes marketing campaigns, virtual tours, and high-quality listing presentation.</p>
+        <h2>Contact</h2>
+        <p style="color:#333; line-height:1.7;">Email: info@thevintagerealtors.example | Phone: +254 700 000000</p>
     </main>
 
     <!-- Testimonial Section -->
@@ -255,30 +206,6 @@
         }
 
         testimonialTimer = setInterval(nextTestimonial, 7000);
-    </script>
-    <script>
-    // Word-splitting and in-view trigger for non-fade 'word-pop' animation
-    (function(){
-        function splitWords(el){
-            const text = el.textContent.trim();
-            if(!text) return;
-            const words = text.split(/\s+/);
-            el.innerHTML = words.map((w,i)=>`<span class="word" style="--d:${i*70}ms">${w}&nbsp;</span>`).join('');
-        }
-
-        const targets = document.querySelectorAll('.word-animate');
-        targets.forEach(t => splitWords(t));
-
-        const io = new IntersectionObserver((entries)=>{
-            entries.forEach(en => {
-                if(en.isIntersecting){
-                    en.target.classList.add('in');
-                }
-            });
-        },{threshold:0.15});
-
-        targets.forEach(t => io.observe(t));
-    })();
     </script>
     <footer class="site-footer">
         <div class="footer-content">
