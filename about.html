@@ -214,10 +214,10 @@
             <aside class="about-values">
                 <h3>Core Values</h3>
                 <ul>
-                    <li>Craftsmanship in presentation</li>
-                    <li>Transparent client relationships</li>
-                    <li>Market-led strategy</li>
-                    <li>Attention to detail</li>
+                    <li tabindex="0">Craftsmanship in presentation</li>
+                    <li tabindex="0">Transparent client relationships</li>
+                    <li tabindex="0">Market-led strategy</li>
+                    <li tabindex="0">Attention to detail</li>
                 </ul>
                 <h4 style="margin-top:12px;">Location</h4>
                 <p style="margin:0;">Nairobi, Kenya</p>
@@ -298,6 +298,34 @@
         }
 
         testimonialTimer = setInterval(nextTestimonial, 7000);
+    </script>
+    <script>
+    // Core values: allow click or keyboard (Enter/Space) to toggle active state
+    (function(){
+        const items = document.querySelectorAll('.about-values ul li');
+        if(!items || !items.length) return;
+
+        function clearActive() {
+            items.forEach(i => i.classList.remove('active'));
+        }
+
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                // make this the single active item
+                clearActive();
+                item.classList.add('active');
+                try { item.focus(); } catch(e){}
+            });
+
+            item.addEventListener('keydown', (e) => {
+                const code = e.key || e.code;
+                if(code === 'Enter' || code === ' ' || code === 'Spacebar') {
+                    e.preventDefault();
+                    item.click();
+                }
+            });
+        });
+    })();
     </script>
     <footer class="site-footer">
         <div class="footer-content">

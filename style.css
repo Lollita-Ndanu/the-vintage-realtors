@@ -378,6 +378,26 @@ nav.nav-hide {
 .about-values ul { list-style: none; padding-left: 0; margin: 12px 0 0; }
 .about-values li { margin-bottom: 10px; font-weight:700; color: var(--vintage-muted); }
 
+/* interactive core values: hover, focus, and active show purple */
+.about-values li {
+    cursor: pointer;
+    transition: color 180ms ease, transform 160ms ease, background 180ms ease;
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+.about-values li:hover,
+.about-values li:focus {
+    color: var(--purple);
+    outline: none;
+    transform: translateY(-2px);
+    background: rgba(75,0,130,0.04);
+}
+.about-values li.active {
+    color: var(--purple);
+    background: rgba(75,0,130,0.06);
+    box-shadow: 0 8px 20px rgba(75,0,130,0.06);
+}
+
 /* About: refined lists and small headings for clarity */
 .about-story ul { list-style: disc; margin-left: 20px; margin-bottom: 16px; color: #444; }
 .about-story ul li { margin-bottom: 8px; font-weight:600; }
