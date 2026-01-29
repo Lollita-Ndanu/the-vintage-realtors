@@ -820,6 +820,21 @@ nav.nav-hide {
     position: relative;
 }
 
+/* lively title animation (non-fade): small pop + skew + shadow for a playful, vintage feel */
+.all-properties-title {
+    transform-origin: center;
+    animation: title-pop-sway 4200ms cubic-bezier(.2,.9,.3,1) infinite;
+}
+
+@keyframes title-pop-sway {
+    0%   { transform: translateY(0) skewX(0deg) scale(1); text-shadow: 0 0 0 rgba(0,0,0,0); }
+    12%  { transform: translateY(-6px) skewX(-1.2deg) scale(1.02); text-shadow: 0 8px 20px rgba(43,34,15,0.06); }
+    28%  { transform: translateY(0) skewX(0.6deg) scale(1); text-shadow: 0 6px 18px rgba(43,34,15,0.05); }
+    52%  { transform: translateY(-4px) skewX(-0.8deg) scale(1.01); text-shadow: 0 10px 28px rgba(75,0,130,0.08); }
+    72%  { transform: translateY(0) skewX(0deg) scale(1); text-shadow: 0 0 0 rgba(0,0,0,0); }
+    100% { transform: translateY(0) skewX(0deg) scale(1); text-shadow: 0 0 0 rgba(0,0,0,0); }
+}
+
 .all-properties-title::after {
     content: "";
     position: absolute;
