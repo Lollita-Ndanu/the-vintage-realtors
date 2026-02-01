@@ -2,7 +2,8 @@
 
 
 backend:
-  name: git-gateway
+  name: github
+  repo: Lollita-Ndanu/the-vintage-realtors
   branch: main
 
 media_folder: "images/uploads"
