@@ -139,40 +139,59 @@
 
     
 	<script>
-	// Render all properties grouped by category (read-only)
+	// Load property markdown files from /properties and render them
 	(function(){
-		const data = [
-			{ id:1, type:'apartments', title:'2 Bedroom Apartment — Kilimani', price:'KES 120,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2', beds:2, baths:1, area:'95 m²' },
-			{ id:2, type:'apartments', title:'3 Bedroom Apartment — Westlands', price:'KES 38,500,000', status:'sale', img:'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb', beds:3, baths:2, area:'140 m²' },
-			{ id:3, type:'houses', title:'4 Bedroom House — Lavington', price:'KES 85,000,000', status:'sale', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511', beds:4, baths:3, area:'320 m²' },
-			{ id:4, type:'houses', title:'5 Bedroom Villa — Karen', price:'KES 62,000,000', status:'sale', img:'https://images.unsplash.com/photo-1599423300746-b62533397364', beds:5, baths:4, area:'480 m²' },
-			{ id:5, type:'commercial', title:'Office Space — Upper Hill', price:'KES 95,000,000', status:'sale', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267', beds:null, baths:2, area:'1500 m²' },
-			{ id:7, type:'farms', title:'2 Acre Farm — Kiambu', price:'KES 6,000,000', status:'sale', img:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee', beds:null, baths:null, area:'2 acres' },
-			{ id:8, type:'warehouses', title:'Warehouse — Industrial Area', price:'KES 140,000,000', status:'sale', img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994', beds:null, baths:1, area:'2400 m²' },
-			{ id:9, type:'offices', title:'Serviced Office — Westlands', price:'From KES 45,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511', beds:null, baths:1, area:'From 30 m²' }
+		const mdFiles = [
+			'3-bedroom-apartment.md',
+			'4-bedroom-townhouse.md',
+			'office-space-upper-hill.md',
+			'2-bedroom-apartment-kilimani.md',
+			'5-bedroom-villa-karen.md',
+			'1-bedroom-apartment-kileleshwa.md',
+			'warehouse-office-complex.md'
 		];
 
-		const order = [
-			{ key: 'houses', label: 'Houses' },
-			{ key: 'apartments', label: 'Apartments' },
-			{ key: 'commercial', label: 'Commercials' },
-			{ key: 'offices', label: 'Offices' },
-			{ key: 'farms', label: 'Farms & Land' },
-			{ key: 'warehouses', label: 'Warehouses' }
-		];
+		function parseFrontmatter(md){
+			const fmMatch = md.match(/^---\s*([\s\S]*?)\s*---/);
+			const result = { body: md };
+			if(!fmMatch) return result;
+			const fm = fmMatch[1];
+			result.body = md.slice(fmMatch[0].length).trim();
+			fm.split(/\r?\n/).forEach(line => {
+				const m = line.match(/^([^:]+):\s*(.*)$/);
+				if(!m) return;
+				const key = m[1].trim();
+				let val = m[2].trim();
+				if(val === '""' || val === "''") val = '';
+				val = val.replace(/^"|"$/g,'').replace(/^'|'$/g,'');
+				if(/^[0-9]+$/.test(val)) val = parseInt(val,10);
+				result[key] = val;
+			});
+			return result;
+		}
 
 		const container = document.getElementById('propertiesContainer');
 		if(!container) return;
 
-		order.forEach(cat => {
-			const items = data.filter(d => d.type === cat.key);
-			if(items.length === 0) return;
+		Promise.all(mdFiles.map(f => fetch('/properties/' + f).then(r => r.text()).then(txt => ({ file: f, txt })).catch(()=>({ file:f, txt: null })) ))
+		.then(all => {
+			const items = all.map(a => {
+				if(!a.txt) return null;
+				const parsed = parseFrontmatter(a.txt);
+				const slug = a.file.replace(/\.md$/, '');
+				return {
+					slug,
+					title: parsed.title || '',
+					price: parsed.price || '',
+					location: parsed.location || '',
+					bedrooms: parsed.bedrooms || null,
+					bathrooms: parsed.bathrooms || null,
+					image: parsed.image || '',
+					description: parsed.description || parsed.body || ''
+				};
+			}).filter(Boolean);
 
-			const section = document.createElement('section');
-			section.className = 'property-group';
-			section.id = `group-${cat.key}`;
-			section.setAttribute('tabindex','-1');
-			section.innerHTML = `<h3 class="group-title">${cat.label}</h3>`;
+			if(!items.length){ container.innerHTML = '<p>No properties found.</p>'; return; }
 
 			const list = document.createElement('div');
 			list.className = 'property-list';
@@ -180,57 +199,27 @@
 			items.forEach(it => {
 				const item = document.createElement('a');
 				item.className = 'property-item property-link';
-				item.href = `property.html?property=${it.id}`;
+				item.href = `property.html?slug=${encodeURIComponent(it.slug)}`;
 				item.setAttribute('aria-label', `${it.title} — ${it.price}`);
 				item.innerHTML = `
 					<div class="pi-left">
-						<img src="${it.img}?q=60&w=800&auto=format&fit=crop" alt="${it.title}">
+						<img src="${it.image.startsWith('/') ? it.image : it.image + '?q=60&w=800&auto=format&fit=crop' }" alt="${it.title}">
 					</div>
 					<div class="pi-right">
 						<div class="pi-title">${it.title}</div>
 						<div class="pi-price">${it.price}</div>
-						<div class="pi-meta">${it.type}</div>
+						<div class="pi-meta">${it.location}</div>
 						<div class="pi-specs">
-							${it.beds !== null ? `<span class="spec"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 10v7a1 1 0 0 0 1 1h1v-6h14v6h1a1 1 0 0 0 1-1v-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="6" width="18" height="4" rx="1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="spec-text">${it.beds} bd</span></span>` : ''}
-							${it.baths !== null ? `<span class="spec"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 11c0-2.5 3-4 5-6 2 2 5 3.5 5 6 0 3-5 6-10 6S7 14 7 11z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="spec-text">${it.baths} ba</span></span>` : ''}
-							${it.area ? `<span class="spec"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 7v10a2 2 0 0 0 2 2h14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 7V5a2 2 0 0 0-2-2H7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="spec-text">${it.area}</span></span>` : ''}
+							${it.bedrooms ? `<span class="spec"><span class="spec-text">${it.bedrooms} bd</span></span>` : ''}
+							${it.bathrooms ? `<span class="spec"><span class="spec-text">${it.bathrooms} ba</span></span>` : ''}
 						</div>
-						<div class="pi-status ${it.status}">${it.status === 'sale' ? 'For Sale' : 'To Let'}</div>
+						<div class="pi-excerpt">${it.description}</div>
 					</div>
 				`;
 				list.appendChild(item);
 			});
 
-			section.appendChild(list);
-			container.appendChild(section);
-		});
-
-		// Attach click handlers to top filters to smooth-scroll to groups
-		const filters = document.querySelectorAll('.filter-card[data-type]');
-		filters.forEach(f => {
-			f.addEventListener('click', (e) => {
-				const type = f.dataset.type;
-				const target = document.getElementById('group-' + type);
-				if (!target) return;
-				// smooth scroll to the group's top
-				target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-				// briefly highlight the target with a purple glow for visibility
-				try {
-					target.classList.remove('highlight-glow');
-					// force reflow so re-adding the class restarts the animation
-					// eslint-disable-next-line no-unused-expressions
-					void target.offsetWidth;
-					target.classList.add('highlight-glow');
-					// ensure the class is removed after the animation
-					setTimeout(() => { target.classList.remove('highlight-glow'); }, 2300);
-				} catch (err) {
-					// ignore if DOM not available
-				}
-
-				// focus for accessibility after a short delay (allow scroll to complete)
-				setTimeout(() => { try { target.focus(); } catch (err){} }, 500);
-			});
+			container.appendChild(list);
 		});
 	})();
 	</script>
