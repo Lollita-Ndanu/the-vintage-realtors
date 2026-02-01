@@ -1,8 +1,9 @@
 ---
 title: ELIZAPHAN APARTMENTS
 price: KES 8,000,000
-bedrooms: 2
 bathrooms: 2
+date: 2026-02-01
+bedrooms: 2
 location: Nairobi, Ruaka Town
 image: /images/elizaphan-2.png
 description: >-
@@ -29,7 +30,7 @@ description: >-
 
   Location Benefits:
 
-  5 minutes to Two Rivers Mall
+  5 minutes to Two Rivers Mall   
 
   10 minutes to Village Market
 
@@ -39,5 +40,4 @@ description: >-
 
   The units are currently available for Kes 8 million, making them an attractive option for both homeowners and investors looking to tap into the Airbnb market. All units are ready for occupation, making it a great time to secure your dream apartment at Elizaphan Plaza, Ruaka
 status: For Sale
-date: "2026-02-01"
 ---
