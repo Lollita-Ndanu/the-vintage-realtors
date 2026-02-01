@@ -166,12 +166,61 @@
         <p class="section-subtitle">Sample listings — real properties will be added</p>
     </div>
 
-        <div class="featured-wrapper">
-            <div style="padding:24px;text-align:center;">
-                <p>Featured properties are managed from the properties collection.</p>
-                <a href="properties.html" class="btn-primary">View Properties</a>
-            </div>
+        <div class="featured-wrapper" id="featuredWrapper">
+            <div id="featuredList" class="featured-list"></div>
         </div>
+        <script>
+        // Render top 3 most recent properties in Featured section
+        (function(){
+            function parseFrontmatter(md){
+                const fmMatch = md.match(/^---\s*([\s\S]*?)\s*---/);
+                const result = { body: md };
+                if(!fmMatch) return result;
+                const fm = fmMatch[1];
+                result.body = md.slice(fmMatch[0].length).trim();
+                fm.split(/\r?\n/).forEach(line => {
+                    const m = line.match(/^([^:]+):\s*(.*)$/);
+                    if(!m) return;
+                    const key = m[1].trim();
+                    let val = m[2].trim();
+                    val = val.replace(/^"|"$/g,'').replace(/^'|'$/g,'');
+                    result[key] = val;
+                });
+                return result;
+            }
+
+            const target = document.getElementById('featuredList');
+            if(!target) return;
+
+            fetch('/properties/index.json').then(r => r.json()).then(list => {
+                list.sort((a,b)=> new Date(b.date) - new Date(a.date));
+                const top = list.slice(0,3);
+                return Promise.all(top.map(i => fetch('/properties/' + i.file).then(r => r.text()).then(txt => ({ file: i.file, txt }))));
+            }).then(all => {
+                target.innerHTML = all.map(a => {
+                    const parsed = parseFrontmatter(a.txt);
+                    const slug = a.file.replace(/\.md$/,'');
+                    const img = parsed.image || '';
+                    const title = parsed.title || '';
+                    const price = parsed.price || '';
+                    const location = parsed.location || '';
+                    const beds = parsed.bedrooms || '';
+                    const baths = parsed.bathrooms || '';
+                    return `
+                        <a class="featured-card" href="property.html?slug=${encodeURIComponent(slug)}">
+                            <div class="fc-image"><img src="${img}" alt="${title}"></div>
+                            <div class="fc-body">
+                                <div class="fc-title">${title}</div>
+                                <div class="fc-price">${price}</div>
+                                <div class="fc-location">${location}</div>
+                                <div class="fc-meta">${beds ? beds + ' bd' : ''} ${baths ? '· ' + baths + ' ba' : ''}</div>
+                            </div>
+                        </a>
+                    `;
+                }).join('');
+            }).catch(()=>{ target.innerHTML = '<div style="padding:24px;text-align:center;"><a href="properties.html" class="btn-primary">View Properties</a></div>'; });
+        })();
+        </script>
     </section>
 
 

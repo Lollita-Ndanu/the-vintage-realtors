@@ -39,4 +39,5 @@ description: >-
 
   The units are currently available for Kes 8 million, making them an attractive option for both homeowners and investors looking to tap into the Airbnb market. All units are ready for occupation, making it a great time to secure your dream apartment at Elizaphan Plaza, Ruaka
 status: For Sale
+date: "2026-02-01"
 ---

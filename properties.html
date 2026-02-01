@@ -139,18 +139,8 @@
 
     
 	<script>
-	// Load property markdown files from /properties and render them
+	// Load property markdown files from /properties/index.json and render them
 	(function(){
-		const mdFiles = [
-			'3-bedroom-apartment.md',
-			'4-bedroom-townhouse.md',
-			'office-space-upper-hill.md',
-			'2-bedroom-apartment-kilimani.md',
-			'5-bedroom-villa-karen.md',
-			'1-bedroom-apartment-kileleshwa.md',
-			'warehouse-office-complex.md'
-		];
-
 		function parseFrontmatter(md){
 			const fmMatch = md.match(/^---\s*([\s\S]*?)\s*---/);
 			const result = { body: md };
@@ -173,8 +163,12 @@
 		const container = document.getElementById('propertiesContainer');
 		if(!container) return;
 
-		Promise.all(mdFiles.map(f => fetch('/properties/' + f).then(r => r.text()).then(txt => ({ file: f, txt })).catch(()=>({ file:f, txt: null })) ))
-		.then(all => {
+		fetch('/properties/index.json').then(r => r.json()).then(list => {
+			// sort by date ascending (older first) to show newest at top of properties page as needed
+			list.sort((a,b)=> new Date(b.date) - new Date(a.date));
+			const mdFiles = list.map(i => i.file);
+			return Promise.all(mdFiles.map(f => fetch('/properties/' + f).then(r => r.text()).then(txt => ({ file: f, txt })).catch(()=>({ file:f, txt: null })) ));
+		}).then(all => {
 			const items = all.map(a => {
 				if(!a.txt) return null;
 				const parsed = parseFrontmatter(a.txt);
@@ -193,8 +187,8 @@
 
 			if(!items.length){ container.innerHTML = '<p>No properties found.</p>'; return; }
 
-			const list = document.createElement('div');
-			list.className = 'property-list';
+			const listEl = document.createElement('div');
+			listEl.className = 'property-list';
 
 			items.forEach(it => {
 				const item = document.createElement('a');
@@ -216,11 +210,11 @@
 						<div class="pi-excerpt">${it.description}</div>
 					</div>
 				`;
-				list.appendChild(item);
+				listEl.appendChild(item);
 			});
 
-			container.appendChild(list);
-		});
+			container.appendChild(listEl);
+		}).catch(err => { container.innerHTML = '<p>Unable to load properties.</p>'; });
 	})();
 	</script>
 
