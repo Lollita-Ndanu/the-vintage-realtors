@@ -1,19 +1,29 @@
 
+
+
 backend:
   name: git-gateway
   branch: main
 
-media_folder: "images"
-public_folder: "/images"
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
 collections:
-  - name: "pages"
-    label: "Pages"
-    files:
-      - label: "Property Index"
-        name: "property_index"
-        file: "properties/index.json" # This creates a list of all filenames
-        fields:
-          - {label: "All Properties", name: "all", widget: "list", field: {label: "File Name", name: "filename", widget: "string"}}
   - name: "properties"
-    # ... keep your existing properties collection below this
+    label: "Properties"
+    folder: "properties"
+    create: true
+    slug: "{{slug}}"
+    format: "yaml"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Price", name: "price", widget: "string" }
+      - { label: "Bedrooms", name: "bedrooms", widget: "number" }
+      - { label: "Bathrooms", name: "bathrooms", widget: "number" }
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options: ["For Sale", "For Rent", "Sold"]
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Main Image", name: "image", widget: "image" }
+      - { label: "Description", name: "description", widget: "text" }
