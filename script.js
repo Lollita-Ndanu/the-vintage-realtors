@@ -60,3 +60,69 @@ if (hamburger && menu) {
         }
     });
 }
+
+/* Lightbox gallery behavior for collaborators page */
+(function(){
+    const galleryImgs = Array.from(document.querySelectorAll('.gallery-grid .photo img'));
+    const lightbox = document.getElementById('lightbox');
+    if (!galleryImgs.length || !lightbox) return;
+
+    const lbImg = lightbox.querySelector('.lightbox-content img');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    const prevBtn = lightbox.querySelector('.lightbox-prev');
+    const nextBtn = lightbox.querySelector('.lightbox-next');
+
+    // Normalize a higher-res URL when possible (Unsplash pattern)
+    function largeSrc(src){
+        try {
+            return src.replace(/\/\d+x\d+\//, '/1200x800/');
+        } catch (e) { return src; }
+    }
+
+    const images = galleryImgs.map(img => ({ el: img, src: img.getAttribute('data-large') || largeSrc(img.src), alt: img.alt || '' }));
+    let current = 0;
+
+    function open(index){
+        current = index;
+        lbImg.src = images[current].src;
+        lbImg.alt = images[current].alt;
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        // focus close for keyboard users
+        closeBtn.focus();
+    }
+
+    function close(){
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+    }
+
+    function showNext(){ open((current + 1) % images.length); }
+    function showPrev(){ open((current - 1 + images.length) % images.length); }
+
+    galleryImgs.forEach((imgEl, i) => {
+        imgEl.style.cursor = 'zoom-in';
+        imgEl.addEventListener('click', (e) => { e.preventDefault(); open(i); });
+        imgEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(i); });
+    });
+
+    closeBtn.addEventListener('click', close);
+    nextBtn.addEventListener('click', (e)=>{ e.stopPropagation(); showNext(); });
+    prevBtn.addEventListener('click', (e)=>{ e.stopPropagation(); showPrev(); });
+
+    // click outside image closes
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) close();
+    });
+
+    // keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowRight') showNext();
+        if (e.key === 'ArrowLeft') showPrev();
+    });
+})();
