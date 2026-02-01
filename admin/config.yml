@@ -7,20 +7,13 @@ media_folder: "images"
 public_folder: "/images"
 
 collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Property Index"
+        name: "property_index"
+        file: "properties/index.json" # This creates a list of all filenames
+        fields:
+          - {label: "All Properties", name: "all", widget: "list", field: {label: "File Name", name: "filename", widget: "string"}}
   - name: "properties"
-    label: "Properties"
-    folder: "properties"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Price", name: "price", widget: "string" }
-      - { label: "Bedrooms", name: "bedrooms", widget: "number" }
-      - { label: "Bathrooms", name: "bathrooms", widget: "number" }
-      - { label: "Location", name: "location", widget: "string" }
-      - { label: "Main Image", name: "image", widget: "image" }
-      - { label: "Description", name: "description", widget: "text" }
-      - label: "Status"
-        name: "status"
-        widget: "select"
-        options: ["For Sale", "To Let", "Upcoming"]
+    # ... keep your existing properties collection below this

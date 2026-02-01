@@ -124,5 +124,104 @@ if (hamburger && menu) {
         if (e.key === 'Escape') close();
         if (e.key === 'ArrowRight') showNext();
         if (e.key === 'ArrowLeft') showPrev();
-    });
-})();
+
+        async function loadProperties() {
+    const propertyContainer = document.getElementById('propertySlider');
+    if (!propertyContainer) return;
+
+    try {
+        // 1. Fetch the master list of filenames
+        const indexResponse = await fetch('/properties/index.json');
+        const indexData = await indexResponse.json();
+        const propertyFiles = indexData.all; // This is now your automatic list!
+
+        propertyContainer.innerHTML = ''; 
+
+        for (const property of propertyFiles) {
+            const file = property.filename;
+            const response = await fetch(`/properties/${file}`);
+            const text = await response.text();
+
+            // Extract the data (including the full description)
+            const title = text.match(/title: (.*)/)?.[1];
+            const price = text.match(/price: (.*)/)?.[1];
+            const location = text.match(/location: (.*)/)?.[1];
+            const image = text.match(/image: (.*)/)?.[1];
+            const bedrooms = text.match(/bedrooms: (.*)/)?.[1];
+            const bathrooms = text.match(/bathrooms: (.*)/)?.[1];
+            const description = text.split('---').pop().trim();
+
+            const card = document.createElement('div');
+            card.className = 'property-card';
+            card.innerHTML = `
+                <div class="property-image"><img src="${image}" alt="${title}"></div>
+                <div class="property-details">
+                    <p class="property-price">${price}</p>
+                    <h3>${title}</h3>
+                    <p class="property-location">${location}</p>
+                    <p class="property-desc-short">${description.substring(0, 100)}...</p>
+                    <div class="property-meta">
+                        <span>🛏 ${bedrooms} Beds</span> <span>🛁 ${bathrooms} Baths</span>
+                    </div>
+                </div>
+            `;
+            propertyContainer.appendChild(card);
+        }
+    } catch (error) {
+        console.error("The website couldn't find the new properties:", error);
+    }
+}
+
+    // ... previous lightbox code ...
+        if (e.key === 'ArrowLeft') showPrev();
+    }); // Closes the keydown listener
+})(); // Closes the Lightbox IIFE
+
+/* --- PROPERTIES FETCH SECTION --- */
+async function loadProperties() {
+    const propertyContainer = document.getElementById('propertySlider');
+    if (!propertyContainer) return;
+
+    try {
+        const indexResponse = await fetch('/properties/index.json');
+        const indexData = await indexResponse.json();
+        const propertyFiles = indexData.all; 
+
+        propertyContainer.innerHTML = ''; 
+
+        for (const property of propertyFiles) {
+            const file = property.filename;
+            const response = await fetch(`/properties/${file}`);
+            const text = await response.text();
+
+            const title = text.match(/title: (.*)/)?.[1];
+            const price = text.match(/price: (.*)/)?.[1];
+            const location = text.match(/location: (.*)/)?.[1];
+            const image = text.match(/image: (.*)/)?.[1];
+            const bedrooms = text.match(/bedrooms: (.*)/)?.[1];
+            const bathrooms = text.match(/bathrooms: (.*)/)?.[1];
+            const description = text.split('---').pop().trim();
+
+            const card = document.createElement('div');
+            card.className = 'property-card';
+            card.innerHTML = `
+                <div class="property-image"><img src="${image}" alt="${title}"></div>
+                <div class="property-details">
+                    <p class="property-price">${price}</p>
+                    <h3>${title}</h3>
+                    <p class="property-location">${location}</p>
+                    <p class="property-desc-short">${description.substring(0, 100)}...</p>
+                    <div class="property-meta">
+                        <span>🛏 ${bedrooms} Beds</span> <span>🛁 ${bathrooms} Baths</span>
+                    </div>
+                </div>
+            `;
+            propertyContainer.appendChild(card);
+        }
+    } catch (error) {
+        console.error("The website couldn't find the new properties:", error);
+    }
+}
+
+// Ensure the function runs when the page is ready
+document.addEventListener('DOMContentLoaded', loadProperties);
