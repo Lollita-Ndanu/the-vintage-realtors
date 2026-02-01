@@ -36,11 +36,81 @@
 
 	<div class="menu-overlay"></div>
 
-	<main style="max-width:900px;margin:60px auto;padding:24px;">
-		<h1>Contact</h1>
-		<p>Email: <a href="mailto:sales@vintagerealtors.co.ke">sales@vintagerealtors.co.ke</a></p>
-		<p>Phone: +254722865306</p>
-		<p><a href="index.html" class="btn-secondary">Return Home</a></p>
+	<main class="contact-page">
+		<section class="contact-hero">
+			<div class="contact-inner">
+				<div class="contact-form">
+					<h1>Contact Us</h1>
+					<p class="lead">We're here to help — send a message and we'll respond promptly.</p>
+
+					<form action="#" method="post" class="form-contact" aria-label="Contact form">
+						<div class="form-row">
+							<label for="name">Name</label>
+							<input id="name" name="name" type="text" required placeholder="Your full name">
+						</div>
+						<div class="form-row">
+							<label for="email">Email</label>
+							<input id="email" name="email" type="email" required placeholder="you@email.com">
+						</div>
+						<div class="form-row">
+							<label for="phone">Phone</label>
+							<input id="phone" name="phone" type="tel" placeholder="+2547...">
+						</div>
+						<div class="form-row">
+							<label for="message">Message</label>
+							<textarea id="message" name="message" rows="6" placeholder="How can we help?" required></textarea>
+						</div>
+						<div class="form-row">
+							<button type="submit" class="btn-primary">Send Message</button>
+						</div>
+					</form>
+				</div>
+
+				<aside class="contact-details">
+					<div class="contact-card">
+						<h3>Get in touch</h3>
+						<p><strong>Email:</strong> <a href="mailto:sales@vintagerealtors.co.ke">sales@vintagerealtors.co.ke</a></p>
+						<p><strong>Phone:</strong> <a href="tel:+254722865306">+254 722 865 306</a></p>
+						<p><strong>Address:</strong> Nairobi, Kenya</p>
+						<p><strong>Office hours:</strong> Mon–Fri, 9:00 — 17:00</p>
+					</div>
+
+					<div class="map-placeholder" aria-hidden="true">
+						<!-- You can replace this with an embedded Google Map iframe -->
+						<img src="images/background4.avif" alt="Office location" style="width:100%;border-radius:10px;display:block;">
+					</div>
+				</aside>
+			</div>
+		</section>
+
+		<section class="agents-section">
+			<div class="agents-inner">
+				<h2>Meet Our Agents</h2>
+				<p class="lead">Our experienced agents are ready to guide you.</p>
+
+				<div class="agents-grid">
+					<div class="agent">
+						<div class="agent-photo" style="background-image:url('images/logo.avif');"></div>
+						<div class="agent-name">Jane Mwangi</div>
+					</div>
+
+					<div class="agent">
+						<div class="agent-photo" style="background-image:url('images/background7.avif');"></div>
+						<div class="agent-name">David Otieno</div>
+					</div>
+
+					<div class="agent">
+						<div class="agent-photo" style="background-image:url('images/background6.avif');"></div>
+						<div class="agent-name">Susan Karanja</div>
+					</div>
+
+					<div class="agent">
+						<div class="agent-photo" style="background-image:url('images/background8.avif');"></div>
+						<div class="agent-name">Peter Njoroge</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</main>
 
 	<footer class="site-footer">
