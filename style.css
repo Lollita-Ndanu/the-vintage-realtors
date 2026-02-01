@@ -463,7 +463,30 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
     color: #fff;
     box-shadow: 0 12px 32px rgba(0,0,0,0.12);
 }
-.contact-details a { color: #fff; text-decoration: underline; }
+.contact-details a { color: #fff; text-decoration: underline; transition: color 180ms ease; }
+
+/* Turn contact details purple when hovered, focused, or pressed */
+.contact-details .contact-card,
+.contact-details .contact-card p,
+.contact-details .contact-card a,
+.contact-details .contact-card strong {
+    transition: color 180ms ease, transform 120ms ease;
+}
+.contact-details .contact-card:hover p,
+.contact-details .contact-card:active p,
+.contact-details .contact-card:focus-within p,
+.contact-details .contact-card:hover strong,
+.contact-details .contact-card:active strong,
+.contact-details .contact-card:focus-within strong,
+.contact-details .contact-card:hover a,
+.contact-details .contact-card:active a,
+.contact-details .contact-card:focus-within a,
+.contact-details .contact-card a:hover,
+.contact-details .contact-card a:focus,
+.contact-details .contact-card a:active,
+.contact-details .contact-card a:focus-visible {
+    color: var(--purple);
+}
 .map-placeholder img { opacity: 0.95; box-shadow: 0 14px 40px rgba(0,0,0,0.18); }
 
 .agents-section { padding: 60px 4%; background: linear-gradient(180deg,#fffef9,#fbf6ef); color: var(--black); }
