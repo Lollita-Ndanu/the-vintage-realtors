@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE VINTAGE REALTORS</title>
@@ -13,8 +9,7 @@
 </head>
 <body>
 
-   <!-- Navigation -->
-<nav>
+   <nav>
     <a href="index.html" class="logo-container">
         <img src="images/logo.avif" alt="Vintage Realtors Logo" class="logo-img">
     </a>
@@ -37,7 +32,6 @@
     </button>
 </nav>
 
-<!-- Menu Drawer -->
 <div id="menu" class="menu-drawer" aria-hidden="true">
     <button class="close" aria-label="Close menu">&times;</button>
     <nav class="drawer-nav">
@@ -163,15 +157,18 @@
 <section class="featured-section" id="featured">
     <div class="section-header">
         <h2>Featured Properties</h2>
-        <p class="section-subtitle">Sample listings — real properties will be added</p>
+        <p class="section-subtitle">Our latest listings</p>
     </div>
 
     <div class="featured-wrapper">
         <button class="slide-btn left" aria-label="Previous">&#10094;</button>
 
         <div class="property-slider" id="propertySlider">
+            </div>
 
-            <!-- Property 1 -->
+        <button class="slide-btn right" aria-label="Next">&#10095;</button>
+    </div>
+</section>
 
 <script>
 // Hide header on scroll (shows when scrolling up)
@@ -206,133 +203,6 @@
     }, { passive: true });
 })();
 </script>
-            <div class="property-card">
-                <div class="property-image">
-                    <span class="property-status sale">For Sale</span>
-                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb" alt="Apartment building Nairobi">
-                </div>
-                <div class="property-details">
-                    <p class="property-price">KES 38,500,000</p>
-                    <h3>3 Bedroom Apartment</h3>
-                    <p class="property-location">Westlands, Nairobi</p>
-                    <div class="property-meta">
-                        <span>🛏 3 Beds</span>
-                        <span>🛁 2 Baths</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Property 2 (UPDATED – Nairobi-style townhouse) -->
-            <div class="property-card">
-                <div class="property-image">
-                    <span class="property-status rent">To Let</span>
-                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop" alt="Modern townhouse interior">
-                </div>
-                <div class="property-details">
-                    <p class="property-price">KES 180,000 / month</p>
-                    <h3>4 Bedroom Townhouse</h3>
-                    <p class="property-location">Lavington, Nairobi</p>
-                    <div class="property-meta">
-                        <span>🛏 4 Beds</span>
-                        <span>🛁 3 Baths</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Property 3 (UPDATED – Office building / Upper Hill vibe) -->
-            <div class="property-card">
-                <div class="property-image">
-                    <span class="property-status sale">For Sale</span>
-                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" alt="Office building Nairobi">
-                </div>
-                <div class="property-details">
-                    <p class="property-price">KES 95,000,000</p>
-                    <h3>Office Space</h3>
-                    <p class="property-location">Upper Hill, Nairobi</p>
-                    <div class="property-meta">
-                        <span>🏢 Commercial</span>
-                        <span>📐 350 m²</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Property 4 (UPDATED – Modern apartment interior/exterior) -->
-            <div class="property-card">
-                <div class="property-image">
-                    <span class="property-status rent">To Let</span>
-                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop" alt="Modern apartment interior">
-                </div>
-                <div class="property-details">
-                    <p class="property-price">KES 120,000 / month</p>
-                    <h3>2 Bedroom Apartment</h3>
-                    <p class="property-location">Kilimani, Nairobi</p>
-                    <div class="property-meta">
-                        <span>🛏 2 Beds</span>
-                        <span>🛁 2 Baths</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Property 5 -->
-            <div class="property-card">
-                <div class="property-image">
-                    <span class="property-status sale">For Sale</span>
-                    <img src="https://images.unsplash.com/photo-1599423300746-b62533397364" alt="">
-                </div>
-                <div class="property-details">
-                    <p class="property-price">KES 62,000,000</p>
-                    <h3>5 Bedroom Villa</h3>
-                    <p class="property-location">Karen, Nairobi</p>
-                    <div class="property-meta">
-                        <span>🛏 5 Beds</span>
-                        <span>🛁 4 Baths</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Property 6 -->
-            <div class="property-card">
-                <div class="property-image">
-                    <span class="property-status rent">To Let</span>
-                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85" alt="">
-                </div>
-                <div class="property-details">
-                    <p class="property-price">KES 95,000 / month</p>
-                    <h3>1 Bedroom Apartment</h3>
-                    <p class="property-location">Kileleshwa, Nairobi</p>
-                    <div class="property-meta">
-                        <span>� 1 Bed</span>
-                        <span>🛁 1 Bath</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Property 7 -->
-            <div class="property-card">
-                <div class="property-image">
-                    <span class="property-status sale">For Sale</span>
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c" alt="">
-                </div>
-                <div class="property-details">
-                    <p class="property-price">KES 140,000,000</p>
-                    <h3>Warehouse & Office Complex</h3>
-                    <p class="property-location">Industrial Area, Nairobi</p>
-                    <div class="property-meta">
-                        <span>🏭 Warehouse</span>
-                        <span>📐 1,200 m²</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <button class="slide-btn right" aria-label="Next">&#10095;</button>
-    </div>
-</section>
-
-
-
-</section>
 
 <section class="services-section">
     <div class="section-header">
@@ -400,7 +270,6 @@
 })();
 </script>
 
-<!-- Testimonials (copied from about.html) -->
 <section class="testimonial-section">
     <h2>What Our Clients Say</h2>
     <div class="testimonial-slider-wrapper">
@@ -527,28 +396,60 @@
         </div>
     </div>
 
-    <!-- Floating WhatsApp button -->
     <a href="https://wa.me/254722865306" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
         <img src="images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
     </a>
 
-
-
 <script src="script.js"></script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
 <script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
+    // 1. Connect to Contentful
+    const client = contentful.createClient({
+        space: '34evf5vfv8l3',
+        accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
     });
-  }
-</script>
 
+    // 2. Fetch the 6 most recent properties
+    client.getEntries({ 
+        content_type: 'property', 
+        limit: 6,
+        order: '-sys.createdAt' 
+    })
+    .then((response) => {
+        const container = document.getElementById('propertySlider');
+        container.innerHTML = ''; // Clear any placeholders
+
+        response.items.forEach((item) => {
+            const p = item.fields;
+            const imageUrl = p.mainImage && p.mainImage.fields ? p.mainImage.fields.file.url : '';
+            const price = p.price ? p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
+
+            // Match exact HTML structure for slider
+            const card = `
+                <div class="property-card">
+                    <div class="property-image">
+                        <span class="property-status ${p.status === 'For Sale' ? 'sale' : 'rent'}">${p.status}</span>
+                        <a href="property.html?id=${item.sys.id}">
+                            <img src="${imageUrl}" alt="${p.title}">
+                        </a>
+                    </div>
+                    <div class="property-details">
+                        <p class="property-price">KES ${price}</p>
+                        <h3>${p.title}</h3>
+                        <p class="property-location">${p.location}</p>
+                        <div class="property-meta">
+                            <span>🛏 ${p.bedrooms} Beds</span>
+                            <span>🛁 ${p.bathrooms} Baths</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += card;
+        });
+    })
+    .catch(console.error);
+</script>
 
 </body>
 </html>

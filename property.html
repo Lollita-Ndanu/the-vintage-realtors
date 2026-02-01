@@ -3,11 +3,43 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Property — The Vintage Realtors</title>
+    <title>Property Details — The Vintage Realtors</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS for the Single Property Page */
+        .pd-container { max-width: 1100px; margin: 40px auto; padding: 20px; }
+        
+        .pd-header { margin-bottom: 30px; }
+        .pd-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px; }
+        .pd-location { color: #666; font-size: 1.2rem; }
+        .pd-price { font-size: 1.5rem; color: #6a1b9a; font-weight: bold; margin-top: 10px; }
+
+        .pd-main-img { width: 100%; height: auto; max-height: 600px; object-fit: cover; border-radius: 8px; margin-bottom: 30px; }
+
+        .pd-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+        
+        .pd-specs { display: flex; gap: 20px; margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; }
+        .spec-item { font-weight: bold; color: #333; }
+        
+        .pd-description { line-height: 1.8; color: #444; margin-bottom: 30px; white-space: pre-wrap; }
+
+        /* Gallery Grid */
+        .gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 40px; }
+        .gallery-img { width: 100%; height: 150px; object-fit: cover; border-radius: 6px; cursor: pointer; transition: opacity 0.2s; }
+        .gallery-img:hover { opacity: 0.8; }
+
+        /* Contact Box */
+        .contact-box { background: #333; color: white; padding: 30px; border-radius: 8px; position: sticky; top: 20px; height: fit-content; }
+        .contact-box h3 { color: white; margin-bottom: 20px; }
+        .btn-contact { display: block; background: #6a1b9a; color: white; text-align: center; padding: 15px; text-decoration: none; border-radius: 4px; font-weight: bold; margin-top: 20px; }
+        
+        @media (max-width: 768px) {
+            .pd-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
-<body class="property-page">
+<body>
     <nav>
         <a href="index.html" class="logo-container">
             <img src="images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
@@ -15,181 +47,119 @@
         <div class="site-title"><span>THE VINTAGE REALTORS</span></div>
         <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </nav>
+    
+    <div id="menu" class="menu-drawer" aria-hidden="true">
+        <button class="close">&times;</button>
+        <nav class="drawer-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="properties.html">Properties</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="menu-overlay"></div>
 
-    <main style="max-width:1100px;margin:60px auto;padding:24px;">
-        <div id="propertyDetail" class="property-detail">Loading…</div>
+    <main class="pd-container">
+        <div class="pd-header">
+            <h1 id="prop-title" class="pd-title">Loading Property...</h1>
+            <div id="prop-location" class="pd-location"></div>
+            <div id="prop-price" class="pd-price"></div>
+        </div>
+
+        <img id="prop-main-image" class="pd-main-img" src="" alt="Property Image">
+
+        <div class="pd-grid">
+            <div>
+                <div class="pd-specs">
+                    <span id="prop-beds" class="spec-item"></span>
+                    <span id="prop-baths" class="spec-item"></span>
+                    <span id="prop-area" class="spec-item"></span>
+                </div>
+
+                <div class="pd-description">
+                    <h3>Description</h3>
+                    <p id="prop-desc"></p>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <h3>Interested in this property?</h3>
+                <p>Contact us to schedule a viewing or request more details.</p>
+                <a href="tel:+254722865306" class="btn-contact">Call: +254 722 865 306</a>
+                <a href="mailto:sales@vintagerealtors.co.ke" class="btn-contact" style="background:white; color:#333; margin-top:10px;">Email Us</a>
+            </div>
+        </div>
+
+        <h3 style="margin-top:50px; font-family: 'Playfair Display', serif;">Property Gallery</h3>
+        <div id="prop-gallery" class="gallery-container">
+            </div>
+
     </main>
 
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-logo"><img src="images/FOOTER%20LOGO.avif" alt="Footer logo"></div>
             <div class="footer-about"><h3>The Vintage Realtors</h3><p>If you build it, we will list it.</p><p>Nairobi, Kenya</p></div>
-            <div class="footer-contact"><h4>Contact</h4><p>Email: <a href="mailto:sales@vintagerealtors.co.ke">sales@vintagerealtors.co.ke</a></p><p>Phone: <a href="tel:+254722865306">+254722865306</a></p></div>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+
     <script>
-    (function(){
-        // Data (keep in sync with properties.html)
-        const data = [
-            { id:1, type:'apartments', title:'2 Bedroom Apartment — Kilimani', price:'KES 120,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2', beds:2, baths:1, area:'95 m²', gallery:[
-                'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1560184897-6a2a1e4f9c2f?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop'
-            ], description:'Bright 2-bedroom apartment in Kilimani with open-plan living and balcony overlooking the gardens.', petsAllowed:true, pool:false, water24:true, security:true },
-            { id:2, type:'apartments', title:'3 Bedroom Apartment — Westlands', price:'KES 38,500,000', status:'sale', img:'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb', beds:3, baths:2, area:'140 m²', gallery:[
-                'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1502673530728-f79b4cab31b1?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1502672023488-70e2580725f3?q=80&w=1200&auto=format&fit=crop'
-            ], description:'Spacious 3-bedroom apartment close to shops and cafes, ideal for families.', petsAllowed:false, pool:true, water24:true, security:true },
-            { id:3, type:'houses', title:'4 Bedroom House — Lavington', price:'KES 85,000,000', status:'sale', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511', beds:4, baths:3, area:'320 m²', gallery:[
-                'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1502673530728-f79b4cab31b1?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1502672023488-70e2580725f3?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop'
-            ], description:'Elegant 4-bedroom family home with private garden, modern kitchen and generous living spaces.', petsAllowed:true, pool:true, water24:true, security:true },
-            { id:4, type:'houses', title:'5 Bedroom Villa — Karen', price:'KES 62,000,000', status:'sale', img:'https://images.unsplash.com/photo-1599423300746-b62533397364', beds:5, baths:4, area:'480 m²', gallery:[
-                'https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1505691723518-36a1b61e6d5d?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop'
-            ], description:'Luxury 5-bedroom villa in Karen with expansive grounds and private pool.', petsAllowed:true, pool:true, water24:true, security:true },
-            { id:5, type:'commercial', title:'Office Space — Upper Hill', price:'KES 95,000,000', status:'sale', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267', beds:null, baths:2, area:'1500 m²', gallery:[
-                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1505691723518-36a1b61e6d5d?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop'
-            ], description:'Well-located commercial property suited for corporate offices.', petsAllowed:false, pool:false, water24:true, security:true },
-            { id:7, type:'farms', title:'2 Acre Farm — Kiambu', price:'KES 6,000,000', status:'sale', img:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee', beds:null, baths:null, area:'2 acres', gallery:[
-                'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop'
-            ], description:'Productive 2-acre parcel suitable for small-scale farming.', petsAllowed:true, pool:false, water24:false, security:false },
-            { id:8, type:'warehouses', title:'Warehouse — Industrial Area', price:'KES 140,000,000', status:'sale', img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994', beds:null, baths:1, area:'2400 m²', gallery:[
-                'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1502672023488-70e2580725f3?q=80&w=1200&auto=format&fit=crop'
-            ], description:'Large warehouse with easy access to major transport routes.', petsAllowed:false, pool:false, water24:true, security:true },
-            { id:9, type:'offices', title:'Serviced Office — Westlands', price:'From KES 45,000 / month', status:'rent', img:'https://images.unsplash.com/photo-1505691938895-1758d7feb511', beds:null, baths:1, area:'From 30 m²', gallery:[
-                'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop'
-            ], description:'Flexible serviced office spaces with reception and meeting rooms.', petsAllowed:false, pool:false, water24:true, security:true }
-        ];
+      // 1. Setup Contentful
+      const client = contentful.createClient({
+        space: '34evf5vfv8l3',
+        accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
+      });
 
-        function qs(key){
-            const params = new URLSearchParams(location.search);
-            return params.get(key);
-        }
+      // 2. Get the ID from the URL (e.g. property.html?id=12345)
+      const urlParams = new URLSearchParams(window.location.search);
+      const propertyId = urlParams.get('id');
 
-        const id = parseInt(qs('property'),10);
-        const container = document.getElementById('propertyDetail');
-        if(!id){ container.innerHTML = '<p>Property not specified. <a href="properties.html">View other properties</a></p>'; return; }
-        const it = data.find(d => d.id === id);
-        if(!it){ container.innerHTML = '<p>Property not found. <a href="properties.html">View other properties</a></p>'; return; }
+      // Helper for price commas
+      const formatPrice = (price) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-        function renderGallery(gallery){
-            if(!gallery || !gallery.length) return '';
-            return `
-                <div class="pd-gallery">
-                    <div class="pd-main"><img src="${gallery[0]}" alt="${it.title}" class="pd-main-img"></div>
-                    <div class="pd-thumbs">${gallery.map((g,i) => `<button class="thumb" data-src="${g}" data-index="${i}" aria-label="View image"><img src="${g}" alt="${it.title}"></button>`).join('')}</div>
-                </div>
-            `;
-        }
+      if (propertyId) {
+        // 3. Fetch the SINGLE property
+        client.getEntry(propertyId)
+          .then((entry) => {
+            const p = entry.fields;
 
-        function amenityIcon(ok, label){
-            return `<div class="amenity ${ok? 'yes':'no'}"><span class="am-icon">${ok? '✓':'✕'}</span><span class="am-label">${label}</span></div>`;
-        }
+            // Fill text fields
+            document.getElementById('prop-title').innerText = p.title;
+            document.getElementById('prop-location').innerText = p.location;
+            document.getElementById('prop-price').innerText = 'KES ' + formatPrice(p.price);
+            
+            // Note: If you used "Rich Text" for description, this might show raw data. 
+            // If you used "Long Text", this works perfectly.
+            document.getElementById('prop-desc').innerText = p.description; // or p.description.content if rich text
 
-        container.innerHTML = `
-            <article class="pd-card">
-                ${renderGallery(it.gallery)}
-                <div class="pd-body">
-                    <h1 class="pd-title">${it.title}</h1>
-                    <div class="pd-meta"><span class="pd-price">${it.price}</span> · <span>${it.type}</span> · <span>${it.area || ''}</span></div>
-                    <p class="pd-desc">${it.description || ''}</p>
-                    <div class="pd-specs">
-                        ${it.beds ? `<strong>${it.beds} bd</strong>` : ''}
-                        ${it.baths ? `<strong>${it.baths} ba</strong>` : ''}
-                    </div>
-                    <div class="pd-amenities">
-                        ${amenityIcon(it.petsAllowed,'Pets allowed')}
-                        ${amenityIcon(it.pool,'Swimming pool')}
-                        ${amenityIcon(it.water24,'24/7 water')}
-                        ${amenityIcon(it.security,'Security')}
-                    </div>
-                    <div class="pd-actions">
-                        <a href="contact.html?property=${it.id}" class="btn-primary">Contact about this property</a>
-                        <a href="properties.html" class="btn-secondary">View other properties</a>
-                    </div>
-                </div>
-            </article>
-        `;
+            // Fill Specs
+            document.getElementById('prop-beds').innerText = '🛏 ' + p.bedrooms + ' Bedrooms';
+            document.getElementById('prop-baths').innerText = '🚿 ' + p.bathrooms + ' Bathrooms';
+            document.getElementById('prop-area').innerText = '📐 ' + p.area + ' m²';
 
-        // gallery thumbnail click handling and lightweight lightbox
-        const thumbs = container.querySelectorAll('.pd-thumbs .thumb');
-        const mainImg = container.querySelector('.pd-main-img');
+            // Main Image
+            if (p.mainImage && p.mainImage.fields) {
+                document.getElementById('prop-main-image').src = p.mainImage.fields.file.url;
+            }
 
-        // Build a simple lightbox element (if not present) and wire interactions
-        let lb = document.getElementById('lightbox');
-        if(!lb){
-            lb = document.createElement('div');
-            lb.id = 'lightbox';
-            lb.className = 'lightbox';
-            lb.innerHTML = `
-                <button class="lb-close" aria-label="Close">&times;</button>
-                <button class="lb-prev" aria-label="Previous">‹</button>
-                <div class="lb-inner"><img src="" alt=""></div>
-                <button class="lb-next" aria-label="Next">›</button>
-            `;
-            document.body.appendChild(lb);
-        }
-
-        const lbInnerImg = lb.querySelector('.lb-inner img');
-        const lbClose = lb.querySelector('.lb-close');
-        const lbPrev = lb.querySelector('.lb-prev');
-        const lbNext = lb.querySelector('.lb-next');
-
-        const gallery = it.gallery || [];
-        let currentIndex = 0;
-
-        function openLightbox(index){
-            currentIndex = (index + gallery.length) % gallery.length;
-            lbInnerImg.src = gallery[currentIndex];
-            lb.classList.add('open');
-            lb.setAttribute('aria-hidden','false');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeLightbox(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
-        function prev(){ openLightbox((currentIndex - 1 + gallery.length) % gallery.length); }
-        function next(){ openLightbox((currentIndex + 1) % gallery.length); }
-
-        if(mainImg){
-            mainImg.addEventListener('click', () => openLightbox(0));
-        }
-
-        if(thumbs && thumbs.length){
-            thumbs.forEach(t => t.addEventListener('click', (e) => {
-                const idx = parseInt(t.dataset.index,10) || 0;
-                // update main image for quick preview
-                if(mainImg) mainImg.src = t.dataset.src;
-                openLightbox(idx);
-            }));
-        }
-
-        lbClose.addEventListener('click', closeLightbox);
-        lbPrev.addEventListener('click', prev);
-        lbNext.addEventListener('click', next);
-
-        // close when clicking outside the image
-        lb.addEventListener('click', (e) => { if(e.target === lb) closeLightbox(); });
-
-        // keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if(!lb.classList.contains('open')) return;
-            if(e.key === 'Escape') closeLightbox();
-            if(e.key === 'ArrowLeft') prev();
-            if(e.key === 'ArrowRight') next();
-        });
-    })();
+            // 4. Handle Gallery (The Loop)
+            const galleryContainer = document.getElementById('prop-gallery');
+            if (p.gallery) {
+                p.gallery.forEach(image => {
+                    if(image.fields){
+                        const imgUrl = image.fields.file.url;
+                        galleryContainer.innerHTML += `<img src="${imgUrl}" class="gallery-img" onclick="window.open('${imgUrl}')">`;
+                    }
+                });
+            }
+          })
+          .catch(console.error);
+      } else {
+          document.getElementById('prop-title').innerText = "Property not found.";
+      }
     </script>
 </body>
 </html>
