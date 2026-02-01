@@ -166,62 +166,169 @@
         <p class="section-subtitle">Sample listings — real properties will be added</p>
     </div>
 
-        <div class="featured-wrapper" id="featuredWrapper">
-            <div id="featuredList" class="featured-list"></div>
+    <div class="featured-wrapper">
+        <button class="slide-btn left" aria-label="Previous">&#10094;</button>
+
+        <div class="property-slider" id="propertySlider">
+
+            <!-- Property 1 -->
+
+<script>
+// Hide header on scroll (shows when scrolling up)
+(function(){
+    const nav = document.querySelector('nav');
+    if(!nav) return;
+    let last = window.scrollY;
+    let ticking = false;
+    const threshold = 20; // minimum px change to trigger
+
+    function onScroll(){
+        const current = window.scrollY;
+        if(Math.abs(current - last) < threshold){
+            ticking = false;
+            return;
+        }
+
+        if(current > last && current > 80){
+            nav.classList.add('nav-hide');
+        } else {
+            nav.classList.remove('nav-hide');
+        }
+        last = current <= 0 ? 0 : current;
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', ()=>{
+        if(!ticking){
+            window.requestAnimationFrame(onScroll);
+            ticking = true;
+        }
+    }, { passive: true });
+})();
+</script>
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status sale">For Sale</span>
+                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb" alt="Apartment building Nairobi">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 38,500,000</p>
+                    <h3>3 Bedroom Apartment</h3>
+                    <p class="property-location">Westlands, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 3 Beds</span>
+                        <span>🛁 2 Baths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 2 (UPDATED – Nairobi-style townhouse) -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status rent">To Let</span>
+                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop" alt="Modern townhouse interior">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 180,000 / month</p>
+                    <h3>4 Bedroom Townhouse</h3>
+                    <p class="property-location">Lavington, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 4 Beds</span>
+                        <span>🛁 3 Baths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 3 (UPDATED – Office building / Upper Hill vibe) -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status sale">For Sale</span>
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" alt="Office building Nairobi">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 95,000,000</p>
+                    <h3>Office Space</h3>
+                    <p class="property-location">Upper Hill, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🏢 Commercial</span>
+                        <span>📐 350 m²</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 4 (UPDATED – Modern apartment interior/exterior) -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status rent">To Let</span>
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop" alt="Modern apartment interior">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 120,000 / month</p>
+                    <h3>2 Bedroom Apartment</h3>
+                    <p class="property-location">Kilimani, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 2 Beds</span>
+                        <span>🛁 2 Baths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 5 -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status sale">For Sale</span>
+                    <img src="https://images.unsplash.com/photo-1599423300746-b62533397364" alt="">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 62,000,000</p>
+                    <h3>5 Bedroom Villa</h3>
+                    <p class="property-location">Karen, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🛏 5 Beds</span>
+                        <span>🛁 4 Baths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 6 -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status rent">To Let</span>
+                    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85" alt="">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 95,000 / month</p>
+                    <h3>1 Bedroom Apartment</h3>
+                    <p class="property-location">Kileleshwa, Nairobi</p>
+                    <div class="property-meta">
+                        <span>� 1 Bed</span>
+                        <span>🛁 1 Bath</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 7 -->
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-status sale">For Sale</span>
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c" alt="">
+                </div>
+                <div class="property-details">
+                    <p class="property-price">KES 140,000,000</p>
+                    <h3>Warehouse & Office Complex</h3>
+                    <p class="property-location">Industrial Area, Nairobi</p>
+                    <div class="property-meta">
+                        <span>🏭 Warehouse</span>
+                        <span>📐 1,200 m²</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <script>
-        // Render top 3 most recent properties in Featured section
-        (function(){
-            function parseFrontmatter(md){
-                const fmMatch = md.match(/^---\s*([\s\S]*?)\s*---/);
-                const result = { body: md };
-                if(!fmMatch) return result;
-                const fm = fmMatch[1];
-                result.body = md.slice(fmMatch[0].length).trim();
-                fm.split(/\r?\n/).forEach(line => {
-                    const m = line.match(/^([^:]+):\s*(.*)$/);
-                    if(!m) return;
-                    const key = m[1].trim();
-                    let val = m[2].trim();
-                    val = val.replace(/^"|"$/g,'').replace(/^'|'$/g,'');
-                    result[key] = val;
-                });
-                return result;
-            }
 
-            const target = document.getElementById('featuredList');
-            if(!target) return;
-
-            fetch('/properties/index.json').then(r => r.json()).then(list => {
-                list.sort((a,b)=> new Date(b.date) - new Date(a.date));
-                const top = list.slice(0,3);
-                return Promise.all(top.map(i => fetch('/properties/' + i.file).then(r => r.text()).then(txt => ({ file: i.file, txt }))));
-            }).then(all => {
-                target.innerHTML = all.map(a => {
-                    const parsed = parseFrontmatter(a.txt);
-                    const slug = a.file.replace(/\.md$/,'');
-                    const img = parsed.image || '';
-                    const title = parsed.title || '';
-                    const price = parsed.price || '';
-                    const location = parsed.location || '';
-                    const beds = parsed.bedrooms || '';
-                    const baths = parsed.bathrooms || '';
-                    return `
-                        <a class="featured-card" href="property.html?slug=${encodeURIComponent(slug)}">
-                            <div class="fc-image"><img src="${img}" alt="${title}"></div>
-                            <div class="fc-body">
-                                <div class="fc-title">${title}</div>
-                                <div class="fc-price">${price}</div>
-                                <div class="fc-location">${location}</div>
-                                <div class="fc-meta">${beds ? beds + ' bd' : ''} ${baths ? '· ' + baths + ' ba' : ''}</div>
-                            </div>
-                        </a>
-                    `;
-                }).join('');
-            }).catch(()=>{ target.innerHTML = '<div style="padding:24px;text-align:center;"><a href="properties.html" class="btn-primary">View Properties</a></div>'; });
-        })();
-        </script>
-    </section>
+        <button class="slide-btn right" aria-label="Next">&#10095;</button>
+    </div>
+</section>
 
 
 
