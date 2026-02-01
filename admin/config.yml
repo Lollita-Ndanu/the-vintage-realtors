@@ -14,7 +14,8 @@ collections:
     folder: "properties"
     create: true
     slug: "{{slug}}"
-    format: "yaml"
+    extension: "md"
+    format: "frontmatter"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Price", name: "price", widget: "string" }
@@ -26,4 +27,5 @@ collections:
         options: ["For Sale", "For Rent", "Sold"]
       - { label: "Location", name: "location", widget: "string" }
       - { label: "Main Image", name: "image", widget: "image" }
-      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
