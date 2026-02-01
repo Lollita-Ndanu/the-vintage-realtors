@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const propertiesDir = path.join(__dirname, '..', 'properties');
+const propertiesDir = path.join(__dirname, '..', 'admin', 'properties');
 const outFile = path.join(propertiesDir, 'index.json');
 
 function main(){

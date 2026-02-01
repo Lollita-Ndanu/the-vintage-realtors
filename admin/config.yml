@@ -11,7 +11,7 @@ public_folder: "/images/uploads"
 collections:
   - name: "properties"
     label: "Properties"
-    folder: "properties"
+    folder: "admin/properties"
     create: true
     slug: "{{slug}}"
     extension: "md"

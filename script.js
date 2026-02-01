@@ -183,7 +183,7 @@ async function loadProperties() {
     if (!propertyContainer) return;
 
     try {
-        const indexResponse = await fetch('/properties/index.json');
+        const indexResponse = await fetch('/admin/properties/index.json');
         const indexData = await indexResponse.json();
         const propertyFiles = indexData.all; 
 
@@ -191,7 +191,7 @@ async function loadProperties() {
 
         for (const property of propertyFiles) {
             const file = property.filename;
-            const response = await fetch(`/properties/${file}`);
+            const response = await fetch(`/admin/properties/${file}`);
             const text = await response.text();
 
             const title = text.match(/title: (.*)/)?.[1];
