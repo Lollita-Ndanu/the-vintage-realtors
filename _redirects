@@ -1,5 +1,0 @@
-/* /index.html  200
-
-# Serve the Netlify CMS admin UI from /admin
-/admin/*  /admin/index.html  200
-/admin     /admin/index.html  200

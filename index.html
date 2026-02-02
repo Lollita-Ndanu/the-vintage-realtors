@@ -403,6 +403,9 @@
 <script src="script.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+
+
+
 <script>
     // 1. Connect to Contentful
     const client = contentful.createClient({
@@ -422,7 +425,13 @@
 
         response.items.forEach((item) => {
             const p = item.fields;
-            const imageUrl = p.mainImage && p.mainImage.fields ? p.mainImage.fields.file.url : '';
+            
+            // --- THE FIX: ADD HTTPS ---
+            let imageUrl = '';
+            if (p.mainImage && p.mainImage.fields && p.mainImage.fields.file) {
+                imageUrl = 'https:' + p.mainImage.fields.file.url;
+            }
+            
             const price = p.price ? p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
 
             // Match exact HTML structure for slider
@@ -450,6 +459,5 @@
     })
     .catch(console.error);
 </script>
-
 </body>
 </html>

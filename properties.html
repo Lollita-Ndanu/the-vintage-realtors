@@ -151,57 +151,67 @@
 
     <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
 
+    <!-- Core site script (menu drawer, footer reveal, common lightbox) -->
+    <script src="script.js"></script>
+
     <script>
-      const client = contentful.createClient({
-        space: '34evf5vfv8l3',
-        accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
+  const client = contentful.createClient({
+    space: '34evf5vfv8l3',
+    accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
+  });
+
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  client.getEntries({ content_type: 'property' })
+    .then((response) => {
+      const housesContainer = document.getElementById('houses-container');
+      const apartmentsContainer = document.getElementById('apartments-container');
+
+      response.items.forEach((item) => {
+        const p = item.fields;
+        
+        // --- THE FIX STARTS HERE ---
+        // We check if the image exists, then add 'https:' to the URL
+        let imageUrl = '';
+        if (p.mainImage && p.mainImage.fields && p.mainImage.fields.file) {
+            imageUrl = 'https:' + p.mainImage.fields.file.url;
+        }
+        // --- THE FIX ENDS HERE ---
+
+        const htmlContent = `
+          <div class="property-box">
+            <div class="property-image">
+               <span class="tag">${p.status}</span>
+               <a href="property.html?id=${item.sys.id}">
+                 <img src="${imageUrl}" alt="${p.title}" style="width:100%; height:250px; object-fit:cover;">
+               </a>
+            </div>
+            <div class="property-details">
+               <h3 style="font-size:1.2rem; margin-bottom:10px;">${p.title} — ${p.location}</h3>
+               <div class="price" style="font-weight:bold; color:#6a1b9a; font-size:1.1rem; margin-bottom:10px;">KES ${formatPrice(p.price)}</div>
+               <div class="features" style="display:flex; gap:15px; color:#666; font-size:0.9rem;">
+                  <span>🛏 ${p.bedrooms} bd</span>
+                  <span>🚿 ${p.bathrooms} ba</span>
+                  <span>📐 ${p.area} m²</span>
+               </div>
+               <a href="property.html?id=${item.sys.id}" class="btn-view">View Details</a>
+            </div>
+          </div>
+        `;
+
+        if (p.category === 'House') {
+            housesContainer.innerHTML += htmlContent;
+        } else if (p.category === 'Apartment') {
+            apartmentsContainer.innerHTML += htmlContent;
+        }
       });
-
-      const formatPrice = (price) => {
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      }
-
-      client.getEntries({ content_type: 'property' })
-        .then((response) => {
-          const housesContainer = document.getElementById('houses-container');
-          const apartmentsContainer = document.getElementById('apartments-container');
-
-          response.items.forEach((item) => {
-            const p = item.fields;
-            const imageUrl = p.mainImage && p.mainImage.fields ? p.mainImage.fields.file.url : '';
-
-            const htmlContent = `
-              <div class="property-box">
-                <div class="property-image">
-                   <span class="tag">${p.status}</span>
-                   <a href="property.html?id=${item.sys.id}">
-                     <img src="${imageUrl}" alt="${p.title}" style="width:100%; height:250px; object-fit:cover;">
-                   </a>
-                </div>
-                <div class="property-details">
-                   <h3 style="font-size:1.2rem; margin-bottom:10px;">${p.title} — ${p.location}</h3>
-                   <div class="price" style="font-weight:bold; color:#6a1b9a; font-size:1.1rem; margin-bottom:10px;">KES ${formatPrice(p.price)}</div>
-                   <div class="features" style="display:flex; gap:15px; color:#666; font-size:0.9rem;">
-                      <span>🛏 ${p.bedrooms} bd</span>
-                      <span>🚿 ${p.bathrooms} ba</span>
-                      <span>📐 ${p.area} m²</span>
-                   </div>
-                   <a href="property.html?id=${item.sys.id}" class="btn-view">View Details</a>
-                </div>
-              </div>
-            `;
-
-            if (p.category === 'House') {
-                housesContainer.innerHTML += htmlContent;
-            } else if (p.category === 'Apartment') {
-                apartmentsContainer.innerHTML += htmlContent;
-            }
-          });
-        })
-        .catch((error) => {
-            console.error("Error fetching data:", error);
-        });
-    </script>
+    })
+    .catch((error) => {
+        console.error("Error fetching data:", error);
+    });
+</script>
 
 </body>
 </html>
