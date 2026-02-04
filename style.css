@@ -486,7 +486,9 @@ nav.nav-hide {
 .form-row { margin-bottom: 12px; display: flex; flex-direction: column; }
 input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 8px; font-size: 1rem; }
 .btn-primary { background: var(--purple); color: #fff; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; }
-.contact-details .contact-card { background: rgba(255,255,255,0.06); padding: 18px; border-radius: 10px; color: #fff; box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+.contact-details .contact-card { background: rgba(255,255,255,0.06); padding: 18px; border-radius: 10px; color: #fff; box-shadow: 0 12px 32px rgba(0,0,0,0.12); transition: background 280ms ease, transform 180ms ease, box-shadow 280ms ease; cursor: pointer; }
+.contact-details .contact-card:hover { background: linear-gradient(135deg, var(--purple), #6a2db8); transform: translateY(-4px); box-shadow: 0 18px 48px rgba(75,0,130,0.28); }
+.contact-details .contact-card:active { background: var(--purple); transform: translateY(-2px); }
 .contact-details a { color: #fff; text-decoration: underline; }
 
 .agents-section { padding: 60px 4%; background: linear-gradient(180deg,#fffef9,#fbf6ef); color: var(--black); }
@@ -563,13 +565,8 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
 .contact-phone a { color: var(--black); text-decoration: none; display:flex; align-items:center; gap:8px; font-weight: 600; }
 .phone-icon { width: 34px; height: 34px; object-fit: contain; }
 
-@media (max-width: 900px) {
-    .contact-phone { right: 102px; }
-    .contact-phone .phone-number { display: none; }
-}
-@media (max-width: 600px) {
-    .contact-phone { position: relative; right: auto; top: auto; margin-left: auto; margin-right: 8px; transform: none; }
-    .phone-icon { width: auto; height: 21px; }
+@media (max-width: 1024px) {
+    .contact-phone { display: none; }
 }
 
 /* ==========================================================================

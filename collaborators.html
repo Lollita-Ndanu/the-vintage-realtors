@@ -56,8 +56,9 @@
 					<!-- 20 placeholder images from Unsplash (moving theme) -->
 					<!-- Replace with your own images by editing the src attributes -->
 					<div class="gallery-grid">
-						<!-- generate 20 images -->
+						<!-- You can mix images and videos (mp4). Videos will autoplay on hover/click -->
 						<div class="photo"><img src="https://source.unsplash.com/800x800/?moving,boxes&sig=1" alt="Shalom gallery 1"></div>
+						<!-- Example video: <div class="photo"><video src="images/uploads/video1.mp4" muted loop preload="metadata"></video></div> -->
 						<div class="photo"><img src="https://source.unsplash.com/800x800/?moving,truck&sig=2" alt="Shalom gallery 2"></div>
 						<div class="photo"><img src="https://source.unsplash.com/800x800/?packing,boxes&sig=3" alt="Shalom gallery 3"></div>
 						<div class="photo"><img src="https://source.unsplash.com/800x800/?movers,team&sig=4" alt="Shalom gallery 4"></div>
@@ -145,16 +146,123 @@
 		<img src="images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
 	</a>
 
-	<!-- Lightbox modal (used by collaborators galleries) -->
-	<div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
+	<!-- Lightbox modal (used by collaborators galleries - supports images and videos) -->
+	<div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Media viewer">
 		<button class="lightbox-close" aria-label="Close">&times;</button>
 		<button class="lightbox-prev" aria-label="Previous">‹</button>
 		<button class="lightbox-next" aria-label="Next">›</button>
 		<div class="lightbox-content">
-			<img src="" alt="">
+			<img src="" alt="" style="display:none;">
+			<video src="" controls loop muted style="display:none;"></video>
 		</div>
 	</div>
 
 	<script src="script.js"></script>
+
+	<!-- Video autoplay on hover/click for collaborators page -->
+	<script>
+	(function(){
+		const videos = document.querySelectorAll('.collab-gallery video');
+		if(!videos.length) return;
+
+		videos.forEach(video => {
+			// Hover to play
+			video.addEventListener('mouseenter', () => {
+				video.play().catch(e => console.log('Play prevented:', e));
+			});
+
+			// Leave to pause
+			video.addEventListener('mouseleave', () => {
+				video.pause();
+				video.currentTime = 0;
+			});
+
+			// Click to play/pause toggle
+			video.addEventListener('click', (e) => {
+				if(video.paused) {
+					video.play().catch(err => console.log('Play prevented:', err));
+				} else {
+					video.pause();
+				}
+			});
+
+			// Style videos like images
+			video.style.width = '100%';
+			video.style.height = '100%';
+			video.style.objectFit = 'cover';
+			video.style.display = 'block';
+			video.style.cursor = 'pointer';
+		});
+
+		// Update lightbox to handle videos
+		const lightbox = document.getElementById('lightbox');
+		if(!lightbox) return;
+
+		const lbImg = lightbox.querySelector('img');
+		const lbVideo = lightbox.querySelector('video');
+		const closeBtn = lightbox.querySelector('.lightbox-close');
+		const prevBtn = lightbox.querySelector('.lightbox-prev');
+		const nextBtn = lightbox.querySelector('.lightbox-next');
+
+		const allMedia = Array.from(document.querySelectorAll('.gallery-grid .photo img, .gallery-grid .photo video'));
+		let currentIndex = 0;
+
+		function showMedia(index) {
+			currentIndex = index;
+			const media = allMedia[currentIndex];
+			
+			if(media.tagName === 'VIDEO') {
+				lbImg.style.display = 'none';
+				lbVideo.style.display = 'block';
+				lbVideo.src = media.src;
+				lbVideo.play();
+			} else {
+				lbVideo.style.display = 'none';
+				lbVideo.pause();
+				lbImg.style.display = 'block';
+				lbImg.src = media.src;
+				lbImg.alt = media.alt || '';
+			}
+			
+			lightbox.classList.add('open');
+			lightbox.setAttribute('aria-hidden', 'false');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeLightbox() {
+			lightbox.classList.remove('open');
+			lightbox.setAttribute('aria-hidden', 'true');
+			lbImg.src = '';
+			lbVideo.src = '';
+			lbVideo.pause();
+			document.body.style.overflow = '';
+		}
+
+		function showNext() { showMedia((currentIndex + 1) % allMedia.length); }
+		function showPrev() { showMedia((currentIndex - 1 + allMedia.length) % allMedia.length); }
+
+		allMedia.forEach((media, i) => {
+			media.parentElement.style.cursor = 'zoom-in';
+			media.parentElement.addEventListener('click', (e) => {
+				// Don't open lightbox if video is already playing inline
+				if(media.tagName === 'VIDEO' && !media.paused) return;
+				e.preventDefault();
+				e.stopPropagation();
+				showMedia(i);
+			});
+		});
+
+		closeBtn.addEventListener('click', closeLightbox);
+		prevBtn.addEventListener('click', showPrev);
+		nextBtn.addEventListener('click', showNext);
+		lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+		document.addEventListener('keydown', (e) => {
+			if(!lightbox.classList.contains('open')) return;
+			if(e.key === 'Escape') closeLightbox();
+			if(e.key === 'ArrowRight') showNext();
+			if(e.key === 'ArrowLeft') showPrev();
+		});
+	})();
+	</script>
 </body>
 </html>
