@@ -641,6 +641,17 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
 }
 
 .property-details h3 {
+.featured-cta { text-align: center; margin-top: 20px; }
+.view-more-btn { display: inline-block; background: #000; color: #fff; padding: 12px 24px; border-radius: 10px; text-decoration: none; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase; border: 2px solid transparent; box-shadow: 0 10px 24px rgba(0,0,0,0.12); transition: background-color 180ms ease, transform 160ms ease, box-shadow 160ms ease, color 160ms ease; }
+.view-more-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,0.18); }
+.view-more-btn:active, .view-more-btn:focus, .view-more-btn:focus-visible {
+    background: var(--purple);
+    color: #fff;
+    border-color: var(--purple);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 30px rgba(106,45,184,0.18);
+    outline: none;
+}
     font-size: 1.1rem;
     margin-bottom: 6px;
     color: var(--black);

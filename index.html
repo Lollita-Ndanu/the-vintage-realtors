@@ -168,6 +168,9 @@
 
         <button class="slide-btn right" aria-label="Next">&#10095;</button>
     </div>
+    <div class="featured-cta">
+        <a href="properties.html" class="view-more-btn">View More</a>
+    </div>
 </section>
 
 <script>
@@ -413,10 +416,10 @@
         accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
     });
 
-    // 2. Fetch the 6 most recent properties
+    // 2. Fetch the 3 most recent properties
     client.getEntries({ 
         content_type: 'property', 
-        limit: 6,
+        limit: 3,
         order: '-sys.createdAt' 
     })
     .then((response) => {
