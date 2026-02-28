@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Location — The Vintage Realtors</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Reuse properties page card/grid styles so listings look identical */
+        .properties-hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 12px; }
+
+        .type-cursor { display: inline-block; width: 10px; margin-left: 6px; background: rgba(255,255,255,0.92); border-radius: 2px; vertical-align: middle; animation: blink 1s steps(2, start) infinite; height: 1.1em; }
+        @keyframes blink { 50% { opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { .type-cursor { animation: none; opacity: 0.9; } }
+
+        .all-properties { max-width: 1200px; margin: 36px auto; padding: 28px 20px; background: linear-gradient(180deg, rgba(250,248,245,0.6), rgba(245,243,240,0.35)); border-radius: 12px; box-shadow: 0 6px 24px rgba(15,12,10,0.04); }
+        .all-properties h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #0f1720; margin: 6px 0 18px; text-align: center; position: relative; }
+        .all-properties h2::after { content: ''; display: block; width: 72px; height: 2px; background: rgba(16,16,16,0.12); margin: 10px auto 0; border-radius: 2px; }
+
+        .properties-group { margin-top: 26px; padding: 14px 8px; }
+        .properties-group .group-inner { display:block; }
+        .properties-group h3 { font-size: 1.05rem; margin: 0 0 12px; color: #262626; letter-spacing: 0.2px; }
+        @media (min-width: 900px) { .properties-group { display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: start; } .properties-group h3 { margin-top: 6px; } }
+
+        .properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+
+        .property-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 30px rgba(8,8,10,0.05); text-decoration: none; color: inherit; display: block; transition: transform 240ms cubic-bezier(.2,.9,.3,1), box-shadow 240ms ease; }
+        .property-card:hover { transform: translateY(-8px); box-shadow: 0 26px 60px rgba(8,8,10,0.08); }
+
+        .property-card .thumb { width:100%; aspect-ratio: 16 / 9; background-size: cover; background-position: center; position: relative; }
+        .property-card .thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.12)); }
+
+        .property-card .meta { padding: 12px 14px 16px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(250,250,250,0.02)); display:flex; flex-direction:column; gap:8px; }
+        .property-card .title { font-weight: 700; margin: 0; font-size: 1rem; color:#0d1220; }
+        .property-card .price { color: #0b1220; font-weight: 800; font-size: 0.95rem; }
+        .property-card .location { font-size: 0.85rem; color: #7a7a7a; margin-top:4px }
+
+        .property-card .specs { font-size: 0.85rem; color: #5f5f5f; display:flex; gap:10px; align-items:center; }
+        .property-card .meta-row { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+        .property-card .cta { background: #0f1720; color:#fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
+        .property-card .cta:focus { outline: 2px solid rgba(15,23,32,0.12); outline-offset: 2px; }
+
+        .property-card .thumb { transition: transform 420ms cubic-bezier(.2,.9,.3,1); }
+        .property-card:hover .thumb { transform: scale(1.03); }
+
+        .property-card .price-badge { position: absolute; right: 10px; top: 10px; background: rgba(6,6,8,0.75); color: #fff; padding: 6px 10px; border-radius: 8px; font-weight:700; font-size:0.85rem; }
+
+        @media (max-width: 600px) { .properties-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; } .all-properties { padding: 20px 12px; } }
+
+        /* location page specific small bits */
+        .location-list { max-width:1100px; margin: 18px auto; padding: 18px; }
+        .no-results { text-align:center; color:#666; padding:18px; }
+    </style>
+</head>
+    <body class="location-page">
+    <nav>
+        <a href="index.html" class="logo-container">
+            <img src="images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
+        </a>
+        <div class="site-title"><span>THE VINTAGE REALTORS</span></div>
+        <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <main>
+        <header class="location-hero" style="background-image: url('images/background8.avif'); background-size: cover; background-position: center; position: relative;">
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(11,11,13,0.36), rgba(11,11,13,0.12));"></div>
+            <div class="hero-inner">
+                <div style="flex:1;">
+                    <h1 id="locTitle">Location</h1>
+                    <p id="locSummary">Browse properties in this area. Click a listing to view details.</p>
+                    <div style="margin-top:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                        <div id="propCount" style="background:rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;color:#fff;font-weight:700;">0 properties</div>
+                        <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+                            <label for="sortSelect" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:0.95rem;">Sort</label>
+                            <select id="sortSelect" style="padding:8px 10px;border-radius:8px;border:none;">
+                                <option value="alpha">A → Z</option>
+                                <option value="alpha-desc">Z → A</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Return button: placed on the right for a professional layout -->
+                <div style="display:flex;align-items:flex-start;margin-left:18px;">
+                    <a href="properties.html" class="back-btn" id="backBtn" aria-label="Return to properties page">← Back to Properties</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="location-list" id="locationList">
+            <!-- Filtered properties will render here -->
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/FOOTER%20LOGO.avif" alt="Footer logo">
+            </div>
+
+            <div class="footer-about">
+                <h3>The Vintage Realtors</h3>
+                <p>If you build it, we will list it.</p>
+                <p>Nairobi, Kenya</p>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>Email: <a href="mailto:sales@vintagerealtors.co.ke">sales@vintagerealtors.co.ke</a></p>
+                <p>Phone: <a href="tel:+254722865306">+254722865306</a></p>
+            </div>
+
+            <div class="footer-follow">
+                <h4>Follow Us</h4>
+                <p><a class="social-link" href="https://instagram.com/realtorvintage" target="_blank" rel="noopener noreferrer"><span class="icon instagram" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg></span> Instagram</a></p>
+                <p><a class="social-link" href="https://www.tiktok.com/@the.realtors7" target="_blank" rel="noopener noreferrer"><span class="icon tiktok" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v9.5a3.5 3.5 0 1 0 3.5 3.5V9.5h2.5V7h-2.5V3h-3.5z" fill="currentColor"/></svg></span> TikTok</a></p>
+                <p><a class="social-link" href="https://www.facebook.com/TheVintageRealtors" target="_blank" rel="noopener noreferrer"><span class="icon facebook" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M22 12.07C22 6.52 17.52 2 12 2S2 6.52 2 12.07c0 4.98 3.66 9.05 8.47 9.95v-7.05H8.07v-2.9h2.4V9.41c0-2.35 1.39-3.64 3.51-3.64 1.02 0 2.09.18 2.09.18v2.3h-1.18c-1.16 0-1.52.72-1.52 1.46v1.75h2.6l-.42 2.9h-2.18v7.05C18.34 21.12 22 17.05 22 12.07z"/></svg></span> Facebook</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="footer-bottom">
+        <div class="footer-bottom-inner">
+            <p>© 2026 The Vintage Realtors — All rights reserved.</p>
+            <nav class="footer-links" aria-label="Footer legal links">
+                <a href="privacy.html">Privacy</a>
+                <a href="legal.html">Legal</a>
+                <a href="termsandconditions.html">Terms &amp; Conditions</a>
+            </nav>
+        </div>
+    </div>
+
+    <a href="https://wa.me/254722865306" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <img src="images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
+    </a>
+
+    <script src="script.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+    <script>
+    (function(){
+        function getParam(name){
+            const url = new URL(location.href);
+            return url.searchParams.get(name);
+        }
+
+        const loc = getParam('loc') || '';
+        const titleEl = document.getElementById('locTitle');
+        if(titleEl) titleEl.textContent = loc ? `Properties — ${loc}` : 'Location';
+
+        const client = contentful.createClient({ space: '34evf5vfv8l3', accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY' });
+
+        function renderCard(item){
+            const p = item.fields;
+            const container = document.createElement('a');
+            container.className = 'property-card';
+            container.href = `property.html?id=${item.sys.id}`;
+            const imageUrl = (p.mainImage && p.mainImage.fields && p.mainImage.fields.file) ? 'https:' + p.mainImage.fields.file.url : 'images/background2.avif';
+            const status = p.status ? `<div class="price-badge">${p.status}</div>` : '';
+            container.innerHTML = `
+                <div class="thumb" style="background-image:url('${imageUrl}')">${status}</div>
+                <div class="meta">
+                    <div class="title">${p.title || 'Untitled'}</div>
+                    <div class="price">${p.price ? 'KES ' + p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''}</div>
+                    <div class="specs">${p.bedrooms ? '🛏 ' + p.bedrooms : ''}${p.bedrooms && p.bathrooms ? ' • ' : ''}${p.bathrooms ? '🚿 ' + p.bathrooms : ''}</div>
+                    <div class="meta-row"><div class="location">${p.location || ''}</div><span class="cta" role="button" aria-hidden="true">View</span></div>
+                </div>
+            `;
+            return container;
+        }
+
+        // Try using Contentful filter; fall back to client-side filter. Also support client-side sorting.
+        const sortSelect = document.getElementById('sortSelect');
+        // hook up back button to history where possible
+        const backBtn = document.getElementById('backBtn');
+        if(backBtn){
+            backBtn.addEventListener('click', (e)=>{
+                // if user navigated from another page, go back in history; otherwise follow link
+                if(history.length > 1){
+                    e.preventDefault();
+                    history.back();
+                }
+            });
+        }
+
+        client.getEntries({ content_type: 'property', limit: 200 })
+        .then(res => {
+            let items = res.items || [];
+            if(loc){
+                items = items.filter(it => (it.fields.location || '').toString().trim().toLowerCase() === loc.toString().trim().toLowerCase());
+            }
+
+            function renderList(listItems){
+                const list = document.getElementById('locationList');
+                if(!list) return;
+                list.innerHTML = '';
+                if(listItems.length === 0){ list.innerHTML = `<div class="no-results">No properties found for ${loc || 'this location'}.</div>`; return; }
+
+                const grid = document.createElement('div');
+                grid.className = 'properties-grid';
+                listItems.forEach(it => grid.appendChild(renderCard(it)));
+                list.appendChild(grid);
+
+                // update count
+                const count = document.getElementById('propCount');
+                if(count) count.textContent = `${listItems.length} property${listItems.length === 1 ? '' : 'ies'}`;
+            }
+
+            // default alphabetical ascending
+            items.sort((a,b)=> ((a.fields.title||'').toString().localeCompare((b.fields.title||'').toString())) );
+            renderList(items);
+
+            // listen for sort changes
+            sortSelect?.addEventListener('change', (e)=>{
+                const v = e.target.value;
+                const copy = items.slice();
+                if(v === 'alpha') copy.sort((a,b)=> ((a.fields.title||'').toString().localeCompare((b.fields.title||'').toString())) );
+                else if(v === 'alpha-desc') copy.sort((a,b)=> ((b.fields.title||'').toString().localeCompare((a.fields.title||'').toString())) );
+                renderList(copy);
+            });
+        })
+        .catch(err => {
+            console.error('Error loading properties for location', err);
+            const list = document.getElementById('locationList');
+            if(list) list.innerHTML = `<div class="no-results">Unable to load properties.</div>`;
+        });
+    })();
+    </script>
+</body>
+</html>

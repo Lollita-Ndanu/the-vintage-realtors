@@ -504,6 +504,37 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
     .contact-form { order: 1; }
 }
 
+/* --- SUBSCRIBE SECTION (Contact page) --- */
+.subscribe-section {
+    padding: 40px 4%;
+    background: linear-gradient(180deg,#fffef9,#fbf6ef);
+}
+.subscribe-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 24px;
+    align-items: center;
+    padding: 22px;
+    background: #070707; /* black container */
+    color: #f3f3f3;
+    border-radius: 12px;
+    box-shadow: 0 18px 46px rgba(0,0,0,0.6);
+}
+.subscribe-copy h2 { font-family: 'Playfair Display', serif; color: var(--vintage-ochre); font-size: 1.9rem; margin-bottom: 8px; }
+.subscribe-copy .lead { color: #d6d6d6; font-size: 1rem; line-height: 1.6; }
+.subscribe-form .form-row { margin-bottom: 12px; }
+.subscribe-form input { width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); font-size: 1rem; background: rgba(255,255,255,0.03); color: #fff; }
+.subscribe-form input::placeholder { color: rgba(255,255,255,0.6); }
+.subscribe-form .btn-primary { width: 100%; display: inline-block; padding: 12px 16px; background: var(--vintage-ochre); border-color: rgba(0,0,0,0.12); color: #fff; }
+.subscribe-message { margin-top: 8px; font-weight: 700; color: #cbd5ff; }
+
+@media (max-width: 900px) {
+    .subscribe-inner { grid-template-columns: 1fr; padding: 18px; }
+}
+
+
 /* --- ABOUT TEXT VINTAGE STYLES --- */
 .about-story h2 {
     position: relative;
@@ -641,21 +672,43 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
 }
 
 .property-details h3 {
-.featured-cta { text-align: center; margin-top: 20px; }
-.view-more-btn { display: inline-block; background: #000; color: #fff; padding: 12px 24px; border-radius: 10px; text-decoration: none; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase; border: 2px solid transparent; box-shadow: 0 10px 24px rgba(0,0,0,0.12); transition: background-color 180ms ease, transform 160ms ease, box-shadow 160ms ease, color 160ms ease; }
-.view-more-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,0.18); }
-.view-more-btn:active, .view-more-btn:focus, .view-more-btn:focus-visible {
-    background: var(--purple);
-    color: #fff;
-    border-color: var(--purple);
-    transform: translateY(-1px);
-    box-shadow: 0 12px 30px rgba(106,45,184,0.18);
-    outline: none;
-}
     font-size: 1.1rem;
     margin-bottom: 6px;
     color: var(--black);
     font-weight: 700;
+}
+
+/* Featured CTA: align to the right (opposite side) and give a vintage look */
+.featured-cta {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.view-more-btn {
+    display: inline-block;
+    background: linear-gradient(180deg, var(--vintage-paper), #fff7ec);
+    color: var(--vintage-ochre);
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(16,12,8,0.08);
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    border: 2px solid rgba(139,94,60,0.12);
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 0.6px;
+}
+
+.view-more-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 38px rgba(16,12,8,0.12);
+    background: linear-gradient(180deg, #fff7ec, var(--vintage-paper));
+}
+
+/* On small screens keep the button centered for better layout */
+@media (max-width: 600px) {
+    .featured-cta { justify-content: center; }
 }
 
 .property-location {
@@ -833,4 +886,148 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
 
 @media (max-width: 480px) {
     .whatsapp-float { right: 12px; bottom: 12px; width: 48px; height: 48px; }
+}
+
+/* Scoped listing styles used by `location.html` to ensure consistent, professional cards */
+.location-list .properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.location-list .property-card {
+    background: linear-gradient(180deg,#ffffff,#fbfbff);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(18,18,18,0.06);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms ease;
+}
+.location-list .property-card:hover { transform: translateY(-8px); box-shadow: 0 30px 70px rgba(18,18,18,0.12); }
+
+.location-list .property-card .thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    transition: transform 420ms cubic-bezier(.2,.9,.3,1);
+}
+.location-list .property-card .thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.12)); }
+.location-list .property-card:hover .thumb { transform: scale(1.03); }
+
+.location-list .property-card .meta { padding: 14px; display:flex; flex-direction:column; gap:10px; }
+.location-list .property-card .title { font-weight: 800; margin: 0; font-size: 1.02rem; color: var(--black); }
+.location-list .property-card .price { color: var(--purple); font-weight: 800; font-size: 0.98rem; }
+.location-list .property-card .location { font-size: 0.9rem; color: #6f6f6f; }
+.location-list .property-card .specs { font-size: 0.9rem; color: #666; display:flex; gap:10px; }
+.location-list .property-card .meta-row { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.location-list .property-card .cta { background: var(--purple); color:#fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight:700; cursor:pointer; text-decoration:none; }
+
+@media (max-width: 900px) {
+    .location-list .properties-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+}
+
+@media (max-width: 600px) {
+    .location-list .properties-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:12px; }
+}
+
+/* Polished hero and back button for location pages */
+.location-hero { padding: 0; }
+.location-hero .hero-inner { position: relative; max-width: 1100px; margin: 0 auto; padding: 36px 20px; display: flex; gap: 12px; align-items: flex-start; }
+.location-hero nav[aria-label="breadcrumb"] { color: rgba(255,255,255,0.85); font-size: 0.95rem; }
+.location-hero #locTitle { color: #fff; font-size: 2.4rem; margin: 0; }
+.location-hero #locSummary { color: rgba(255,255,255,0.92); margin: 8px 0 0; }
+
+.back-btn {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: linear-gradient(180deg,#fff,#f6efe4);
+    color: var(--vintage-ochre);
+    border-radius: 10px;
+    border: 2px solid rgba(139,94,60,0.12);
+    box-shadow: 0 10px 26px rgba(16,12,8,0.08);
+    font-weight: 700;
+    text-decoration: none;
+}
+.back-btn:hover, .back-btn:focus { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(16,12,8,0.12); }
+.back-btn:active { transform: translateY(-1px); }
+
+/* small breadcrumb link styling */
+.loc-breadcrumb { color: rgba(255,255,255,0.85); }
+
+/* Improve property card footer layout */
+.location-list .property-card .meta-row .location { color: #777; font-weight:600; }
+.location-list .property-card .price-badge { left: 10px; right: auto; top: 10px; background: rgba(255,255,255,0.9); color: var(--purple); font-weight:800; box-shadow: 0 6px 18px rgba(16,12,8,0.06); }
+
+/* subtle entrance for grid */
+.properties-grid { animation: fadeUp 420ms ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+@media (max-width: 700px) {
+    .location-hero .hero-inner { flex-direction: column; align-items: stretch; }
+    .back-btn { margin-left: 0; justify-self: end; }
+}
+
+/* Slightly reduce emphasis when on the right so it doesn't compete with title */
+.hero-inner .back-btn { padding: 8px 12px; font-size: 0.95rem; }
+
+/* Remove white nav bar on location pages (transparent over hero) */
+.location-page nav {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.location-page .site-title { pointer-events: auto; }
+
+/* Locations section & vintage-styled buttons */
+.locations-section { padding: 18px 5%; background: transparent; }
+.locations-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--vintage-ochre);
+    margin: 0;
+    transform: translateX(-100%);
+    opacity: 0;
+    animation: slideInCenter 700ms cubic-bezier(.2,.9,.3,1) forwards;
+}
+
+@keyframes slideInCenter {
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.locations-list { margin-top: 12px; }
+
+.location-btn {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, var(--vintage-paper), #fff7ec);
+    color: var(--vintage-muted);
+    border: 2px solid rgba(139,94,60,0.08);
+    box-shadow: 0 8px 18px rgba(16,12,8,0.06);
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    transition: background 160ms ease, color 140ms ease, transform 140ms ease, box-shadow 160ms ease;
+}
+
+.location-btn:hover,
+.location-btn:focus,
+.location-btn:active {
+    background: linear-gradient(180deg, var(--purple), #5a1f86);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(75,0,130,0.18);
+}
+
+@media (max-width: 600px) {
+    .locations-title { text-align: center; }
+    .locations-list { grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
 }
