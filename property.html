@@ -6,6 +6,8 @@
     <title>Property Details — The Vintage Realtors</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
     <style>
         /* Professional vintage styling for Single Property Page */
         .pd-container { max-width: 1100px; margin: 48px auto; padding: 36px; background: linear-gradient(180deg, rgba(251,246,239,0.9), rgba(255,255,255,0.86)); border-radius: 14px; box-shadow: 0 22px 60px rgba(16,12,8,0.06); border: 1px solid rgba(16,12,8,0.04); }
@@ -180,7 +182,9 @@
         document.getElementById('prop-title').innerText = p.title;
         document.getElementById('prop-location').innerText = p.location;
         document.getElementById('prop-price').innerText = 'KES ' + formatPrice(p.price);
-        document.getElementById('prop-desc').innerText = p.description;
+        // THIS IS THE FIX: It parses the markdown and renders it as HTML
+document.getElementById('prop-desc').innerHTML = marked.parse(p.description || '');
+        
 
         // Fill Specs
         document.getElementById('prop-beds').innerText = '🛏 ' + p.bedrooms + ' Bedrooms';
