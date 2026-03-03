@@ -11,59 +11,28 @@
     <style>
         /* Professional vintage styling for Single Property Page */
         .pd-container { max-width: 1100px; margin: 48px auto; padding: 36px; background: linear-gradient(180deg, rgba(251,246,239,0.9), rgba(255,255,255,0.86)); border-radius: 14px; box-shadow: 0 22px 60px rgba(16,12,8,0.06); border: 1px solid rgba(16,12,8,0.04); }
-
         .pd-header { margin-bottom: 26px; }
         .pd-title { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 6px; letter-spacing: 0.6px; color: var(--black); }
         .pd-title::after { content: ''; display:block; width:72px; height:4px; background: var(--vintage-ochre); margin-top:12px; border-radius:2px; }
         .pd-location { color: #6b5b4b; font-size: 1.05rem; margin-top: 6px; }
         .pd-price { font-size: 1.3rem; color: var(--purple); font-weight: 800; margin-top: 10px; }
-
         .pd-main-img { width: 100%; height: auto; max-height: 600px; object-fit: cover; border-radius: 10px; margin-bottom: 28px; display:block; border: 8px solid rgba(255,255,255,0.6); box-shadow: 0 28px 80px rgba(16,12,8,0.08); }
-
         .pd-grid { display: grid; grid-template-columns: 2fr 380px; gap: 38px; align-items: start; }
-
         .pd-specs { display: flex; gap: 18px; margin-bottom: 18px; padding: 16px; background: linear-gradient(180deg,#fffef9,#fbf6ef); border-left: 4px solid var(--vintage-ochre); border-radius: 8px; box-shadow: 0 8px 20px rgba(16,12,8,0.03); }
         .spec-item { font-weight: 700; color: #3f2f2a; }
-
-        .pd-description { line-height: 1.85; color: #444; margin-bottom: 26px; white-space: pre-wrap; font-size: 1rem; }
-
-        /* Gallery Grid - vintage framed thumbnails */
+        .pd-description { line-height: 1.85; color: #444; margin-bottom: 26px; font-size: 1rem; }
         .gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; margin-top: 34px; }
         .gallery-img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; cursor: pointer; transition: transform 260ms ease, filter 260ms ease, box-shadow 260ms ease; border: 6px solid #fff; box-shadow: 0 12px 30px rgba(16,12,8,0.06); filter: sepia(8%) contrast(0.98) saturate(0.95); }
         .gallery-img:hover { transform: translateY(-6px) scale(1.02); filter: sepia(0%) contrast(1) saturate(1.02); box-shadow: 0 28px 64px rgba(16,12,8,0.12); }
-
         .gallery-thumb-wrap { position: relative; display: block; }
         .gallery-thumb-wrap .gallery-video { display: block; width: 100%; height: 140px; object-fit: cover; border-radius: 6px; }
         .video-play-overlay { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.45); color: #fff; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; pointer-events: none; }
-
-        /* Contact Box - vintage card */
         .contact-box { background: linear-gradient(180deg,#fffef9,#fbf6ef); color: #2e2622; padding: 28px; border-radius: 10px; position: sticky; top: 24px; height: fit-content; border: 1px solid rgba(16,12,8,0.06); box-shadow: 0 18px 46px rgba(16,12,8,0.06); }
         .contact-box h3 { color: #3f2f2a; margin-bottom: 14px; font-family: 'Playfair Display', serif; }
         .btn-contact { display: block; background: linear-gradient(135deg,var(--vintage-ochre), #b07a50); color: #fff; text-align: center; padding: 12px; text-decoration: none; border-radius: 8px; font-weight: 800; margin-top: 12px; box-shadow: 0 12px 30px rgba(16,12,8,0.08); }
         .btn-contact[style] { background: #fff; color: #3f2f2a; border: 1px solid rgba(16,12,8,0.06); }
-
-        @media (max-width: 900px) {
-            .pd-grid { grid-template-columns: 1fr; }
-            .pd-main-img { max-height: 420px; }
-            .pd-container { padding: 24px; }
-        }
-
-        /* Button linking back to listings */
-        .btn-view-other {
-            display: inline-block;
-            background: var(--purple, #6a1b9a);
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            box-shadow: 0 12px 30px rgba(75,0,130,0.12);
-            transition: transform 180ms ease, box-shadow 180ms ease;
-            margin: 18px 0 6px;
-        }
+        .btn-view-other { display: inline-block; background: var(--purple, #6a1b9a); color: #fff; padding: 12px 18px; border-radius: 8px; text-decoration: none; font-weight: 700; box-shadow: 0 12px 30px rgba(75,0,130,0.12); transition: transform 180ms ease, box-shadow 180ms ease; margin: 18px 0 6px; }
         .btn-view-other:hover { transform: translateY(-4px); box-shadow: 0 28px 56px rgba(75,0,130,0.16); }
-        
-        /* Lightbox styles */
         .lightbox { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,0.88); z-index: 5000; opacity: 0; pointer-events: none; transition: opacity 220ms ease; }
         .lightbox.open { opacity: 1; pointer-events: auto; }
         .lightbox-content { max-width: 92vw; max-height: 86vh; display: flex; align-items: center; justify-content: center; }
@@ -72,7 +41,7 @@
         .lightbox-close { right: 18px; top: 18px; }
         .lightbox-prev { left: 18px; top: 50%; transform: translateY(-50%); }
         .lightbox-next { right: 18px; top: 50%; transform: translateY(-50%); }
-        .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { transform: translateY(-2px); background: rgba(255,255,255,0.12); }
+        @media (max-width: 900px) { .pd-grid { grid-template-columns: 1fr; } .pd-main-img { max-height: 420px; } .pd-container { padding: 24px; } }
     </style>
 </head>
 <body>
@@ -120,7 +89,7 @@
 
                 <div class="pd-description">
                     <h3>Description</h3>
-                    <p id="prop-desc"></p>
+                    <div id="prop-desc"></div>
                 </div>
             </div>
 
@@ -135,10 +104,8 @@
         <div style="margin-top:18px;">
             <a href="properties.html" class="btn-view-other" aria-label="View other properties">View Other Properties</a>
         </div>
-
     </main>
 
-    <!-- Lightbox markup for gallery (image OR video) -->
     <div id="lightbox" class="lightbox" aria-hidden="true">
         <button class="lightbox-close" id="lbClose" aria-label="Close">&times;</button>
         <button class="lightbox-prev" id="lbPrev" aria-label="Previous">&#10094;</button>
@@ -154,178 +121,116 @@
     </footer>
 
     <script src="script.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
 
+    <script>
+    // 1. Setup Contentful
+    const client = contentful.createClient({
+        space: '34evf5vfv8l3',
+        accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
+    });
 
-   <script>
-  // 1. Setup Contentful
-  const client = contentful.createClient({
-    space: '34evf5vfv8l3',
-    accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
-  });
+    // 2. Get SLUG or ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug');
+    const propertyId = urlParams.get('id');
 
-  // 2. Get the ID from the URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const propertyId = urlParams.get('id');
+    const formatPrice = (price) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // Helper for price commas
-  const formatPrice = (price) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // 3. Logic to determine how to fetch
+    let fetchJob;
+    if (slug) {
+        fetchJob = client.getEntries({ content_type: 'property', 'fields.slug': slug, limit: 1 }).then(res => res.items[0]);
+    } else if (propertyId) {
+        fetchJob = client.getEntry(propertyId);
+    }
 
-  if (propertyId) {
-    // 3. Fetch the SINGLE property
-    client.getEntry(propertyId)
-      .then((entry) => {
-        const p = entry.fields;
-
-        // Fill text fields
-        document.getElementById('prop-title').innerText = p.title;
-        document.getElementById('prop-location').innerText = p.location;
-        document.getElementById('prop-price').innerText = 'KES ' + formatPrice(p.price);
-        // THIS IS THE FIX: It parses the markdown and renders it as HTML
-document.getElementById('prop-desc').innerHTML = marked.parse(p.description || '');
-        
-
-        // Fill Specs
-        document.getElementById('prop-beds').innerText = '🛏 ' + p.bedrooms + ' Bedrooms';
-        document.getElementById('prop-baths').innerText = '🚿 ' + p.bathrooms + ' Bathrooms';
-        document.getElementById('prop-area').innerText = '📐 ' + p.area + ' m²';
-
-        // --- FIX MAIN IMAGE ---
-        if (p.mainImage && p.mainImage.fields) {
-            document.getElementById('prop-main-image').src = 'https:' + p.mainImage.fields.file.url;
-        }
-
-        // --- FIX GALLERY MEDIA (images + videos) ---
-        const galleryContainer = document.getElementById('prop-gallery');
-        const galleryItems = []; // { type: 'image'|'video', url: 'https:...' }
-        if (p.gallery) {
-            p.gallery.forEach((asset) => {
-                if (!asset.fields || !asset.fields.file) return;
-                const file = asset.fields.file;
-                const url = 'https:' + file.url;
-                const contentType = (file.contentType || '').toLowerCase();
-
-                // detect video types
-                const isVideo = contentType.startsWith('video') || /\.(mp4|webm|ogg)(\?|$)/i.test(url);
-                if (isVideo) {
-                    galleryItems.push({ type: 'video', url });
-
-                    const vidEl = document.createElement('video');
-                    vidEl.src = url;
-                    vidEl.className = 'gallery-img gallery-video';
-                    vidEl.muted = true;
-                    vidEl.loop = true;
-                    vidEl.playsInline = true;
-                    vidEl.preload = 'metadata';
-                    // try to play to show a motion thumbnail; ignore failures
-                    vidEl.addEventListener('canplay', () => { try { vidEl.play(); } catch(e){} });
-                    vidEl.setAttribute('data-index', galleryItems.length - 1);
-                    vidEl.addEventListener('click', () => openLightbox(parseInt(vidEl.dataset.index)));
-
-                    // overlay play icon
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'gallery-thumb-wrap';
-                    wrapper.appendChild(vidEl);
-                    const play = document.createElement('span');
-                    play.className = 'video-play-overlay';
-                    play.innerHTML = '&#9658;';
-                    wrapper.appendChild(play);
-                    galleryContainer.appendChild(wrapper);
-                } else {
-                    galleryItems.push({ type: 'image', url });
-
-                    const imgEl = document.createElement('img');
-                    imgEl.src = url;
-                    imgEl.className = 'gallery-img';
-                    imgEl.setAttribute('data-index', galleryItems.length - 1);
-                    imgEl.addEventListener('click', () => openLightbox(parseInt(imgEl.dataset.index)));
-                    galleryContainer.appendChild(imgEl);
-                }
-            });
-        }
-
-        // --- LIGHTBOX MARKUP already present in DOM; wire handlers below ---
-        const lb = document.getElementById('lightbox');
-        const lbContent = document.getElementById('lbContent');
-        const lbPrev = document.getElementById('lbPrev');
-        const lbNext = document.getElementById('lbNext');
-        const lbClose = document.getElementById('lbClose');
-        let currentIndex = 0;
-
-        function openLightbox(index) {
-            if (!galleryItems.length) return;
-            currentIndex = index;
-            // clear existing
-            lbContent.innerHTML = '';
-            const item = galleryItems[currentIndex];
-            if (!item) return;
-            if (item.type === 'image') {
-                const img = document.createElement('img');
-                img.src = item.url;
-                img.alt = 'Expanded property image';
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '86vh';
-                lbContent.appendChild(img);
-            } else if (item.type === 'video') {
-                const v = document.createElement('video');
-                v.src = item.url;
-                v.controls = true;
-                v.autoplay = true;
-                v.playsInline = true;
-                v.style.maxWidth = '100%';
-                v.style.maxHeight = '86vh';
-                lbContent.appendChild(v);
-                // attempt to play
-                setTimeout(()=>{ try{ v.play(); }catch(e){} }, 50);
+    // 4. Run the fetch and fill the page
+    if (fetchJob) {
+        fetchJob.then((entry) => {
+            if (!entry) {
+                document.getElementById('prop-title').innerText = "Property not found.";
+                return;
             }
-            lb.classList.add('open');
-            lb.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-        }
+            const p = entry.fields;
 
-        function closeLightbox() {
-            lb.classList.remove('open');
-            lb.setAttribute('aria-hidden', 'true');
-            // stop and remove any media inside the lightbox
-            try {
-                const media = lbContent.querySelector('video');
-                if (media) {
-                    media.pause();
-                    media.src = '';
+            // Fill Text
+            document.getElementById('prop-title').innerText = p.title;
+            document.getElementById('prop-location').innerText = p.location;
+            document.getElementById('prop-price').innerText = 'KES ' + formatPrice(p.price);
+            
+            // FIX: Parse description markdown correctly
+            document.getElementById('prop-desc').innerHTML = marked.parse(p.description || '');
+
+            // Fill Specs
+            document.getElementById('prop-beds').innerText = '🛏 ' + p.bedrooms + ' Bedrooms';
+            document.getElementById('prop-baths').innerText = '🚿 ' + p.bathrooms + ' Bathrooms';
+            document.getElementById('prop-area').innerText = '📐 ' + p.area + ' m²';
+
+            // Main Image
+            if (p.mainImage && p.mainImage.fields) {
+                document.getElementById('prop-main-image').src = 'https:' + p.mainImage.fields.file.url;
+            }
+
+            // Gallery
+            const galleryContainer = document.getElementById('prop-gallery');
+            const galleryItems = [];
+            if (p.gallery) {
+                p.gallery.forEach((asset) => {
+                    if (!asset.fields || !asset.fields.file) return;
+                    const url = 'https:' + asset.fields.file.url;
+                    const isVideo = asset.fields.file.contentType.includes('video');
+                    
+                    if (isVideo) {
+                        galleryItems.push({ type: 'video', url });
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'gallery-thumb-wrap';
+                        wrapper.innerHTML = `<video src="${url}" class="gallery-img gallery-video" muted loop playsinline></video><span class="video-play-overlay">&#9658;</span>`;
+                        const vid = wrapper.querySelector('video');
+                        vid.addEventListener('click', () => openLightbox(galleryItems.length - 1));
+                        galleryContainer.appendChild(wrapper);
+                    } else {
+                        galleryItems.push({ type: 'image', url });
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.className = 'gallery-img';
+                        img.onclick = () => openLightbox(galleryItems.length - 1);
+                        galleryContainer.appendChild(img);
+                    }
+                });
+            }
+
+            // Lightbox Logic
+            const lb = document.getElementById('lightbox');
+            const lbContent = document.getElementById('lbContent');
+            let currentIdx = 0;
+
+            window.openLightbox = (index) => {
+                currentIdx = index;
+                lbContent.innerHTML = '';
+                const item = galleryItems[currentIdx];
+                if (item.type === 'image') {
+                    lbContent.innerHTML = `<img src="${item.url}" style="max-width:100%; max-height:86vh;">`;
+                } else {
+                    lbContent.innerHTML = `<video src="${item.url}" controls autoplay style="max-width:100%; max-height:86vh;"></video>`;
                 }
-            } catch (e) {}
-            lbContent.innerHTML = '';
-            document.body.style.overflow = '';
-        }
+                lb.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            };
 
-        function showNext() {
-            if (!galleryItems.length) return;
-            currentIndex = (currentIndex + 1) % galleryItems.length;
-            openLightbox(currentIndex);
-        }
+            document.getElementById('lbClose').onclick = () => {
+                lb.classList.remove('open');
+                lbContent.innerHTML = '';
+                document.body.style.overflow = '';
+            };
 
-        function showPrev() {
-            if (!galleryItems.length) return;
-            currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-            openLightbox(currentIndex);
-        }
-
-        lbPrev.addEventListener('click', showPrev);
-        lbNext.addEventListener('click', showNext);
-        lbClose.addEventListener('click', closeLightbox);
-        lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
-        document.addEventListener('keydown', (e) => {
-            if (!lb.classList.contains('open')) return;
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') showNext();
-            if (e.key === 'ArrowLeft') showPrev();
+            document.getElementById('lbNext').onclick = () => openLightbox((currentIdx + 1) % galleryItems.length);
+            document.getElementById('lbPrev').onclick = () => openLightbox((currentIdx - 1 + galleryItems.length) % galleryItems.length);
+        }).catch(err => {
+            console.error(err);
+            document.getElementById('prop-title').innerText = "Error loading property.";
         });
-      })
-      .catch(console.error);
-  } else {
-      document.getElementById('prop-title').innerText = "Property not found.";
-  }
-</script>
+    }
+    </script>
 </body>
 </html>
