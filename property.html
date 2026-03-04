@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Property Details — The Vintage Realtors</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
@@ -13,8 +13,9 @@
         .pd-container { max-width: 1100px; margin: 48px auto; padding: 36px; background: linear-gradient(180deg, rgba(251,246,239,0.9), rgba(255,255,255,0.86)); border-radius: 14px; box-shadow: 0 22px 60px rgba(16,12,8,0.06); border: 1px solid rgba(16,12,8,0.04); }
 
         .pd-header { margin-bottom: 26px; }
-        .pd-title { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 6px; letter-spacing: 0.6px; color: var(--black); }
-        .pd-title::after { content: ''; display:block; width:72px; height:4px; background: var(--vintage-ochre); margin-top:12px; border-radius:2px; }
+
+.pd-title { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 6px; letter-spacing: 0.6px; color: var(--black); }
+.pd-title::after { content: ''; display:block; width:72px; height:4px; background: var(--vintage-ochre); margin-top:12px; border-radius:2px; }
         .pd-location { color: #6b5b4b; font-size: 1.05rem; margin-top: 6px; }
         .pd-price { font-size: 1.3rem; color: var(--purple); font-weight: 800; margin-top: 10px; }
 
@@ -42,25 +43,25 @@
         .btn-contact { display: block; background: linear-gradient(135deg,var(--vintage-ochre), #b07a50); color: #fff; text-align: center; padding: 12px; text-decoration: none; border-radius: 8px; font-weight: 800; margin-top: 12px; box-shadow: 0 12px 30px rgba(16,12,8,0.08); }
         .btn-contact[style] { background: #fff; color: #3f2f2a; border: 1px solid rgba(16,12,8,0.06); }
 
-        @media (max-width: 900px) {
+@media (max-width: 900px) {
             .pd-grid { grid-template-columns: 1fr; }
             .pd-main-img { max-height: 420px; }
             .pd-container { padding: 24px; }
-        }
+}
 
         /* Button linking back to listings */
         .btn-view-other {
-            display: inline-block;
-            background: var(--purple, #6a1b9a);
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            box-shadow: 0 12px 30px rgba(75,0,130,0.12);
-            transition: transform 180ms ease, box-shadow 180ms ease;
-            margin: 18px 0 6px;
-        }
+display: inline-block;
+background: var(--purple, #6a1b9a);
+color: #fff;
+padding: 12px 18px;
+border-radius: 8px;
+text-decoration: none;
+font-weight: 700;
+box-shadow: 0 12px 30px rgba(75,0,130,0.12);
+transition: transform 180ms ease, box-shadow 180ms ease;
+margin: 18px 0 6px;
+}
         .btn-view-other:hover { transform: translateY(-4px); box-shadow: 0 28px 56px rgba(75,0,130,0.16); }
         
         /* Lightbox styles */
