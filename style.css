@@ -106,23 +106,15 @@
     #prop-gallery .gallery-img { animation: none !important; transition: transform 160ms ease !important; }
 }
 
-/* Featured properties floating effect (homepage) */
+/* Featured properties: disable floating animation for a stable professional layout */
 .featured-section .property-image {
-    animation: floaty 4.6s ease-in-out infinite;
-        will-change: transform;
-        transform-origin: center bottom;
+    animation: none !important;
+    will-change: auto;
+    transform-origin: center bottom;
 }
 .featured-section .property-image img {
-        transition: transform 260ms ease, box-shadow 260ms ease;
+    transition: transform 260ms ease, box-shadow 260ms ease;
 }
-.featured-section .property-card:hover .property-image {
-        /* pause float while interacting */
-        animation-play-state: paused;
-}
-/* Slight stagger for a natural look */
-.featured-section .property-card:nth-child(2n) .property-image { animation-duration: 5.0s; animation-direction: reverse; }
-.featured-section .property-card:nth-child(3n) .property-image { animation-duration: 4.4s; animation-delay: 0.2s; }
-.featured-section .property-card:nth-child(5n) .property-image { animation-duration: 5.4s; animation-delay: 0.6s; }
 
 @media (prefers-reduced-motion: reduce) {
     .featured-section .property-image { animation: none !important; transform: none !important; }

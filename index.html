@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE VINTAGE REALTORS</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -15,7 +15,7 @@
 
    <nav>
     <a href="index.html" class="logo-container">
-        <img src="/images/logo.avif" alt="Vintage Realtors Logo" class="logo-img">
+        <img src="images/logo.avif" alt="Vintage Realtors Logo" class="logo-img">
     </a>
 
     <div class="site-title">
@@ -24,7 +24,7 @@
 
     <div class="contact-phone">
         <a href="tel:+254722865306">
-            <img src="/images/phone-icon.avif" alt="Phone" class="phone-icon">
+            <img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
             <span class="phone-number">+254722865306</span>
         </a>
     </div>
@@ -368,7 +368,7 @@
 <footer class="site-footer">
     <div class="footer-content">
         <div class="footer-logo">
-            <img src="/images/FOOTER%20LOGO.avif" alt="Footer logo">
+            <img src="images/FOOTER%20LOGO.avif" alt="Footer logo">
         </div>
 
         <div class="footer-about">
@@ -404,7 +404,7 @@
     </div>
 
     <a href="https://wa.me/254722865306" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
-        <img src="/images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
+        <img src="images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
     </a>
 
 <script src="script.js"></script>
@@ -446,9 +446,10 @@
                 <div class="property-card">
                     <div class="property-image">
                         <span class="property-status ${p.status === 'For Sale' ? 'sale' : 'rent'}">${p.status}</span>
-                        <a href="/property/${p.slug}">View Details</a>
+                        <a href="property.html?id=${item.sys.id}">
                             <img src="${imageUrl}" alt="${p.title}">
                         </a>
+                        <a class="view-link" href="property.html?id=${item.sys.id}">View Details</a>
                     </div>
                     <div class="property-details">
                         <p class="property-price">KES ${price}</p>

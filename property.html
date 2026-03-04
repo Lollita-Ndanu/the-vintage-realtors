@@ -1,220 +1,367 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Property Details — The Vintage Realtors</title>
-    <link rel="stylesheet" href="/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        .pd-container { max-width: 1100px; margin: 48px auto; padding: 36px; background: linear-gradient(180deg, rgba(251,246,239,0.9), rgba(255,255,255,0.86)); border-radius: 14px; box-shadow: 0 22px 60px rgba(16,12,8,0.06); border: 1px solid rgba(16,12,8,0.04); }
-        .pd-header { margin-bottom: 26px; }
-        .pd-title { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 6px; letter-spacing: 0.6px; color: var(--black); }
-        .pd-title::after { content: ''; display:block; width:72px; height:4px; background: #b07a50; margin-top:12px; border-radius:2px; }
-        .pd-location { color: #6b5b4b; font-size: 1.05rem; margin-top: 6px; }
-        .pd-price { font-size: 1.3rem; color: #4B0082; font-weight: 800; margin-top: 10px; }
-        .pd-main-img { width: 100%; height: auto; max-height: 600px; object-fit: cover; border-radius: 10px; margin-bottom: 28px; display:block; border: 8px solid rgba(255,255,255,0.6); box-shadow: 0 28px 80px rgba(16,12,8,0.08); }
-        .pd-grid { display: grid; grid-template-columns: 2fr 380px; gap: 38px; align-items: start; }
-        .pd-specs { display: flex; gap: 18px; margin-bottom: 18px; padding: 16px; background: linear-gradient(180deg,#fffef9,#fbf6ef); border-left: 4px solid #b07a50; border-radius: 8px; box-shadow: 0 8px 20px rgba(16,12,8,0.03); }
-        .spec-item { font-weight: 700; color: #3f2f2a; }
-        .pd-description { line-height: 1.85; color: #444; margin-bottom: 26px; font-size: 1rem; }
-        .gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; margin-top: 34px; }
-        .gallery-img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; cursor: pointer; transition: transform 260ms ease; border: 6px solid #fff; box-shadow: 0 12px 30px rgba(16,12,8,0.06); }
-        .gallery-img:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 28px 64px rgba(16,12,8,0.12); }
-        .gallery-thumb-wrap { position: relative; display: block; }
-        .gallery-thumb-wrap .gallery-video { display: block; width: 100%; height: 140px; object-fit: cover; border-radius: 6px; cursor: pointer; }
-        .video-play-overlay { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.45); color: #fff; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; pointer-events: none; }
-        .contact-box { background: linear-gradient(180deg,#fffef9,#fbf6ef); color: #2e2622; padding: 28px; border-radius: 10px; position: sticky; top: 24px; border: 1px solid rgba(16,12,8,0.06); box-shadow: 0 18px 46px rgba(16,12,8,0.06); }
-        .contact-box h3 { color: #3f2f2a; margin-bottom: 14px; font-family: 'Playfair Display', serif; }
-        .btn-contact { display: block; background: linear-gradient(135deg,#b07a50, #96633b); color: #fff; text-align: center; padding: 12px; text-decoration: none; border-radius: 8px; font-weight: 800; margin-top: 12px; }
-        .btn-contact[style] { background: #fff; color: #3f2f2a; border: 1px solid rgba(16,12,8,0.06); }
-        .btn-view-other { display: inline-block; background: #4B0082; color: #fff; padding: 12px 18px; border-radius: 8px; text-decoration: none; font-weight: 700; margin: 18px 0 6px; }
-        .lightbox { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,0.88); z-index: 5000; opacity: 0; pointer-events: none; transition: opacity 220ms ease; }
-        .lightbox.open { opacity: 1; pointer-events: auto; }
-        .lightbox-content { max-width: 92vw; max-height: 86vh; display: flex; align-items: center; justify-content: center; }
-        .lightbox-content img, .lightbox-content video { max-width: 100%; max-height: 100%; border-radius: 6px; box-shadow: 0 28px 80px rgba(0,0,0,0.6); display: block; }
-        .lightbox-close, .lightbox-prev, .lightbox-next { position: absolute; background: rgba(255,255,255,0.06); color: #fff; border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 1.6rem; }
-        .lightbox-close { right: 18px; top: 18px; }
-        .lightbox-prev { left: 18px; top: 50%; transform: translateY(-50%); }
-        .lightbox-next { right: 18px; top: 50%; transform: translateY(-50%); }
-        @media (max-width: 900px) { .pd-grid { grid-template-columns: 1fr; } .pd-main-img { max-height: 420px; } .pd-container { padding: 24px; } }
-    </style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Property Details — The Vintage Realtors</title>
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+	<style>
+		/* Modern professional single-property page — purple / black / white / vintage */
+		:root { --brand-purple: #5b2a86; --brand-dark: #0f1720; --brand-white: #ffffff; --vintage-ochre: #8b5e3c; --muted: #f6f5f7 }
+		.property-page { background: linear-gradient(180deg,#fff,#fbfbff); color: var(--brand-dark); font-family: 'Montserrat', system-ui, sans-serif; }
+		.pd-container { max-width: 1200px; margin: 40px auto; padding: 0 18px; }
+
+		/* Hero with large image and overlaid info */
+		.prop-hero { position: relative; display:block; background:#000; border-radius: 14px; overflow: hidden; box-shadow: 0 28px 80px rgba(16,12,8,0.08); }
+		.prop-hero .hero-media { width:100%; height:520px; background-size:cover; background-position:center; display:block; filter: saturate(1.02) contrast(1.02); transform-origin:center; transition: transform 700ms ease; }
+		.prop-hero:hover .hero-media { transform: scale(1.02); }
+		.prop-hero .hero-inner { position: absolute; left:0; right:0; bottom:0; padding: 28px; display:flex; justify-content:space-between; gap:20px; align-items:flex-end; backdrop-filter: blur(8px); background: linear-gradient(180deg, rgba(15,17,32,0.02), rgba(15,17,32,0.35)); }
+		.prop-info { color: #fff; z-index:2; max-width: 68%; }
+		.prop-info h1 { margin:0 0 6px; font-family: 'Playfair Display', serif; font-size: 2.6rem; letter-spacing:0.6px; text-shadow: 0 6px 18px rgba(13,8,22,0.55); }
+		.prop-info p.lead { margin:0; color: rgba(255,255,255,0.95); font-weight:600 }
+		.prop-price-badge { background: linear-gradient(180deg,var(--brand-purple), #3e1760); color:#fff; padding:12px 18px; border-radius: 12px; font-weight:900; font-size:1.2rem; box-shadow: 0 18px 54px rgba(91,42,134,0.2); }
+
+		/* Main grid: details and contact column */
+		.pd-grid { display:grid; grid-template-columns: 1fr 360px; gap: 28px; margin-top: 22px; }
+
+		.pd-main { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 18px 46px rgba(16,12,8,0.04); border: 1px solid rgba(16,12,8,0.03); }
+		.pd-meta { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
+		.pd-meta .meta-item { background: linear-gradient(180deg,#fbfbff,#fff); padding:10px 14px; border-radius:10px; font-weight:800; color:var(--vintage-ochre); box-shadow: 0 8px 20px rgba(16,12,8,0.03); }
+
+		.pd-description { line-height:1.8; color:#444; margin-top:12px; }
+
+		/* Gallery */
+		.gallery-container { display:grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap:12px; margin-top:18px; }
+		.gallery-img { width:100%; aspect-ratio: 4/3; overflow:hidden; border-radius:10px; background:#eee; position:relative; box-shadow: 0 12px 34px rgba(9,7,12,0.06); cursor:pointer; }
+		.gallery-img img, .gallery-img video { width:100%; height:100%; object-fit:cover; display:block; transition: transform 320ms ease, filter 320ms ease; }
+		.gallery-img:hover img, .gallery-img:hover video { transform: scale(1.03); filter: brightness(0.95); }
+		.video-play-overlay { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:28px; color:#fff; background: linear-gradient(180deg, rgba(91,42,134,0.95), rgba(58,24,88,0.85)); width:56px; height:56px; display:flex; align-items:center; justify-content:center; border-radius:50%; box-shadow: 0 10px 30px rgba(14,10,24,0.5); }
+		.gallery-img .inner-video { display:block; }
+
+		/* Contact sidebar */
+		.contact-box { background: linear-gradient(180deg,#fffef9,#fbf6ef); color: var(--brand-dark); padding:18px; border-radius:12px; position:sticky; top:28px; box-shadow: 0 12px 36px rgba(16,12,8,0.06); border: 1px solid rgba(16,12,8,0.04); }
+		.agent-photo { width:84px; height:84px; border-radius:10px; overflow:hidden; background:#fff; margin-bottom:12px; }
+		.contact-actions { display:flex; gap:10px; margin-top:14px; }
+		.btn-call { background: linear-gradient(135deg,var(--brand-purple), #6a2db8); color:#fff; padding:10px 12px; border-radius:10px; text-decoration:none; font-weight:800; }
+		.btn-email { background:#fff; color:var(--brand-dark); padding:10px 12px; border-radius:10px; border:1px solid rgba(16,12,8,0.06); text-decoration:none; font-weight:700; }
+
+		/* Price and small labels */
+		.pd-price { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--brand-purple); font-weight: 900; }
+
+		/* Lightbox */
+		.lightbox { position: fixed; inset: 0; display:flex; align-items:center; justify-content:center; background: rgba(8,6,10,0.65); opacity: 0; pointer-events: none; transition: opacity 220ms ease; z-index:9999; }
+		.lightbox.open { opacity: 1; pointer-events: auto; }
+		.lightbox-content { max-width: 92vw; max-height: 86vh; display: flex; align-items: center; justify-content: center; position: relative; }
+		.lightbox-content img, .lightbox-content video { max-width: 100%; max-height: 86vh; border-radius: 8px; box-shadow: 0 28px 80px rgba(0,0,0,0.6); display:block; }
+		.lightbox-close, .lightbox-prev, .lightbox-next { position: absolute; background: rgba(255,255,255,0.06); color: #fff; border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 1.6rem; backdrop-filter: blur(4px); }
+		.lightbox-close { right: 18px; top: 18px; }
+		.lightbox-prev { left: 18px; top: 50%; transform: translateY(-50%); }
+		.lightbox-next { right: 18px; top: 50%; transform: translateY(-50%); }
+		.lightbox-unmute { position: absolute; left: 18px; bottom: 18px; padding: 8px 12px; border-radius:8px; background: rgba(255,255,255,0.08); color:#fff; border:none; cursor:pointer }
+
+		@media (max-width: 900px) {
+			.prop-hero .hero-media { height: 260px; }
+			.pd-grid { grid-template-columns: 1fr; }
+			.prop-info { max-width: 100%; }
+			.contact-box { position: relative; top: auto; }
+		}
+	</style>
 </head>
 <body>
-    <nav>
-        <a href="/" class="logo-container"><img src="/images/logo.avif" alt="The Vintage Realtors logo" class="logo-img"></a>
-        <div class="site-title"><span>THE VINTAGE REALTORS</span></div>
-        <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    </nav>
-    
-    <div id="menu" class="menu-drawer" aria-hidden="true">
-        <button class="close">&times;</button>
-        <nav class="drawer-nav">
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/properties.html">Properties</a></li>
-                <li><a href="/about.html">About</a></li>
-                <li><a href="/collaborators.html">Collaborators</a></li>
-                <li><a href="/contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </div>
-    <div class="menu-overlay"></div>
 
-    <main class="pd-container">
-        <div class="pd-header">
-            <h1 id="prop-title" class="pd-title">Loading Property...</h1>
-            <div id="prop-location" class="pd-location"></div>
-            <div id="prop-price" class="pd-price"></div>
-        </div>
+   <nav>
+	<a href="index.html" class="logo-container">
+		<img src="images/logo.avif" alt="Vintage Realtors Logo" class="logo-img">
+	</a>
 
-        <img id="prop-main-image" class="pd-main-img" src="/images/background2.avif" alt="Property Image">
+	<div class="site-title">
+		<span>THE VINTAGE REALTORS</span>
+	</div>
 
-        <h3 style="margin-top:24px; font-family: 'Playfair Display', serif;">Property Gallery</h3>
-        <div id="prop-gallery" class="gallery-container"></div>
+	<div class="contact-phone">
+		<a href="tel:+254722865306">
+			<img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
+			<span class="phone-number">+254722865306</span>
+		</a>
+	</div>
 
-        <div class="pd-grid">
-            <div>
-                <div class="pd-specs">
-                    <span id="prop-beds" class="spec-item"></span>
-                    <span id="prop-baths" class="spec-item"></span>
-                    <span id="prop-area" class="spec-item"></span>
-                </div>
-                <div class="pd-description">
-                    <h3>Description</h3>
-                    <div id="prop-desc"></div>
-                </div>
-            </div>
+	<button class="hamburger" aria-label="Open menu" aria-expanded="false">
+		<span></span>
+		<span></span>
+		<span></span>
+	</button>
+</nav>
 
-            <div class="contact-box">
-                <h3>Interested in this property?</h3>
-                <p>Contact us to schedule a viewing or request more details.</p>
-                <a href="tel:+254722865306" class="btn-contact">Call: +254 722 865 306</a>
-                <a href="mailto:sales@vintagerealtors.co.ke" class="btn-contact" style="background:white; color:#333; margin-top:10px;">Email Us</a>
-            </div>
-        </div>
+<div id="menu" class="menu-drawer" aria-hidden="true">
+	<button class="close" aria-label="Close menu">&times;</button>
+	<nav class="drawer-nav">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="about.html">About</a></li>
+			<li><a href="properties.html">Properties</a></li>
+			<li><a href="collaborators.html">Collaborators</a></li>
+			<li><a href="contact.html">Contact</a></li>
+		</ul>
+	</nav>
+</div>
 
-        <div style="margin-top:18px;">
-            <a href="/properties.html" class="btn-view-other" aria-label="View other properties">View Other Properties</a>
-        </div>
-    </main>
+<div class="menu-overlay"></div>
 
-    <div id="lightbox" class="lightbox" aria-hidden="true">
-        <button class="lightbox-close" id="lbClose" aria-label="Close">&times;</button>
-        <button class="lightbox-prev" id="lbPrev" aria-label="Previous">&#10094;</button>
-        <div class="lightbox-content" id="lbContent" role="dialog" aria-label="Media viewer"></div>
-        <button class="lightbox-next" id="lbNext" aria-label="Next">&#10095;</button>
-    </div>
+	<main class="pd-container property-page">
+		<section class="prop-hero" aria-label="Property hero">
+			<div id="heroMedia" class="hero-media" style="background-image: url('');"></div>
+			<div class="hero-inner">
+				<div class="prop-info">
+					<div class="kicker muted">Featured</div>
+					<h1 id="prop-title">Loading Property...</h1>
+					<p id="prop-location" class="lead"></p>
+				</div>
+				<div class="prop-controls">
+					<div id="prop-price" class="prop-price-badge prop-price">&nbsp;</div>
+				</div>
+			</div>
+		</section>
 
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-logo"><img src="/images/FOOTER%20LOGO.avif" alt="Footer logo"></div>
-            <div class="footer-about"><h3>The Vintage Realtors</h3><p>If you build it, we will list it.</p><p>Nairobi, Kenya</p></div>
-        </div>
-    </footer>
+		<section class="hero-gallery" aria-label="Property gallery">
+			<h3 style="font-family: 'Playfair Display', serif; margin-bottom:12px;">Gallery</h3>
+			<div id="prop-gallery" class="gallery-container" aria-live="polite"></div>
+		</section>
 
-    <script src="/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+		<div class="pd-grid">
+			<div class="pd-main">
+				<div class="pd-meta">
+					<div id="prop-beds" class="meta-item">&nbsp;</div>
+					<div id="prop-baths" class="meta-item">&nbsp;</div>
+					<div id="prop-area" class="meta-item">&nbsp;</div>
+				</div>
 
-    <script>
-    const client = contentful.createClient({
-        space: '34evf5vfv8l3',
-        accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
-    });
+				<div class="pd-description">
+					<h3 style="font-family: 'Playfair Display', serif; margin-bottom:8px;">Description</h3>
+					<div id="prop-desc">Loading description…</div>
+				</div>
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const slug = urlParams.get('slug');
-    const formatPrice = (price) => (!price && price !== 0) ? '' : price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-    if (slug) {
-        client.getEntries({
-            content_type: 'property', 
-            'fields.slug': slug,
-            limit: 1
-        })
-        .then((response) => {
-            if (response.items.length === 0) {
-                document.getElementById('prop-title').innerText = "Property not found.";
-                return;
-            }
+			</div>
 
-            const p = response.items[0].fields;
+			<aside class="contact-box" aria-label="Contact agent">
+				<div class="agent-photo"><img id="agentPhoto" src="images/logo.avif" alt="Agent" style="width:100%;height:100%;object-fit:cover"></div>
+				<h3 id="agentName">The Vintage Realtors</h3>
+				<p id="agentPhone">+254 722 865 306</p>
+				<p id="agentEmail">sales@vintagerealtors.co.ke</p>
 
-            document.getElementById('prop-title').innerText = p.title || 'Untitled Property';
-            document.getElementById('prop-location').innerText = p.location || '';
-            document.getElementById('prop-price').innerText = p.price ? 'KES ' + formatPrice(p.price) : '';
-            document.getElementById('prop-desc').innerHTML = marked.parse(p.description || '');
+				<div class="contact-actions">
+					<a id="callBtn" class="btn-call" href="tel:+254722865306">Call</a>
+					<a id="emailBtn" class="btn-email" href="mailto:sales@vintagerealtors.co.ke">Email</a>
+				</div>
 
-            document.getElementById('prop-beds').innerText = p.bedrooms ? '🛏 ' + p.bedrooms + ' Bedrooms' : '';
-            document.getElementById('prop-baths').innerText = p.bathrooms ? '🚿 ' + p.bathrooms + ' Bathrooms' : '';
-            document.getElementById('prop-area').innerText = p.area ? '📐 ' + p.area + ' m²' : '';
+				<div style="margin-top:12px;">
+					<a href="properties.html" class="btn-view-other" aria-label="View other properties">View Other Properties</a>
+				</div>
+			</aside>
+		</div>
+	</main>
 
-            if (p.mainImage && p.mainImage.fields && p.mainImage.fields.file) {
-                document.getElementById('prop-main-image').src = 'https:' + p.mainImage.fields.file.url;
-            }
+	<div id="lightbox" class="lightbox" aria-hidden="true">
+		<button class="lightbox-close" id="lbClose" aria-label="Close">&times;</button>
+		<button class="lightbox-prev" id="lbPrev" aria-label="Previous">&#10094;</button>
+		<div class="lightbox-content" id="lbContent" role="dialog" aria-label="Media viewer"></div>
+		<button class="lightbox-next" id="lbNext" aria-label="Next">&#10095;</button>
+	</div>
 
-            const galleryContainer = document.getElementById('prop-gallery');
-            const galleryItems = [];
-            
-            if (p.gallery) {
-                p.gallery.forEach((asset) => {
-                    if (!asset.fields || !asset.fields.file) return;
-                    const url = 'https:' + asset.fields.file.url;
-                    const isVideo = asset.fields.file.contentType.includes('video');
-                    
-                    if (isVideo) {
-                        galleryItems.push({ type: 'video', url });
-                        const wrapper = document.createElement('div');
-                        wrapper.className = 'gallery-thumb-wrap';
-                        wrapper.innerHTML = `<video src="${url}" class="gallery-img gallery-video" muted playsinline></video><span class="video-play-overlay">&#9658;</span>`;
-                        wrapper.querySelector('video').addEventListener('click', () => window.openLightbox(galleryItems.length - 1));
-                        galleryContainer.appendChild(wrapper);
-                    } else {
-                        galleryItems.push({ type: 'image', url });
-                        const img = document.createElement('img');
-                        img.src = url;
-                        img.className = 'gallery-img';
-                        img.onclick = () => window.openLightbox(galleryItems.length - 1);
-                        galleryContainer.appendChild(img);
-                    }
-                });
-            }
+<footer class="site-footer">
+	<div class="footer-content">
+		<div class="footer-logo">
+			<img src="images/FOOTER%20LOGO.avif" alt="Footer logo">
+		</div>
 
-            // Lightbox Logic
-            const lb = document.getElementById('lightbox');
-            const lbContent = document.getElementById('lbContent');
-            let currentIdx = 0;
+		<div class="footer-about">
+			<h3>The Vintage Realtors</h3>
+			<p>If you build it, we will list it.</p>
+			<p>Nairobi, Kenya</p>
+		</div>
 
-            window.openLightbox = (index) => {
-                currentIdx = index;
-                lbContent.innerHTML = '';
-                const item = galleryItems[currentIdx];
-                if (item.type === 'image') {
-                    lbContent.innerHTML = `<img src="${item.url}">`;
-                } else {
-                    lbContent.innerHTML = `<video src="${item.url}" controls autoplay></video>`;
-                }
-                lb.classList.add('open');
-                document.body.style.overflow = 'hidden';
-            };
+		<div class="footer-contact">
+			<h4>Contact</h4>
+			<p>Email: <a href="mailto:sales@vintagerealtors.co.ke">sales@vintagerealtors.co.ke</a></p>
+			<p>Phone: <a href="tel:+254722865306">+254722865306</a></p>
+		</div>
 
-            document.getElementById('lbClose').onclick = () => {
-                lb.classList.remove('open');
-                lbContent.innerHTML = '';
-                document.body.style.overflow = '';
-            };
+		<div class="footer-follow">
+			<h4>Follow Us</h4>
+			<p><a class="social-link" href="https://instagram.com/realtorvintage" target="_blank" rel="noopener noreferrer"><span class="icon instagram" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg></span> Instagram</a></p>
+			<p><a class="social-link" href="https://www.tiktok.com/@the.realtors7" target="_blank" rel="noopener noreferrer"><span class="icon tiktok" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v9.5a3.5 3.5 0 1 0 3.5 3.5V9.5h2.5V7h-2.5V3h-3.5z" fill="currentColor"/></svg></span> TikTok</a></p>
+			<p><a class="social-link" href="https://www.facebook.com/TheVintageRealtors" target="_blank" rel="noopener noreferrer"><span class="icon facebook" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M22 12.07C22 6.52 17.52 2 12 2S2 6.52 2 12.07c0 4.98 3.66 9.05 8.47 9.95v-7.05H8.07v-2.9h2.4V9.41c0-2.35 1.39-3.64 3.51-3.64 1.02 0 2.09.18 2.09.18v2.3h-1.18c-1.16 0-1.52.72-1.52 1.46v1.75h2.6l-.42 2.9h-2.18v7.05C18.34 21.12 22 17.05 22 12.07z"/></svg></span> Facebook</a></p>
+		</div>
+	</div>
+</footer>
 
-            document.getElementById('lbNext').onclick = () => window.openLightbox((currentIdx + 1) % galleryItems.length);
-            document.getElementById('lbPrev').onclick = () => window.openLightbox((currentIdx - 1 + galleryItems.length) % galleryItems.length);
-            
-        }).catch(err => {
-            console.error(err);
-            document.getElementById('prop-title').innerText = "Error loading property.";
-        });
-    } else {
-        document.getElementById('prop-title').innerText = "No property slug provided.";
-    }
-    </script>
+	<div class="footer-bottom">
+		<div class="footer-bottom-inner">
+			<p>© 2026 The Vintage Realtors — All rights reserved.</p>
+			<nav class="footer-links" aria-label="Footer legal links">
+				<a href="privacy.html">Privacy</a>
+				<a href="legal.html">Legal</a>
+				<a href="termsandconditions.html">Terms &amp; Conditions</a>
+			</nav>
+		</div>
+	</div>
+
+	<a href="https://wa.me/254722865306" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+		<img src="images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
+	</a>
+
+	<script>
+	(function(){
+		// Setup Contentful client
+		const client = contentful.createClient({
+			space: '34evf5vfv8l3',
+			accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
+		});
+
+		// Use Contentful entry ID passed as `?id=ENTRY_ID` — avoid slug-based routing
+		const params = new URLSearchParams(window.location.search);
+		const entryId = params.get('id');
+
+		const formatPrice = (price) => (price || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+		if (!entryId) {
+			document.getElementById('prop-title').innerText = 'No property specified.';
+			return;
+		}
+
+		client.getEntry(entryId).then(entry => {
+			if (!entry || !entry.fields) {
+				document.getElementById('prop-title').innerText = 'Property not found.';
+				return;
+			}
+
+			const p = entry.fields || {};
+
+			document.getElementById('prop-title').innerText = p.title || '';
+			document.getElementById('prop-location').innerText = p.location || '';
+			document.getElementById('prop-price').innerText = 'KES ' + formatPrice(p.price);
+			document.getElementById('prop-desc').innerHTML = marked.parse(p.description || '');
+
+			document.getElementById('prop-beds').innerText = '🛏 ' + (p.bedrooms || 0) + ' Bedrooms';
+			document.getElementById('prop-baths').innerText = '🚿 ' + (p.bathrooms || 0) + ' Bathrooms';
+			document.getElementById('prop-area').innerText = '📐 ' + (p.area || 'N/A') + ' m²';
+
+			// Agent/contact info (if provided)
+			if (p.agentName) document.getElementById('agentName').innerText = p.agentName;
+			if (p.agentPhone) { document.getElementById('agentPhone').innerText = p.agentPhone; document.getElementById('callBtn').href = 'tel:' + p.agentPhone.replace(/\s+/g,''); }
+			if (p.agentEmail) { document.getElementById('agentEmail').innerText = p.agentEmail; document.getElementById('emailBtn').href = 'mailto:' + p.agentEmail; }
+			if (p.agentImage && p.agentImage.fields && p.agentImage.fields.file) {
+				const u = p.agentImage.fields.file.url; const full = u.startsWith('http') ? u : 'https:' + u; document.getElementById('agentPhoto').src = full;
+			}
+
+			// Hero main image
+			const heroMedia = document.getElementById('heroMedia');
+			if (p.mainImage && p.mainImage.fields && p.mainImage.fields.file && p.mainImage.fields.file.url) {
+				const u = p.mainImage.fields.file.url;
+				const full = u.startsWith('http') ? u : 'https:' + u;
+				heroMedia.style.backgroundImage = `url('${full}')`;
+			} else {
+				heroMedia.style.backgroundImage = "url('images/background2.avif')";
+			}
+
+			// Gallery
+			const galleryContainer = document.getElementById('prop-gallery');
+			galleryContainer.innerHTML = '';
+			const galleryItems = [];
+			if (Array.isArray(p.gallery)) {
+				p.gallery.forEach((asset) => {
+					if (!asset || !asset.fields || !asset.fields.file) return;
+					const file = asset.fields.file;
+					const url = (file.url || '').startsWith('http') ? file.url : 'https:' + file.url;
+					const isVideo = (file.contentType || '').includes('video');
+
+					if (isVideo) {
+						galleryItems.push({ type: 'video', url });
+						const wrapper = document.createElement('div');
+						wrapper.className = 'gallery-img';
+						// autoplay muted looping thumbnail preview (muted so browsers allow autoplay)
+						wrapper.innerHTML = `<video src="${url}" class="inner-video" autoplay muted loop playsinline></video><span class="video-play-overlay">&#9658;</span>`;
+						const vid = wrapper.querySelector('video');
+						// open lightbox when user clicks anywhere on the thumbnail
+						wrapper.addEventListener('click', () => openLightbox(galleryItems.length - 1));
+						galleryContainer.appendChild(wrapper);
+					} else {
+						galleryItems.push({ type: 'image', url });
+						const div = document.createElement('div');
+						div.className = 'gallery-img';
+						const image = document.createElement('img');
+						image.src = url;
+						image.alt = p.title || 'Property image';
+						image.loading = 'lazy';
+						image.addEventListener('click', () => openLightbox(galleryItems.length - 1));
+						div.appendChild(image);
+						galleryContainer.appendChild(div);
+					}
+				});
+			}
+
+			// Lightbox
+			const lb = document.getElementById('lightbox');
+			const lbContent = document.getElementById('lbContent');
+			let currentIdx = 0;
+
+			window.openLightbox = (index) => {
+				if (!galleryItems.length) return;
+				// remove any existing lightbox unmute button
+				const existingUnmute = document.querySelector('.lightbox-unmute');
+				if (existingUnmute) existingUnmute.remove();
+
+				currentIdx = index;
+				const item = galleryItems[currentIdx];
+				lbContent.innerHTML = '';
+
+				if (item.type === 'image') {
+					const img = document.createElement('img');
+					img.src = item.url;
+					img.alt = p.title || 'Property image';
+					lbContent.appendChild(img);
+				} else {
+					// create a muted autoplaying video in the lightbox; allow user to unmute
+					const videoEl = document.createElement('video');
+					videoEl.src = item.url;
+					videoEl.controls = true;
+					videoEl.autoplay = true;
+					videoEl.muted = true;
+					videoEl.playsInline = true;
+					videoEl.style.maxWidth = '100%';
+					videoEl.style.maxHeight = '86vh';
+					lbContent.appendChild(videoEl);
+
+					// unmute control
+					const unmuteBtn = document.createElement('button');
+					unmuteBtn.className = 'lightbox-unmute';
+					unmuteBtn.innerText = 'Unmute';
+					unmuteBtn.addEventListener('click', () => {
+						videoEl.muted = !videoEl.muted;
+						unmuteBtn.innerText = videoEl.muted ? 'Unmute' : 'Mute';
+					});
+					lb.appendChild(unmuteBtn);
+
+					// attempt to play (some browsers require user gesture unless muted)
+					videoEl.play().catch(() => {});
+				}
+
+				lb.classList.add('open');
+				document.body.style.overflow = 'hidden';
+			};
+
+			document.getElementById('lbClose').addEventListener('click', () => { lb.classList.remove('open'); lbContent.innerHTML = ''; const u = document.querySelector('.lightbox-unmute'); if(u) u.remove(); document.body.style.overflow = ''; });
+			document.getElementById('lbNext').addEventListener('click', () => openLightbox((currentIdx + 1) % galleryItems.length));
+			document.getElementById('lbPrev').addEventListener('click', () => openLightbox((currentIdx - 1 + galleryItems.length) % galleryItems.length));
+
+		}).catch(err => {
+			console.error(err);
+			document.getElementById('prop-title').innerText = 'Error loading property.';
+		});
+	})();
+	</script>
 </body>
-</html>
+</html> 

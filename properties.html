@@ -1,50 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Properties — The Vintage Realtors</title>
-    <link rel="stylesheet" href="/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Properties — The Vintage Realtors</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        .properties-hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 12px; }
-        .type-cursor { display: inline-block; width: 10px; margin-left: 6px; background: rgba(255,255,255,0.92); border-radius: 2px; vertical-align: middle; animation: blink 1s steps(2, start) infinite; height: 1.1em; }
-        @keyframes blink { 50% { opacity: 0; } }
-        @media (prefers-reduced-motion: reduce) { .type-cursor { animation: none; opacity: 0.9; } }
-        .all-properties { max-width: 1200px; margin: 36px auto; padding: 28px 20px; background: linear-gradient(180deg, rgba(250,248,245,0.6), rgba(245,243,240,0.35)); border-radius: 12px; box-shadow: 0 6px 24px rgba(15,12,10,0.04); }
-        .all-properties h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #0f1720; margin: 6px 0 18px; text-align: center; position: relative; }
-        .all-properties h2::after { content: ''; display: block; width: 72px; height: 2px; background: rgba(16,16,16,0.12); margin: 10px auto 0; border-radius: 2px; }
-        .properties-group { margin-top: 26px; padding: 14px 8px; }
-        .properties-group .group-inner { display:block; }
-        .properties-group h3 { font-size: 1.05rem; margin: 0 0 12px; color: #262626; letter-spacing: 0.2px; }
-        @media (min-width: 900px) { .properties-group { display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: start; } .properties-group h3 { margin-top: 6px; } }
-        .properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
-        .property-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 30px rgba(8,8,10,0.05); text-decoration: none; color: inherit; display: block; transition: transform 240ms cubic-bezier(.2,.9,.3,1), box-shadow 240ms ease; }
-        .property-card:hover { transform: translateY(-8px); box-shadow: 0 26px 60px rgba(8,8,10,0.08); }
-        .property-card .thumb { width:100%; aspect-ratio: 16 / 9; background-size: cover; background-position: center; position: relative; }
-        .property-card .thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.12)); }
-        .property-card .meta { padding: 12px 14px 16px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(250,250,250,0.02)); display:flex; flex-direction:column; gap:8px; }
-        .property-card .title { font-weight: 700; margin: 0; font-size: 1rem; color:#0d1220; }
-        .property-card .price { color: #0b1220; font-weight: 800; font-size: 0.95rem; }
-        .property-card .location { font-size: 0.85rem; color: #7a7a7a; margin-top:4px }
-        .property-card .specs { font-size: 0.85rem; color: #5f5f5f; display:flex; gap:10px; align-items:center; }
-        .property-card .meta-row { display:flex; justify-content:space-between; align-items:center; gap:12px; }
-        .property-card .cta { background: #0f1720; color:#fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
-        .property-card .cta:focus { outline: 2px solid rgba(15,23,32,0.12); outline-offset: 2px; }
-        .property-card .thumb { transition: transform 420ms cubic-bezier(.2,.9,.3,1); }
-        .property-card:hover .thumb { transform: scale(1.03); }
-        .property-card .price-badge { position: absolute; right: 10px; top: 10px; background: rgba(6,6,8,0.75); color: #fff; padding: 6px 10px; border-radius: 8px; font-weight:700; font-size:0.85rem; }
-        @media (max-width: 600px) { .properties-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; } .all-properties { padding: 20px 12px; } }
+    /* Scoped page theme for Properties — Purple / Black / White / Vintage */
+    .properties-page {
+        --brand-purple: #5b2a86;
+        --brand-dark: #0f1720;
+        --brand-white: #ffffff;
+        --vintage-ochre: #8b5e3c;
+        --muted: #6f6b6b;
+        color: var(--brand-dark);
+        background: linear-gradient(180deg, rgba(250,248,245,0.0), rgba(250,248,245,0.02));
+    }
+
+    .properties-hero {
+        position: relative;
+        padding: 80px 20px;
+        background-image: url('images/background7.avif');
+        background-size: cover;
+        background-position: center;
+        color: var(--brand-white);
+        overflow: hidden;
+    }
+    .properties-hero::before {
+        content: '';
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg, rgba(11,11,13,0.48), rgba(16,6,30,0.36));
+        z-index: 0;
+    }
+    .properties-hero .hero-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; text-align: center; }
+    .properties-hero .hero-content { max-width: 1100px; margin: 0 auto; padding: 6px 18px; }
+    .properties-hero .kicker { display:inline-block; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); padding:6px 10px; border-radius:6px; font-weight:700; margin-bottom:12px; letter-spacing:0.6px; }
+    .properties-hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin: 6px 0 8px; }
+    .properties-hero .lead { color: rgba(255,255,255,0.92); font-size: 1.05rem; margin-bottom: 18px; }
+
+    /* Search / filter bar */
+    .search-bar { display:flex; gap:12px; max-width:920px; margin: 18px auto 0; align-items:center; justify-content:center; }
+    .search-bar input[type="search"] { flex:1 1 420px; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #fff; font-size:1rem; }
+    .search-bar select { padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color:#fff; }
+    .btn-primary { background: var(--brand-purple); color: #fff; padding:12px 16px; border-radius:10px; border:none; font-weight:800; cursor:pointer; box-shadow: 0 10px 30px rgba(91,42,134,0.18); }
+
+    .properties-hero .type-cursor { display:inline-block; width:8px; height:1.05em; background:var(--brand-white); margin-left:8px; vertical-align:middle; border-radius:2px; }
+
+    /* Property types (straight horizontal line, pill buttons) */
+    .property-types { display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:nowrap; overflow:auto; -webkit-overflow-scrolling:touch; padding:6px 8px; }
+    .property-types a { flex:0 0 auto; background: rgba(255,255,255,0.08); color: var(--brand-white); padding:10px 16px; border-radius: 999px; text-decoration:none; font-weight:700; border:1px solid rgba(255,255,255,0.06); transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease; white-space:nowrap; }
+    .property-types a:hover { transform: translateY(-3px); background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.08)); box-shadow: 0 12px 30px rgba(11,7,30,0.32); }
+
+    /* All Properties container */
+    .all-properties { max-width: 1200px; margin: 36px auto; padding: 28px; background: linear-gradient(180deg,#fff,#fbfbff); border-radius: 14px; box-shadow: 0 18px 54px rgba(16,12,8,0.06); border:1px solid rgba(16,12,8,0.04); }
+    .all-properties h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--brand-dark); margin: 6px 0 18px; text-align: left; }
+
+    /* Layout: groups with left labels on wide screens */
+    .properties-group { margin-top: 28px; display:block; }
+    @media (min-width: 900px) {
+        .properties-group { display: grid; grid-template-columns: 220px 1fr; gap:18px; align-items:start; }
+        .properties-group h3 { margin: 6px 0 12px; font-size:1.05rem; color:var(--muted); }
+    }
+
+    .properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+
+    /* Card polish (more vintage, elevated) */
+    .properties-page .property-card { background: linear-gradient(180deg,#fff,#fbfbff); border-radius: 12px; overflow: hidden; text-decoration:none; color:inherit; display:block; box-shadow: 0 14px 40px rgba(11,8,20,0.06); border:1px solid rgba(16,12,8,0.04); transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms ease; }
+    .properties-page .property-card:hover { transform: translateY(-10px); box-shadow: 0 34px 90px rgba(11,8,20,0.12); }
+
+    .properties-page .thumb { width:100%; aspect-ratio: 16/10; position:relative; overflow:hidden; background:#f3f3f3; }
+    .properties-page .thumb img { width:100%; height:100%; object-fit:cover; display:block; transition: transform 400ms cubic-bezier(.2,.9,.3,1); }
+    .properties-page .thumb::after { content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.18)); pointer-events:none; }
+    .properties-page .card-overlay { position:absolute; left:0; right:0; bottom:0; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px; transform: translateY(12px); opacity:0; transition: all 260ms ease; backdrop-filter: blur(4px); }
+    .properties-page .property-card:hover .card-overlay { transform: translateY(0); opacity:1; }
+    .properties-page .property-card:hover .thumb img { transform: scale(1.05); }
+
+
+    .properties-page .meta { padding:14px 16px; display:flex; flex-direction:column; gap:8px; position:relative; }
+    .properties-page .title { font-weight:800; font-size:1.02rem; color:var(--brand-dark); }
+    .properties-page .price { color:var(--brand-purple); font-weight:900; font-size:1rem; }
+    .properties-page .location { font-size:0.9rem; color:var(--muted); }
+    .properties-page .specs { display:flex; gap:12px; color:#6b6b6b; font-size:0.9rem; margin-top:6px; }
+    .properties-page .muted { color: #8a8080; font-size:0.9rem; }
+
+    /* CTA style inside overlay */
+    .properties-page .cta { background: var(--brand-dark); color:#fff; padding:8px 12px; border-radius:8px; font-weight:800; cursor:pointer; }
+
+    .price-badge { position:absolute; right:12px; top:12px; background: linear-gradient(180deg, var(--brand-purple), #3e1760); color:#fff; padding:6px 10px; border-radius:8px; font-weight:800; font-size:0.85rem; box-shadow: 0 8px 22px rgba(75,0,130,0.18); }
+
+    /* Locations list styling */
+    .locations-list { display:grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:12px; }
+    .location-btn { display:inline-block; text-decoration:none; text-align:center; padding:10px 14px; border-radius:8px; background:linear-gradient(180deg,var(--vintage-ochre), #b07a50); color:#fff; font-weight:700; box-shadow: 0 10px 28px rgba(16,12,8,0.08); }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+        .properties-hero { padding: 48px 14px; }
+        .properties-hero h1 { font-size: 2rem; }
+        .properties-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    }
+    @media (max-width: 480px) {
+        .properties-hero h1 { font-size: 1.6rem; }
+        .property-types { gap:10px; }
+    }
     </style>
+
 </head>
 <body class="properties-page">
     <nav>
-        <a href="/" class="logo-container">
-            <img src="/images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
+        <a href="index.html" class="logo-container">
+            <img src="images/logo.avif" alt="Vintage Realtors Logo" class="logo-img">
         </a>
-        <div class="site-title"><span>THE VINTAGE REALTORS</span></div>
+
+        <div class="site-title">
+            <span>THE VINTAGE REALTORS</span>
+        </div>
+
+        <div class="contact-phone">
+            <a href="tel:+254722865306">
+                <img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
+                <span class="phone-number">+254722865306</span>
+            </a>
+        </div>
+
         <button class="hamburger" aria-label="Open menu" aria-expanded="false">
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </button>
     </nav>
 
@@ -52,68 +134,94 @@
         <button class="close" aria-label="Close menu">&times;</button>
         <nav class="drawer-nav">
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/about.html">About</a></li>
-                <li><a href="/properties.html">Properties</a></li>
-                <li><a href="/collaborators.html">Collaborators</a></li>
-                <li><a href="/contact.html">Contact</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="properties.html">Properties</a></li>
+                <li><a href="collaborators.html">Collaborators</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
     </div>
+
     <div class="menu-overlay"></div>
 
     <main>
-        <header class="properties-hero" style="background-image: url('/images/background7.avif'); background-size: cover; background-position: center; padding: 100px 5%; position: relative;">
-            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,13,0.28), rgba(11,11,13,0.18));"></div>
-            <div style="position: relative; max-width: 1100px; margin: 0 auto; text-align: center; color: #fff;">
-                <h1>
-                    <span id="typing" aria-live="polite">Your next space awaits</span>
-                    <span class="type-cursor" aria-hidden="true"></span>
-                </h1>
-                <p style="font-size:1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 28px;">Find homes, offices and spaces that fit your life — curated listings across Nairobi.</p>
-                <div class="property-types" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; max-width: 900px; margin: 0 auto;">
-                    <a href="/properties.html#houses" class="btn-secondary" style="padding:12px 16px; background: rgba(255,255,255,0.14); color: #fff; border-radius: 8px; text-decoration:none; font-weight:700;">Houses</a>
-                    <a href="/properties.html#apartments" class="btn-secondary" style="padding:12px 16px; background: rgba(255,255,255,0.14); color: #fff; border-radius: 8px; text-decoration:none; font-weight:700;">Apartments</a>
-                    <a href="/properties.html#offices" class="btn-secondary" style="padding:12px 16px; background: rgba(255,255,255,0.14); color: #fff; border-radius: 8px; text-decoration:none; font-weight:700;">Offices</a>
-                    <a href="/properties.html#land" class="btn-secondary" style="padding:12px 16px; background: rgba(255,255,255,0.14); color: #fff; border-radius: 8px; text-decoration:none; font-weight:700;">Land</a>
-                    <a href="/properties.html#warehouses" class="btn-secondary" style="padding:12px 16px; background: rgba(255,255,255,0.14); color: #fff; border-radius: 8px; text-decoration:none; font-weight:700;">Warehouses</a>
-                    <a href="/properties.html#commercials" class="btn-secondary" style="padding:12px 16px; background: rgba(255,255,255,0.14); color: #fff; border-radius: 8px; text-decoration:none; font-weight:700;">Commercials</a>
+        <header class="properties-hero">
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <h1>
+                        <span id="typing" aria-live="polite">Your next space awaits</span>
+                        <span class="type-cursor" aria-hidden="true"></span>
+                    </h1>
+                    <p class="lead">Find homes, offices and spaces that fit your life — curated listings across Nairobi.</p>
+
+                    <div class="property-types">
+                        <a href="properties.html#houses" class="btn-secondary">Houses</a>
+                        <a href="properties.html#apartments" class="btn-secondary">Apartments</a>
+                        <a href="properties.html#offices" class="btn-secondary">Offices</a>
+                        <a href="properties.html#land" class="btn-secondary">Land</a>
+                        <a href="properties.html#warehouses" class="btn-secondary">Warehouses</a>
+                        <a href="properties.html#commercials" class="btn-secondary">Commercials</a>
+                    </div>
+
+                    <div class="search-bar" role="search" aria-label="Search properties">
+                        <input id="propSearch" type="search" placeholder="Search by title, location or neighbourhood…" aria-label="Search properties">
+                        <select id="sortSelect" aria-label="Sort properties">
+                            <option value="newest">Newest</option>
+                            <option value="priceAsc">Price — Low to High</option>
+                            <option value="priceDesc">Price — High to Low</option>
+                        </select>
+                        <button id="clearSearch" class="btn-primary" type="button">Clear</button>
+                    </div>
                 </div>
             </div>
         </header>
+        <!-- Our Locations: injected buttons (slide-in title + vintage buttons) -->
+        <section class="locations-section" aria-label="Our Locations">
+            <div class="locations-inner" style="max-width:1100px;margin:18px auto 0;padding:0 20px;">
+                <h2 class="locations-title">Our Locations</h2>
+                <div class="locations-list" id="locationsList" aria-live="polite" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px;">
+                    <!-- Buttons will be populated from Contentful results -->
+                </div>
+            </div>
+        </section>
+            <!-- All Properties (populated from Content Manager) -->
+            <section class="all-properties" aria-label="All properties">
+                <h2>All Properties</h2>
 
-        <section class="locations-section" aria-label="Our Locations">
-            <div class="locations-inner" style="max-width:1100px;margin:18px auto 0;padding:0 20px;">
-                <h2 class="locations-title">Our Locations</h2>
-                <div class="locations-list" id="locationsList" aria-live="polite" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px;"></div>
-            </div>
-        </section>
-
-        <section class="all-properties" aria-label="All properties">
-            <h2>All Properties</h2>
-            <div class="properties-group" id="houses"><h3>Houses</h3><div class="properties-grid" data-group="Houses"></div></div>
-            <div class="properties-group" id="apartments"><h3>Apartments</h3><div class="properties-grid" data-group="Apartments"></div></div>
-            <div class="properties-group" id="offices"><h3>Offices</h3><div class="properties-grid" data-group="Offices"></div></div>
-            <div class="properties-group" id="land"><h3>Land</h3><div class="properties-grid" data-group="Land"></div></div>
-            <div class="properties-group" id="warehouses"><h3>Warehouses</h3><div class="properties-grid" data-group="Warehouses"></div></div>
-            <div class="properties-group" id="commercials"><h3>Commercials</h3><div class="properties-grid" data-group="Commercials"></div></div>
-        </section>
-    </main>
+                <!-- Empty groups — populated dynamically from the CMS in this order -->
+                <div class="properties-group" id="houses"><h3>Houses</h3><div class="properties-grid" data-group="Houses"></div></div>
+                <div class="properties-group" id="apartments"><h3>Apartments</h3><div class="properties-grid" data-group="Apartments"></div></div>
+                <div class="properties-group" id="offices"><h3>Offices</h3><div class="properties-grid" data-group="Offices"></div></div>
+                <div class="properties-group" id="land"><h3>Land</h3><div class="properties-grid" data-group="Land"></div></div>
+                <div class="properties-group" id="warehouses"><h3>Warehouses</h3><div class="properties-grid" data-group="Warehouses"></div></div>
+                <div class="properties-group" id="commercials"><h3>Commercials</h3><div class="properties-grid" data-group="Commercials"></div></div>
+            </section>
+    </main>
 
     <footer class="site-footer">
         <div class="footer-content">
-            <div class="footer-logo"><img src="/images/FOOTER%20LOGO.avif" alt="Footer logo"></div>
-            <div class="footer-about"><h3>The Vintage Realtors</h3><p>If you build it, we will list it.</p><p>Nairobi, Kenya</p></div>
+            <div class="footer-logo">
+                <img src="images/FOOTER%20LOGO.avif" alt="Footer logo">
+            </div>
+
+            <div class="footer-about">
+                <h3>The Vintage Realtors</h3>
+                <p>If you build it, we will list it.</p>
+                <p>Nairobi, Kenya</p>
+            </div>
+
             <div class="footer-contact">
                 <h4>Contact</h4>
                 <p>Email: <a href="mailto:sales@vintagerealtors.co.ke">sales@vintagerealtors.co.ke</a></p>
                 <p>Phone: <a href="tel:+254722865306">+254722865306</a></p>
             </div>
+
             <div class="footer-follow">
                 <h4>Follow Us</h4>
-                <p><a class="social-link" href="https://instagram.com/realtorvintage" target="_blank" rel="noopener noreferrer">Instagram</a></p>
-                <p><a class="social-link" href="https://www.tiktok.com/@the.realtors7" target="_blank" rel="noopener noreferrer">TikTok</a></p>
-                <p><a class="social-link" href="https://www.facebook.com/TheVintageRealtors" target="_blank" rel="noopener noreferrer">Facebook</a></p>
+                <p><a class="social-link" href="https://instagram.com/realtorvintage" target="_blank" rel="noopener noreferrer"><span class="icon instagram" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg></span> Instagram</a></p>
+                <p><a class="social-link" href="https://www.tiktok.com/@the.realtors7" target="_blank" rel="noopener noreferrer"><span class="icon tiktok" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v9.5a3.5 3.5 0 1 0 3.5 3.5V9.5h2.5V7h-2.5V3h-3.5z" fill="currentColor"/></svg></span> TikTok</a></p>
+                <p><a class="social-link" href="https://www.facebook.com/TheVintageRealtors" target="_blank" rel="noopener noreferrer"><span class="icon facebook" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M22 12.07C22 6.52 17.52 2 12 2S2 6.52 2 12.07c0 4.98 3.66 9.05 8.47 9.95v-7.05H8.07v-2.9h2.4V9.41c0-2.35 1.39-3.64 3.51-3.64 1.02 0 2.09.18 2.09.18v2.3h-1.18c-1.16 0-1.52.72-1.52 1.46v1.75h2.6l-.42 2.9h-2.18v7.05C18.34 21.12 22 17.05 22 12.07z"/></svg></span> Facebook</a></p>
             </div>
         </div>
     </footer>
@@ -121,93 +229,270 @@
     <div class="footer-bottom">
         <div class="footer-bottom-inner">
             <p>© 2026 The Vintage Realtors — All rights reserved.</p>
-            <nav class="footer-links">
-                <a href="/privacy.html">Privacy</a>
-                <a href="/legal.html">Legal</a>
-                <a href="/termsandconditions.html">Terms &amp; Conditions</a>
+            <nav class="footer-links" aria-label="Footer legal links">
+                <a href="privacy.html">Privacy</a>
+                <a href="legal.html">Legal</a>
+                <a href="termsandconditions.html">Terms &amp; Conditions</a>
             </nav>
         </div>
     </div>
 
-    <a href="https://wa.me/254722865306" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
-        <img src="/images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
-    </a>
+    <a href="https://wa.me/254722865306" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <img src="images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
+    </a>
 
-    <script src="/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
 
-    <script>
-    (function(){
-        const client = contentful.createClient({ space: '34evf5vfv8l3', accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY' });
-        const groups = ['Houses','Apartments','Offices','Land','Warehouses','Commercials'];
+    <script>
+    // Populate All Properties from Contentful, grouped by type
+    (function(){
+        const client = contentful.createClient({
+            space: '34evf5vfv8l3',
+            accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
+        });
 
-        function getType(fields) { return (fields.type || fields.propertyType || fields.category || fields.property_type || '').toString(); }
-        function formatPrice(price) { return (!price && price !== 0) ? '' : 'KES ' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+        // Order of groups to display
+        const groups = ['Houses','Apartments','Offices','Land','Warehouses','Commercials'];
 
-        client.getEntries({ content_type: 'property', order: '-sys.createdAt', limit: 100 })
-        .then((response) => {
-            const locationsSet = new Set();
-            const containers = {};
-            groups.forEach(name => {
-                const el = document.querySelector(`.properties-grid[data-group="${name}"]`);
-                if(el) containers[name] = el;
-            });
+        // Small helper to determine type field on the entry
+        function getType(fields) {
+            return (fields.type || fields.propertyType || fields.category || fields.property_type || '').toString();
+        }
 
-            response.items.forEach(item => {
-                const p = item.fields;
-                if(p.location) locationsSet.add(p.location.toString().trim());
-                const type = getType(p) || 'Other';
+        function formatPrice(price) {
+            if(!price && price !== 0) return '';
+            return 'KES ' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
 
-                let imageUrl = '';
-                if(p.mainImage && p.mainImage.fields && p.mainImage.fields.file) imageUrl = 'https:' + p.mainImage.fields.file.url;
+        client.getEntries({ content_type: 'property', order: '-sys.createdAt', limit: 100 })
+        .then((response) => {
+            // collect unique locations to build the Locations buttons
+            const locationsSet = new Set();
+            // Map group name to container element
+            const containers = {};
+            groups.forEach(name => {
+                const el = document.querySelector(`.properties-grid[data-group="${name}"]`);
+                if(el) containers[name] = el;
+            });
+
+            response.items.forEach(item => {
+                const p = item.fields;
+                if(p.location) locationsSet.add(p.location.toString().trim());
+                const type = getType(p) || 'Other';
+
+                // Build card
+                let imageUrl = '';
+                if(p.mainImage && p.mainImage.fields && p.mainImage.fields.file) imageUrl = 'https:' + p.mainImage.fields.file.url;
 
                 const card = document.createElement('a');
                 card.className = 'property-card';
-                // THIS IS THE FIX FOR PROPERTIES.HTML ROUTING:
-                card.href = `/property/${p.slug}`; 
-                
-                const thumbBg = imageUrl || '/images/background2.avif';
+                card.href = `property.html?id=${item.sys.id}`;
+                const thumbBg = imageUrl || 'images/background2.avif';
                 const status = p.status ? `<div class="price-badge">${p.status}</div>` : '';
+                const beds = p.bedrooms ? `🛏 ${p.bedrooms}` : '';
+                const baths = p.bathrooms ? `🚿 ${p.bathrooms}` : '';
+                const area = p.area ? `📐 ${p.area} m²` : '';
                 card.innerHTML = `
-                    <div class="thumb" style="background-image: url('${thumbBg}')">${status}</div>
+                    <div class="thumb"><img loading="lazy" src="${thumbBg}" alt="${(p.title||'Property image').replace(/"/g,'')}">${status}
+                        <div class="card-overlay">
+                            <div class="price-mini">${formatPrice(p.price) || ''}</div>
+                            <div class="cta">View</div>
+                        </div>
+                    </div>
                     <div class="meta">
                         <div class="title">${p.title || 'Untitled'}</div>
                         <div class="price">${formatPrice(p.price) || ''}</div>
-                        <div class="specs">${p.bedrooms ? '🛏 ' + p.bedrooms : ''}${p.bedrooms && p.bathrooms ? ' • ' : ''}${p.bathrooms ? '🚿 ' + p.bathrooms : ''}</div>
-                        <div class="meta-row"><div class="location">${p.location || ''}</div><span class="cta">View</span></div>
+                        <div class="location">${p.location || ''}</div>
+                        <div class="specs">${beds}${beds && (baths || area) ? ' • ' : ''}${baths}${(baths && area) ? ' • ' : ''}${area}</div>
+                        <div class="meta-row"><div class="muted">${p.neighborhood || ''}</div></div>
                     </div>
                 `;
 
-                if(containers[type]) containers[type].appendChild(card);
-                else { const fallback = containers[groups[0]]; if(fallback) fallback.appendChild(card); }
+                // Append to matching group if found, otherwise to first group
+                if(containers[type]) {
+                    containers[type].appendChild(card);
+                } else {
+                    // if type missing or unknown, append to first group (Houses) as fallback
+                    const fallback = containers[groups[0]];
+                    if(fallback) fallback.appendChild(card);
+                }
+            });
+            // Build the locations buttons (preferred ones first)
+            const locationsListEl = document.getElementById('locationsList');
+            if(locationsListEl){
+                const locations = Array.from(locationsSet).sort((a,b)=> a.localeCompare(b));
+                const preferred = ['Westlands','Karen'];
+                const ordered = [];
+                const seen = new Set();
+                preferred.forEach(name => { if(!seen.has(name)){ ordered.push(name); seen.add(name); } });
+                locations.forEach(name => { if(!seen.has(name)){ ordered.push(name); seen.add(name); } });
+
+                ordered.forEach(loc => {
+                    const a = document.createElement('a');
+                    a.className = 'location-btn';
+                    a.href = `location.html?loc=${encodeURIComponent(loc)}`;
+                    a.textContent = loc;
+                    locationsListEl.appendChild(a);
+                });
+            }
+            // Hide any groups that ended up empty for a cleaner layout
+            Object.keys(containers).forEach(name => {
+                const grid = containers[name];
+                if(grid && grid.children.length === 0) {
+                    const groupEl = grid.closest('.properties-group');
+                    if(groupEl) groupEl.style.display = 'none';
+                }
+            });
+        })
+        .catch(err => console.error('Contentful error:', err));
+    })();
+    </script>
+    <script>
+    // Client-side search/filter for the loaded property cards
+    (function(){
+        const search = document.getElementById('propSearch');
+        const clear = document.getElementById('clearSearch');
+        const sort = document.getElementById('sortSelect');
+
+        if(!search) return;
+
+        function filterCards() {
+            const q = (search.value || '').toLowerCase().trim();
+            const cards = document.querySelectorAll('.property-card');
+            cards.forEach(card => {
+                const title = (card.querySelector('.title')?.textContent || '').toLowerCase();
+                const loc = (card.querySelector('.location')?.textContent || '').toLowerCase();
+                const neighborhood = (card.querySelector('.muted')?.textContent || '').toLowerCase();
+                const visible = !q || title.includes(q) || loc.includes(q) || neighborhood.includes(q);
+                card.style.display = visible ? '' : 'none';
             });
+        }
 
-            const locationsListEl = document.getElementById('locationsList');
-            if(locationsListEl){
-                const locations = Array.from(locationsSet).sort((a,b)=> a.localeCompare(b));
-                const ordered = []; const seen = new Set();
-                ['Westlands','Karen'].forEach(name => { if(!seen.has(name)){ ordered.push(name); seen.add(name); } });
-                locations.forEach(name => { if(!seen.has(name)){ ordered.push(name); seen.add(name); } });
+        search.addEventListener('input', filterCards, { passive: true });
+        clear.addEventListener('click', () => { search.value = ''; filterCards(); });
 
-                ordered.forEach(loc => {
-                    const a = document.createElement('a');
-                    a.className = 'location-btn';
-                    a.href = `/location.html?loc=${encodeURIComponent(loc)}`;
-                    a.textContent = loc;
-                    locationsListEl.appendChild(a);
+        // Basic sorting (rearranges DOM within each group)
+        sort.addEventListener('change', () => {
+            const mode = sort.value;
+            const groups = document.querySelectorAll('.properties-grid');
+            groups.forEach(grid => {
+                const items = Array.from(grid.children || []).filter(n => n.classList && n.classList.contains('property-card'));
+                items.sort((a,b) => {
+                    const pa = parseInt((a.querySelector('.price')?.textContent||'').replace(/[^0-9]/g,'')) || 0;
+                    const pb = parseInt((b.querySelector('.price')?.textContent||'').replace(/[^0-9]/g,'')) || 0;
+                    if(mode === 'priceAsc') return pa - pb;
+                    if(mode === 'priceDesc') return pb - pa;
+                    // newest — keep original order (items already in created order)
+                    return 0;
                 });
-            }
-
-            Object.keys(containers).forEach(name => {
-                const grid = containers[name];
-                if(grid && grid.children.length === 0) {
-                    const groupEl = grid.closest('.properties-group');
-                    if(groupEl) groupEl.style.display = 'none';
-                }
+                items.forEach(i => grid.appendChild(i));
             });
-        })
-        .catch(console.error);
+        });
     })();
     </script>
+    <script>
+        (function(){
+            const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const el = document.getElementById('typing');
+            const phrase = 'Your next space awaits';
+
+            if(!el) return;
+
+            if(prefersReduced) {
+                el.textContent = phrase;
+                return;
+            }
+
+            let text = '';
+            let isDeleting = false;
+            let index = 0;
+
+            function tick() {
+                if(!isDeleting) {
+                    text = phrase.substring(0, text.length + 1);
+                } else {
+                    text = phrase.substring(0, text.length - 1);
+                }
+
+                el.textContent = text;
+
+                let delay = isDeleting ? 50 : 120;
+
+                if(!isDeleting && text === phrase) {
+                    delay = 1200;
+                    isDeleting = true;
+                } else if(isDeleting && text === '') {
+                    isDeleting = false;
+                    delay = 500;
+                }
+
+                setTimeout(tick, delay);
+            }
+
+            // start after a short delay so hero feels settled
+            setTimeout(tick, 600);
+        })();
+    </script>
+    <script>
+    // Center a given element vertically in the viewport (respect reduced-motion)
+    (function(){
+        const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function centerElement(el, smooth = true){
+            if(!el) return;
+            const rect = el.getBoundingClientRect();
+            const winH = window.innerHeight || document.documentElement.clientHeight;
+            const target = window.scrollY + rect.top - Math.max(0, Math.round((winH - rect.height) / 2));
+            const top = Math.max(0, target);
+            if(prefersReduced) window.scrollTo(0, top);
+            else window.scrollTo({ top, behavior: smooth ? 'smooth' : 'auto' });
+        }
+
+        function tryCenterHash(){
+            if(!location.hash) return false;
+            const id = location.hash.replace('#','');
+            const el = document.getElementById(id);
+            if(el){ centerElement(el, true); return true; }
+            return false;
+        }
+
+        // If content is loaded asynchronously (CMS), wait for groups to populate using MutationObserver
+        function waitForContentAndCenter(){
+            if(tryCenterHash()) return;
+            const container = document.querySelector('.all-properties');
+            if(!container) return;
+            const obs = new MutationObserver((mutations, o) => {
+                if(tryCenterHash()) o.disconnect();
+            });
+            obs.observe(container, { childList: true, subtree: true });
+            // fallback: try after 900ms
+            setTimeout(() => { tryCenterHash(); obs.disconnect(); }, 900);
+        }
+
+        // Handle initial load and hash changes
+        window.addEventListener('load', waitForContentAndCenter);
+        window.addEventListener('hashchange', () => { setTimeout(() => tryCenterHash(), 40); });
+
+        // Intercept same-page hash clicks and center the target (preserve history)
+        document.addEventListener('click', (e) => {
+            const a = e.target.closest('a[href*="#"]');
+            if(!a) return;
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if(url.pathname === location.pathname){
+                    const id = url.hash.replace('#','');
+                    const target = document.getElementById(id);
+                    if(target){
+                        e.preventDefault();
+                        history.pushState(null, '', '#' + id);
+                        // small timeout to allow any focus/visibility changes
+                        setTimeout(() => centerElement(target, true), 50);
+                    }
+                }
+            } catch (err) { /* ignore malformed URLs */ }
+        }, { passive: true });
+    })();
+    </script>
 </body>
 </html>
