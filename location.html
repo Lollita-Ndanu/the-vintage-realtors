@@ -55,7 +55,7 @@
 </head>
     <body class="location-page">
     <nav>
-        <a href="index.html" class="logo-container">
+        <a href="/" class="logo-container">
             <img src="images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
         </a>
         <div class="site-title"><span>THE VINTAGE REALTORS</span></div>
@@ -87,7 +87,7 @@
 
                 <!-- Return button: placed on the right for a professional layout -->
                 <div style="display:flex;align-items:flex-start;margin-left:18px;">
-                    <a href="properties.html" class="back-btn" id="backBtn" aria-label="Return to properties page">← Back to Properties</a>
+                    <a href="/properties" class="back-btn" id="backBtn" aria-label="Return to properties page">← Back to Properties</a>
                 </div>
             </div>
         </header>
@@ -128,9 +128,9 @@
         <div class="footer-bottom-inner">
             <p>© 2026 The Vintage Realtors — All rights reserved.</p>
             <nav class="footer-links" aria-label="Footer legal links">
-                <a href="privacy.html">Privacy</a>
-                <a href="legal.html">Legal</a>
-                <a href="termsandconditions.html">Terms &amp; Conditions</a>
+                <a href="/privacy">Privacy</a>
+                <a href="/legal">Legal</a>
+                <a href="/termsandconditions">Terms &amp; Conditions</a>
             </nav>
         </div>
     </div>
@@ -159,7 +159,7 @@
             const p = item.fields;
             const container = document.createElement('a');
             container.className = 'property-card';
-            container.href = `property.html?id=${item.sys.id}`;
+            container.href = `/property?id=${item.sys.id}`;
             const imageUrl = (p.mainImage && p.mainImage.fields && p.mainImage.fields.file) ? 'https:' + p.mainImage.fields.file.url : 'images/background2.avif';
             const status = p.status ? `<div class="price-badge">${p.status}</div>` : '';
             container.innerHTML = `

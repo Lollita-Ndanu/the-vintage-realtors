@@ -108,7 +108,7 @@
 </head>
 <body class="properties-page">
     <nav>
-        <a href="index.html" class="logo-container">
+        <a href="/" class="logo-container">
             <img src="images/logo.avif" alt="Vintage Realtors Logo" class="logo-img">
         </a>
 
@@ -134,11 +134,11 @@
         <button class="close" aria-label="Close menu">&times;</button>
         <nav class="drawer-nav">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="properties.html">Properties</a></li>
-                <li><a href="collaborators.html">Collaborators</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/properties">Properties</a></li>
+                <li><a href="/collaborators">Collaborators</a></li>
+                <li><a href="/contact">Contact</a></li>
             </ul>
         </nav>
     </div>
@@ -156,12 +156,12 @@
                     <p class="lead">Find homes, offices and spaces that fit your life — curated listings across Nairobi.</p>
 
                     <div class="property-types">
-                        <a href="properties.html#houses" class="btn-secondary">Houses</a>
-                        <a href="properties.html#apartments" class="btn-secondary">Apartments</a>
-                        <a href="properties.html#offices" class="btn-secondary">Offices</a>
-                        <a href="properties.html#land" class="btn-secondary">Land</a>
-                        <a href="properties.html#warehouses" class="btn-secondary">Warehouses</a>
-                        <a href="properties.html#commercials" class="btn-secondary">Commercials</a>
+                        <a href="#houses" class="btn-secondary">Houses</a>
+                        <a href="#apartments" class="btn-secondary">Apartments</a>
+                        <a href="#offices" class="btn-secondary">Offices</a>
+                        <a href="#land" class="btn-secondary">Land</a>
+                        <a href="#warehouses" class="btn-secondary">Warehouses</a>
+                        <a href="#commercials" class="btn-secondary">Commercials</a>
                     </div>
 
                     <div class="search-bar" role="search" aria-label="Search properties">
@@ -230,9 +230,9 @@
         <div class="footer-bottom-inner">
             <p>© 2026 The Vintage Realtors — All rights reserved.</p>
             <nav class="footer-links" aria-label="Footer legal links">
-                <a href="privacy.html">Privacy</a>
-                <a href="legal.html">Legal</a>
-                <a href="termsandconditions.html">Terms &amp; Conditions</a>
+                <a href="/privacy">Privacy</a>
+                <a href="/legal">Legal</a>
+                <a href="/termsandconditions">Terms &amp; Conditions</a>
             </nav>
         </div>
     </div>
@@ -287,7 +287,7 @@
 
                 const card = document.createElement('a');
                 card.className = 'property-card';
-                card.href = `property.html?id=${item.sys.id}`;
+                card.href = `/property?id=${item.sys.id}`;
                 const thumbBg = imageUrl || 'images/background2.avif';
                 const status = p.status ? `<div class="price-badge">${p.status}</div>` : '';
                 const beds = p.bedrooms ? `🛏 ${p.bedrooms}` : '';
@@ -331,7 +331,7 @@
                 ordered.forEach(loc => {
                     const a = document.createElement('a');
                     a.className = 'location-btn';
-                    a.href = `location.html?loc=${encodeURIComponent(loc)}`;
+                a.href = `/location?loc=${encodeURIComponent(loc)}`;
                     a.textContent = loc;
                     locationsListEl.appendChild(a);
                 });
