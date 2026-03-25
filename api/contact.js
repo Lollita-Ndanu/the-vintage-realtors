@@ -248,6 +248,7 @@ module.exports = async (req, res) => {
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
   const resendApiKey = process.env.RESEND_API_KEY;
+  const senderEmail = process.env.SENDER_EMAIL || 'contacts@vintagerealtors.com';
   const recipientEmail = process.env.CONTACT_EMAIL || 'contacts@vintagerealtors.com';
 
   if (!supabaseUrl || !supabaseKey) {
@@ -326,7 +327,7 @@ module.exports = async (req, res) => {
     const resend = new Resend(resendApiKey);
     
     const emailResponse = await resend.emails.send({
-      from: 'Vintage Realtors <noreply@vintagerealtors.com>',
+      from: `Vintage Realtors <${senderEmail}>`,
       to: [recipientEmail],
       subject: `New Contact Inquiry from ${sanitizedData.name}`,
       html: formatEmailHtml(sanitizedData, timestamp),
