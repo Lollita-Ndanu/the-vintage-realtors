@@ -170,47 +170,87 @@ body {
 
 /* --- 2. NAVIGATION BAR --- */
 nav {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "logo title actions";
     align-items: center;
-    padding: 10px 5%;
+    padding: 12px 5%;
     background: var(--white);
-    height: 90px;
+    min-height: 90px;
+    height: auto;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
     transition: transform 300ms ease, box-shadow 220ms ease;
+    gap: 16px;
+}
+
+.logo-container {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
 }
 
 .logo-img {
     height: 70px;
     width: auto;
+    transition: height 200ms ease;
 }
 
 .site-title {
+    grid-area: title;
     font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
+    font-size: clamp(0.9rem, 2vw, 1.8rem);
     font-weight: 700;
     color: var(--black);
+    text-align: center;
+    justify-self: center;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .site-title span { color: var(--purple); }
 
-/* Center the site title precisely in the header */
-.site-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1002;
-    pointer-events: none;
-    text-align: center;
-    width: max-content;
+.nav-actions {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-self: end;
 }
 
-@media (max-width: 700px) {
-    .site-title { font-size: 1.1rem; }
+.contact-phone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contact-phone a {
+    color: var(--black);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    transition: color 180ms ease;
+}
+
+.contact-phone a:hover { color: var(--purple); }
+
+.phone-icon {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    transition: width 200ms ease, height 200ms ease;
+}
+
+.phone-number {
+    white-space: nowrap;
+    transition: font-size 200ms ease;
 }
 
 /* Hamburger Button */
@@ -221,6 +261,9 @@ nav {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    padding: 8px;
+    margin: -8px;
+    flex-shrink: 0;
 }
 
 .hamburger span {
@@ -228,6 +271,66 @@ nav {
     width: 30px;
     height: 3px;
     background: var(--black);
+    border-radius: 2px;
+    transition: width 200ms ease;
+}
+
+/* Responsive breakpoints for nav */
+@media (max-width: 1200px) {
+    .site-title {
+        font-size: clamp(0.85rem, 1.8vw, 1.5rem);
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .contact-phone .phone-number {
+        font-size: 0.85rem;
+    }
+    .phone-icon {
+        width: 28px;
+        height: 28px;
+    }
+    .nav-actions {
+        gap: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        grid-template-columns: auto 1fr auto;
+        grid-template-areas: "logo . actions";
+        padding: 10px 4%;
+        min-height: 80px;
+    }
+    .site-title {
+        display: none;
+    }
+    .contact-phone {
+        display: none;
+    }
+    .logo-img {
+        height: 60px;
+    }
+    .hamburger span {
+        width: 26px;
+    }
+}
+
+@media (max-width: 480px) {
+    nav {
+        min-height: 70px;
+        padding: 8px 3%;
+    }
+    .logo-img {
+        height: 50px;
+    }
+    .nav-actions {
+        gap: 12px;
+    }
+    .hamburger span {
+        width: 24px;
+        height: 2.5px;
+    }
 }
 
 /* --- 3. MENU DRAWER FIX --- */
@@ -583,22 +686,7 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
     .about-text { text-align: center; }
 }
 
-.contact-phone {
-    position: absolute;
-    top: 50%;
-    right: 120px;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    z-index: 1001;
-}
-.contact-phone a { color: var(--black); text-decoration: none; display:flex; align-items:center; gap:8px; font-weight: 600; }
-.phone-icon { width: 34px; height: 34px; object-fit: contain; }
 
-@media (max-width: 1024px) {
-    .contact-phone { display: none; }
-}
 
 /* ==========================================================================
    FEATURED PROPERTIES (UPDATED FOR GRID LAYOUT / CONTENTFUL)
@@ -1041,4 +1129,67 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
 @media (max-width: 600px) {
     .locations-title { text-align: center; }
     .locations-list { grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
+}
+
+/* =========================================
+   FORM STATUS MESSAGES
+   ========================================= */
+.form-status-message {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: none;
+    animation: slideUp 220ms ease;
+}
+
+.form-status-message.success {
+    background: linear-gradient(180deg, #e8f5e9, #c8e6c9);
+    color: #2e7d32;
+    border: 1px solid rgba(46, 125, 50, 0.2);
+}
+
+.form-status-message.error {
+    background: linear-gradient(180deg, #ffebee, #ffcdd2);
+    color: #c62828;
+    border: 1px solid rgba(198, 40, 40, 0.2);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary.subscribed {
+    background: #2e7d32;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(75, 0, 130, 0.1);
+}
+
+input:invalid:not(:placeholder-shown),
+textarea:invalid:not(:placeholder-shown) {
+    border-color: #c62828;
+}
+
+input:valid:not(:placeholder-shown),
+textarea:valid:not(:placeholder-shown) {
+    border-color: #2e7d32;
 }

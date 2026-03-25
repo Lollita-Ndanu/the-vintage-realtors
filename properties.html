@@ -117,18 +117,19 @@
             <span>THE VINTAGE REALTORS</span>
         </div>
 
-        <div class="contact-phone">
-            <a href="tel:+254722865306">
-                <img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
-                <span class="phone-number">+254722865306</span>
-            </a>
+        <div class="nav-actions">
+            <div class="contact-phone">
+                <a href="tel:+254722865306">
+                    <img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
+                    <span class="phone-number">+254722865306</span>
+                </a>
+            </div>
+            <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-
-        <button class="hamburger" aria-label="Open menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
     </nav>
 
     <div id="menu" class="menu-drawer" aria-hidden="true">
@@ -249,8 +250,8 @@
     // Populate All Properties from Contentful, grouped by type
     (function(){
         const client = contentful.createClient({
-            space: '34evf5vfv8l3',
-            accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
+            space: '__CONTENTFUL_SPACE_ID__',
+            accessToken: '__CONTENTFUL_ACCESS_TOKEN__'
         });
 
         // Order of groups to display
