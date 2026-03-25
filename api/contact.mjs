@@ -1,5 +1,5 @@
-const { createClient } = require('@supabase/supabase-js');
-const { Resend } = require('resend');
+import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -12,13 +12,13 @@ const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const rateLimitStore = new Map();
 
-function getClientIP(request) {
-  const forwarded = request.headers['x-forwarded-for'];
+function getClientIP(headers) {
+  const forwarded = headers['x-forwarded-for'];
   if (forwarded) {
     const ips = forwarded.split(',').map(ip => ip.trim());
     return ips[0];
   }
-  const realIP = request.headers['x-real-ip'];
+  const realIP = headers['x-real-ip'];
   if (realIP) return realIP;
   return 'unknown';
 }
@@ -107,9 +107,28 @@ function validateInput(data) {
   };
 }
 
+function escapeHtml(text) {
+  if (!text) return '';
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  };
+  return String(text).replace(/[&<>"']/g, char => map[char]);
+}
+
 function formatEmailHtml(data, timestamp) {
-  return `
-<!DOCTYPE html>
+  const phoneSection = data.phone ? `
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
+                    <span style="color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</span>
+                    <p style="margin: 4px 0 0; font-size: 16px; color: #333;"><a href="tel:${escapeHtml(data.phone.replace(/\s/g, ''))}" style="color: #8b7355; text-decoration: none;">${escapeHtml(data.phone)}</a></p>
+                  </td>
+                </tr>` : '';
+  
+  return `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -129,7 +148,6 @@ function formatEmailHtml(data, timestamp) {
           <tr>
             <td style="padding: 32px 40px;">
               <p style="margin: 0 0 24px; color: #666; font-size: 14px;">A new contact inquiry has been submitted through the Vintage Realtors website.</p>
-              
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
@@ -143,14 +161,7 @@ function formatEmailHtml(data, timestamp) {
                     <p style="margin: 4px 0 0; font-size: 16px; color: #333;"><a href="mailto:${escapeHtml(data.email)}" style="color: #8b7355; text-decoration: none;">${escapeHtml(data.email)}</a></p>
                   </td>
                 </tr>
-                ${data.phone ? `
-                <tr>
-                  <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
-                    <span style="color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</span>
-                    <p style="margin: 4px 0 0; font-size: 16px; color: #333;"><a href="tel:${escapeHtml(data.phone.replace(/\s/g, ''))}" style="color: #8b7355; text-decoration: none;">${escapeHtml(data.phone)}</a></p>
-                  </td>
-                </tr>
-                ` : ''}
+                ${phoneSection}
                 <tr>
                   <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                     <span style="color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Message</span>
@@ -176,56 +187,34 @@ function formatEmailHtml(data, timestamp) {
     </tr>
   </table>
 </body>
-</html>
-  `.trim();
+</html>`;
 }
 
 function formatEmailText(data, timestamp) {
-  return `
-NEW CONTACT INQUIRY
+  const phoneLine = data.phone ? `Phone: ${data.phone}\n` : '';
+  return `NEW CONTACT INQUIRY
 ==================
 
 A new contact inquiry has been submitted through the Vintage Realtors website.
 
 Name: ${data.name}
 Email: ${data.email}
-${data.phone ? `Phone: ${data.phone}\n` : ''}
-Message:
+${phoneLine}Message:
 ${data.message}
 
 Submitted: ${timestamp}
 
 ---
-This email was automatically sent from the Vintage Realtors website contact form.
-  `.trim();
+This email was automatically sent from the Vintage Realtors website contact form.`;
 }
 
-function escapeHtml(text) {
-  if (!text) return '';
-  const map = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;',
-  };
-  return String(text).replace(/[&<>"']/g, char => map[char]);
-}
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-function sendJsonResponse(statusCode, body) {
-  return {
-    statusCode,
-    headers: {
-      ...CORS_HEADERS,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  };
-}
-
-module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') {
-    res.status(200).json({});
+    res.status(200).end();
     return;
   }
 
@@ -234,133 +223,141 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const clientIP = getClientIP(req.headers);
-  const rateLimitResult = checkRateLimit(clientIP);
-  
-  if (!rateLimitResult.allowed) {
-    res.status(429).json({
-      error: 'Too many requests. Please try again later.',
-      retryAfter: rateLimitResult.resetAfter,
-    });
-    return;
-  }
-
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const senderEmail = process.env.SENDER_EMAIL || 'contacts@vintagerealtors.com';
-  const recipientEmail = process.env.CONTACT_EMAIL || 'contacts@vintagerealtors.com';
-
-  if (!supabaseUrl || !supabaseKey) {
-    console.error('Missing Supabase configuration');
-    res.status(500).json({ error: 'Server configuration error' });
-    return;
-  }
-
-  if (!resendApiKey) {
-    console.error('Missing Resend API key');
-    res.status(500).json({ error: 'Server configuration error' });
-    return;
-  }
-
-  let body;
   try {
-    body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-  } catch (parseError) {
-    res.status(400).json({ error: 'Invalid JSON in request body' });
-    return;
-  }
-
-  const validation = validateInput(body);
-  if (!validation.isValid) {
-    res.status(400).json({
-      error: 'Validation failed',
-      details: validation.errors,
-    });
-    return;
-  }
-
-  const sanitizedData = validation.sanitized;
-  const timestamp = new Date().toLocaleString('en-US', {
-    timeZone: 'Africa/Nairobi',
-    dateStyle: 'full',
-    timeStyle: 'long',
-  });
-
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  });
-
-  let dbResult = null;
-  let dbError = null;
-
-  try {
-    const { data, error } = await supabase
-      .from('contact_submissions')
-      .insert([{
-        name: sanitizedData.name,
-        email: sanitizedData.email,
-        phone: sanitizedData.phone,
-        message: sanitizedData.message,
-      }])
-      .select('id')
-      .single();
-
-    if (error) {
-      console.error('Supabase insert error:', error);
-      dbError = error;
-    } else {
-      dbResult = data;
-    }
-  } catch (err) {
-    console.error('Supabase connection error:', err);
-    dbError = err;
-  }
-
-  let emailSent = false;
-  let emailError = null;
-
-  try {
-    const resend = new Resend(resendApiKey);
+    const clientIP = getClientIP(req.headers);
+    const rateLimitResult = checkRateLimit(clientIP);
     
-    const emailResponse = await resend.emails.send({
-      from: `Vintage Realtors <${senderEmail}>`,
-      to: [recipientEmail],
-      subject: `New Contact Inquiry from ${sanitizedData.name}`,
-      html: formatEmailHtml(sanitizedData, timestamp),
-      text: formatEmailText(sanitizedData, timestamp),
-      reply_to: sanitizedData.email,
-    });
-
-    if (emailResponse.error) {
-      console.error('Resend API error:', emailResponse.error);
-      emailError = emailResponse.error;
-    } else {
-      emailSent = true;
+    if (!rateLimitResult.allowed) {
+      res.status(429).json({
+        error: 'Too many requests. Please try again later.',
+        retryAfter: rateLimitResult.resetAfter,
+      });
+      return;
     }
-  } catch (err) {
-    console.error('Resend error:', err);
-    emailError = err;
-  }
 
-  if (dbError && !dbResult) {
-    res.status(500).json({
-      error: 'Failed to save your message. Please try again.',
-      reference: timestamp,
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const senderEmail = process.env.SENDER_EMAIL || 'contacts@vintagerealtors.com';
+    const recipientEmail = process.env.CONTACT_EMAIL || 'contacts@vintagerealtors.com';
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Missing Supabase configuration');
+      res.status(500).json({ error: 'Server configuration error (SUPABASE)' });
+      return;
+    }
+
+    if (!resendApiKey) {
+      console.error('Missing Resend API key');
+      res.status(500).json({ error: 'Server configuration error (RESEND)' });
+      return;
+    }
+
+    let body;
+    try {
+      body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    } catch (parseError) {
+      res.status(400).json({ error: 'Invalid JSON in request body' });
+      return;
+    }
+
+    const validation = validateInput(body);
+    if (!validation.isValid) {
+      res.status(400).json({
+        error: 'Validation failed',
+        details: validation.errors,
+      });
+      return;
+    }
+
+    const sanitizedData = validation.sanitized;
+    const timestamp = new Date().toLocaleString('en-US', {
+      timeZone: 'Africa/Nairobi',
+      dateStyle: 'full',
+      timeStyle: 'long',
     });
-    return;
-  }
 
-  if (!emailSent) {
-    console.warn('Email notification failed, but submission was saved to database');
-  }
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    });
 
-  res.status(200).json({
-    success: true,
-    message: 'Your message has been sent successfully. We will get back to you soon.',
-    id: dbResult?.id || null,
-  });
-};
+    let dbResult = null;
+    let dbError = null;
+
+    try {
+      const { data, error } = await supabase
+        .from('contact_submissions')
+        .insert([{
+          name: sanitizedData.name,
+          email: sanitizedData.email,
+          phone: sanitizedData.phone,
+          message: sanitizedData.message,
+        }])
+        .select('id')
+        .single();
+
+      if (error) {
+        console.error('Supabase insert error:', error);
+        dbError = error;
+      } else {
+        dbResult = data;
+      }
+    } catch (err) {
+      console.error('Supabase connection error:', err);
+      dbError = err;
+    }
+
+    let emailSent = false;
+    let emailError = null;
+
+    try {
+      const resend = new Resend(resendApiKey);
+      
+      const emailResponse = await resend.emails.send({
+        from: `Vintage Realtors <${senderEmail}>`,
+        to: [recipientEmail],
+        subject: `New Contact Inquiry from ${sanitizedData.name}`,
+        html: formatEmailHtml(sanitizedData, timestamp),
+        text: formatEmailText(sanitizedData, timestamp),
+        reply_to: sanitizedData.email,
+      });
+
+      if (emailResponse.error) {
+        console.error('Resend API error:', emailResponse.error);
+        emailError = emailResponse.error;
+      } else {
+        emailSent = true;
+      }
+    } catch (err) {
+      console.error('Resend error:', err);
+      emailError = err;
+    }
+
+    if (dbError && !dbResult) {
+      res.status(500).json({
+        error: 'Failed to save your message. Please try again.',
+        reference: timestamp,
+      });
+      return;
+    }
+
+    if (!emailSent) {
+      console.warn('Email notification failed, but submission was saved to database');
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Your message has been sent successfully. We will get back to you soon.',
+      id: dbResult?.id || null,
+    });
+  } catch (unexpectedError) {
+    console.error('Unexpected error in handler:', unexpectedError);
+    res.status(500).json({ 
+      error: 'An unexpected error occurred',
+      details: unexpectedError.message 
+    });
+  }
+}
