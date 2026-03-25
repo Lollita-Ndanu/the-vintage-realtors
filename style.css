@@ -170,9 +170,8 @@ body {
 
 /* --- 2. NAVIGATION BAR --- */
 nav {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: "logo title actions";
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 12px 5%;
     background: var(--white);
@@ -183,13 +182,12 @@ nav {
     top: 0;
     z-index: 1000;
     transition: transform 300ms ease, box-shadow 220ms ease;
-    gap: 16px;
 }
 
 .logo-container {
-    grid-area: logo;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .logo-img {
@@ -199,28 +197,38 @@ nav {
 }
 
 .site-title {
-    grid-area: title;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     font-family: 'Playfair Display', serif;
     font-size: clamp(0.9rem, 2vw, 1.8rem);
     font-weight: 700;
     color: var(--black);
     text-align: center;
-    justify-self: center;
-    pointer-events: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
+    max-width: 50%;
+    z-index: 1001;
+}
+
+.site-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.site-title a:hover {
+    color: var(--purple);
 }
 
 .site-title span { color: var(--purple); }
 
 .nav-actions {
-    grid-area: actions;
     display: flex;
     align-items: center;
     gap: 20px;
-    justify-self: end;
+    flex-shrink: 0;
 }
 
 .contact-phone {
@@ -297,13 +305,12 @@ nav {
 
 @media (max-width: 768px) {
     nav {
-        grid-template-columns: auto 1fr auto;
-        grid-template-areas: "logo . actions";
         padding: 10px 4%;
         min-height: 80px;
     }
     .site-title {
-        display: none;
+        font-size: clamp(0.65rem, 2.5vw, 1rem);
+        max-width: 60%;
     }
     .contact-phone {
         display: none;
@@ -324,8 +331,12 @@ nav {
     .logo-img {
         height: 50px;
     }
+    .site-title {
+        font-size: clamp(0.55rem, 3vw, 0.85rem);
+        max-width: 65%;
+    }
     .nav-actions {
-        gap: 12px;
+        gap: 10px;
     }
     .hamburger span {
         width: 24px;
@@ -719,6 +730,8 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
     display: flex;
     flex-direction: column;
     position: relative;
+    text-decoration: none;
+    color: inherit;
 }
 
 .property-card:hover {
@@ -1081,8 +1094,6 @@ input, textarea { padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 
     background: transparent !important;
     box-shadow: none !important;
 }
-
-.location-page .site-title { pointer-events: auto; }
 
 /* Locations section & vintage-styled buttons */
 .locations-section { padding: 18px 5%; background: transparent; }

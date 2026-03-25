@@ -20,7 +20,7 @@
     </a>
 
     <div class="site-title">
-        <span>THE VINTAGE REALTORS</span>
+        <a href="/"><span>THE VINTAGE REALTORS</span></a>
     </div>
 
     <div class="nav-actions">
@@ -443,15 +443,12 @@
             
             const price = p.price ? p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
 
-            // Match exact HTML structure for slider
+            // Match exact HTML structure for slider - whole card is clickable
             const card = `
-                <div class="property-card">
+                <a href="/property?id=${item.sys.id}" class="property-card">
                     <div class="property-image">
                         <span class="property-status ${p.status === 'For Sale' ? 'sale' : 'rent'}">${p.status}</span>
-                        <a href="/property?id=${item.sys.id}">
-                            <img src="${imageUrl}" alt="${p.title}">
-                        </a>
-                        <a class="view-link" href="/property?id=${item.sys.id}">View Details</a>
+                        <img src="${imageUrl}" alt="${p.title}">
                     </div>
                     <div class="property-details">
                         <p class="property-price">KES ${price}</p>
@@ -462,7 +459,7 @@
                             <span>🛁 ${p.bathrooms} Baths</span>
                         </div>
                     </div>
-                </div>
+                </a>
             `;
             container.innerHTML += card;
         });

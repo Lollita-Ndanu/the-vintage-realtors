@@ -223,19 +223,55 @@ if (hamburger && menu) {
         setButtonState(submitBtn, true, 'Sending...');
 
         try {
-            if (!window.TVR || !window.TVR.db) {
-                throw new Error('Database connection not available. Please refresh the page.');
+            let result = null;
+            let usedFallback = false;
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    result = data;
+                } else if (response.status === 429) {
+                    throw new Error('Too many requests. Please wait a minute and try again.');
+                } else if (response.status === 400 && data.details) {
+                    throw new Error(data.details.join('. '));
+                } else if (!response.ok) {
+                    throw new Error(data.error || 'Server error. Please try again.');
+                }
+            } catch (apiError) {
+                console.warn('API endpoint failed, attempting fallback:', apiError.message);
+                
+                if (window.TVR && window.TVR.db) {
+                    result = await window.TVR.db.submitContact({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        message: message
+                    });
+                    usedFallback = true;
+                } else {
+                    throw apiError;
+                }
             }
 
-            const result = await window.TVR.db.submitContact({
-                name: name,
-                email: email,
-                phone: phone,
-                message: message
-            });
-
-            if (result.success) {
-                createStatusMessage(contactForm, 'Thank you! Your message has been sent. We will get back to you soon.');
+            if (result && result.success) {
+                const successMsg = usedFallback 
+                    ? 'Thank you! Your message has been saved. We will get back to you soon.'
+                    : 'Thank you! Your message has been sent. We will get back to you soon.';
+                createStatusMessage(contactForm, successMsg);
                 contactForm.reset();
                 setButtonState(submitBtn, true, 'Sent');
                 
@@ -243,7 +279,7 @@ if (hamburger && menu) {
                     setButtonState(submitBtn, false, originalBtnText);
                 }, 3000);
             } else {
-                createStatusMessage(contactForm, result.error || 'Failed to send message. Please try again.', true);
+                createStatusMessage(contactForm, (result && result.error) || 'Failed to send message. Please try again.', true);
                 setButtonState(submitBtn, false, originalBtnText);
             }
         } catch (error) {
