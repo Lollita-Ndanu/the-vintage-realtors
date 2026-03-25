@@ -225,6 +225,7 @@ if (hamburger && menu) {
         try {
             let result = null;
             let usedFallback = false;
+            let validationError = null;
 
             try {
                 const response = await fetch('/api/contact', {
@@ -244,10 +245,14 @@ if (hamburger && menu) {
                 
                 if (response.ok && data.success) {
                     result = data;
+                } else if (response.status === 400) {
+                    if (data.details && Array.isArray(data.details)) {
+                        validationError = data.details.join('. ');
+                    } else {
+                        validationError = data.error || 'Validation failed. Please check your input.';
+                    }
                 } else if (response.status === 429) {
-                    throw new Error('Too many requests. Please wait a minute and try again.');
-                } else if (response.status === 400 && data.details) {
-                    throw new Error(data.details.join('. '));
+                    validationError = 'Too many requests. Please wait a minute and try again.';
                 } else if (!response.ok) {
                     throw new Error(data.error || 'Server error. Please try again.');
                 }
@@ -265,6 +270,12 @@ if (hamburger && menu) {
                 } else {
                     throw apiError;
                 }
+            }
+
+            if (validationError) {
+                createStatusMessage(contactForm, validationError, true);
+                setButtonState(submitBtn, false, originalBtnText);
+                return;
             }
 
             if (result && result.success) {
