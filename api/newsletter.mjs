@@ -214,6 +214,17 @@ export default async function handler(req, res) {
     const resendApiKey = process.env.RESEND_API_KEY;
     const senderEmail = process.env.NEWSLETTER_SENDER_EMAIL || 'newsletters@thevintagerealtors.com';
 
+    console.log('=== NEWSLETTER SUBSCRIPTION REQUEST ===');
+    console.log('Environment check:', {
+      hasSupabaseUrl: !!supabaseUrl,
+      hasServiceKey: !!process.env.SUPABASE_SERVICE_KEY,
+      hasAnonKey: !!process.env.SUPABASE_ANON_KEY,
+      usingServiceKey: !!process.env.SUPABASE_SERVICE_KEY,
+      hasResendKey: !!resendApiKey,
+      resendKeyPrefix: resendApiKey ? resendApiKey.substring(0, 7) + '...' : 'N/A',
+      senderEmail: senderEmail,
+    });
+
     if (!supabaseUrl || !supabaseKey) {
       console.error('Missing Supabase configuration');
       res.status(500).json({ error: 'Server configuration error (SUPABASE)' });
@@ -244,6 +255,7 @@ export default async function handler(req, res) {
     }
 
     const sanitizedData = validation.sanitized;
+    console.log('Sanitized data:', { name: sanitizedData.name, email: sanitizedData.email });
 
     const supabase = createClient(supabaseUrl, supabaseKey, {
       auth: {
@@ -256,6 +268,7 @@ export default async function handler(req, res) {
     let dbError = null;
 
     try {
+      console.log('Step 1: Checking for existing subscription...');
       const { data: existing, error: selectError } = await supabase
         .from('newsletter_subscriptions')
         .select('id, is_active')
@@ -267,6 +280,7 @@ export default async function handler(req, res) {
       }
 
       if (existing) {
+        console.log('Found existing subscription:', { id: existing.id, is_active: existing.is_active });
         if (existing.is_active) {
           res.status(200).json({
             success: true,
@@ -276,6 +290,7 @@ export default async function handler(req, res) {
           return;
         }
         
+        console.log('Step 2: Re-activating existing subscription...');
         const { data, error } = await supabase
           .from('newsletter_subscriptions')
           .update({
@@ -292,9 +307,11 @@ export default async function handler(req, res) {
           console.error('Supabase update error:', error);
           dbError = error;
         } else {
+          console.log('Subscription re-activated successfully:', data);
           dbResult = data;
         }
       } else {
+        console.log('Step 2: Creating new subscription...');
         const { data, error } = await supabase
           .from('newsletter_subscriptions')
           .insert([{
@@ -310,6 +327,7 @@ export default async function handler(req, res) {
           console.error('Supabase insert error:', error);
           dbError = error;
         } else {
+          console.log('New subscription created successfully:', data);
           dbResult = data;
         }
       }
@@ -328,6 +346,13 @@ export default async function handler(req, res) {
     let emailSent = false;
     let emailError = null;
 
+    console.log('Step 3: Sending welcome email...');
+    console.log('Email details:', {
+      from: `Vintage Realtors <${senderEmail}>`,
+      to: sanitizedData.email,
+      subject: 'Welcome to Vintage Realtors Newsletter',
+    });
+
     try {
       const resend = new Resend(resendApiKey);
       
@@ -339,19 +364,24 @@ export default async function handler(req, res) {
         text: formatWelcomeEmailText(sanitizedData),
       });
 
+      console.log('Resend API response:', JSON.stringify(emailResponse, null, 2));
+
       if (emailResponse.error) {
         console.error('Resend API error:', emailResponse.error);
         emailError = emailResponse.error;
       } else {
+        console.log('Email sent successfully!');
         emailSent = true;
       }
     } catch (err) {
       console.error('Resend error:', err);
+      console.error('Resend error details:', JSON.stringify(err, Object.getOwnPropertyNames(err), 2));
       emailError = err;
     }
 
     if (!emailSent) {
       console.warn('Welcome email failed, but subscription was saved to database');
+      console.warn('Email error was:', emailError);
     }
 
     res.status(200).json({
@@ -360,6 +390,7 @@ export default async function handler(req, res) {
       id: dbResult?.id || null,
       emailSent,
     });
+    console.log('=== NEWSLETTER SUBSCRIPTION COMPLETE ===');
   } catch (unexpectedError) {
     console.error('Unexpected error in handler:', unexpectedError);
     res.status(500).json({ 
