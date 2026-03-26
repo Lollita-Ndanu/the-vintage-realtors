@@ -295,13 +295,9 @@ export default async function handler(req, res) {
           dbResult = data;
         }
       } else {
-        const newId = generateUUID();
-        console.log('Generated UUID:', newId);
-        
         const { data, error } = await supabase
           .from('newsletter_subscriptions')
           .insert([{
-            id: newId,
             name: sanitizedData.name,
             email: sanitizedData.email,
             is_active: true,
