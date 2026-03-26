@@ -238,8 +238,8 @@ export default async function handler(req, res) {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
     const resendApiKey = process.env.RESEND_API_KEY;
-    const senderEmail = process.env.SENDER_EMAIL || 'contacts@vintagerealtors.com';
-    const recipientEmail = process.env.CONTACT_EMAIL || 'contacts@vintagerealtors.com';
+    const senderEmail = process.env.SENDER_EMAIL || 'contacts@thevintagerealtors.com';
+    const recipientEmail = process.env.CONTACT_EMAIL || 'contacts@thevintagerealtors.com';
 
     if (!supabaseUrl || !supabaseKey) {
       console.error('Missing Supabase configuration');
