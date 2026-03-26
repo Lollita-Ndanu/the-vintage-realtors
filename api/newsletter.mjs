@@ -249,17 +249,19 @@ export default async function handler(req, res) {
 
     let dbResult = null;
     let dbError = null;
-    let isExistingSubscriber = false;
 
     try {
-      const { data: existing } = await supabase
+      const { data: existing, error: selectError } = await supabase
         .from('newsletter_subscriptions')
         .select('id, is_active')
         .eq('email', sanitizedData.email)
-        .single();
+        .maybeSingle();
+
+      if (selectError) {
+        console.error('Supabase select error:', selectError);
+      }
 
       if (existing) {
-        isExistingSubscriber = true;
         if (existing.is_active) {
           res.status(200).json({
             success: true,
@@ -282,6 +284,7 @@ export default async function handler(req, res) {
           .single();
 
         if (error) {
+          console.error('Supabase update error:', error);
           dbError = error;
         } else {
           dbResult = data;
