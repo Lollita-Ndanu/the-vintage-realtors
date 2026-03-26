@@ -347,16 +347,60 @@ if (hamburger && menu) {
         submitBtn.textContent = 'Subscribing...';
 
         try {
-            if (!window.TVR || !window.TVR.db) {
-                throw new Error('Database connection not available.');
+            let result = null;
+            let validationError = null;
+
+            try {
+                const response = await fetch('/api/newsletter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name || 'Subscriber',
+                        email: email
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    result = data;
+                } else if (response.status === 400) {
+                    if (data.details && Array.isArray(data.details)) {
+                        validationError = data.details.join('. ');
+                    } else {
+                        validationError = data.error || 'Validation failed. Please check your input.';
+                    }
+                } else if (response.status === 429) {
+                    validationError = 'Too many requests. Please wait a minute and try again.';
+                } else if (!response.ok) {
+                    throw new Error(data.error || 'Server error. Please try again.');
+                }
+            } catch (apiError) {
+                console.warn('Newsletter API failed, attempting fallback:', apiError.message);
+                
+                if (window.TVR && window.TVR.db) {
+                    result = await window.TVR.db.subscribe({
+                        name: name || 'Subscriber',
+                        email: email
+                    });
+                } else {
+                    throw apiError;
+                }
             }
 
-            const result = await window.TVR.db.subscribe({
-                name: name || 'Subscriber',
-                email: email
-            });
+            if (validationError) {
+                if (msgEl) {
+                    msgEl.textContent = validationError;
+                    msgEl.style.color = 'crimson';
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+                return;
+            }
 
-            if (result.success) {
+            if (result && result.success) {
                 if (msgEl) {
                     msgEl.textContent = result.message || 'Thank you! Check your inbox for confirmation.';
                     msgEl.style.color = '';
@@ -373,7 +417,7 @@ if (hamburger && menu) {
                 }, 5000);
             } else {
                 if (msgEl) {
-                    msgEl.textContent = result.error || 'Failed to subscribe. Please try again.';
+                    msgEl.textContent = (result && result.error) || 'Failed to subscribe. Please try again.';
                     msgEl.style.color = 'crimson';
                 }
                 submitBtn.disabled = false;
