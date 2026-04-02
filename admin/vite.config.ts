@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+  root: path.resolve(__dirname, './app'),
   plugins: [react()],
   base: '/admin/',
   resolve: {
@@ -11,7 +12,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../public/admin',
+    outDir: '../../public/admin',
     emptyOutDir: true,
     sourcemap: false,
     rollupOptions: {
@@ -26,6 +27,9 @@ export default defineConfig({
   },
   server: {
     port: 3001,
+    fs: {
+      allow: [path.resolve(__dirname)],
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
