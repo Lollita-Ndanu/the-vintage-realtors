@@ -91,6 +91,10 @@
 						<div class="photo hidden-photo"><img src="images/sh16.jpeg" alt="Shalom 16 image"></div>
 						
 					</div>
+					<div class="collab-gallery-actions">
+						<a href="https://wa.me/254745980198" class="view-more-btn collab-contact-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat with Shalom Movers on WhatsApp">Contact</a>
+						<a href="#" class="view-more-btn collab-view-more" aria-label="View more from Shalom Movers">View More</a>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -140,6 +144,10 @@
 						<div class="photo hidden-photo"><img src="images/FB15.avif" alt="Furniture Hub 15"></div>
 						<div class="photo hidden-photo"><img src="images/WhatsApp%20Image%202026-03-27%20at%2016.27.55%20(1).jpeg" alt="Grandmark 16"></div>
 					</div>
+					<div class="collab-gallery-actions">
+						<a href="https://wa.me/254722865306" class="view-more-btn collab-contact-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat with Grandmark Furniture Hub on WhatsApp">Contact</a>
+						<a href="#" class="view-more-btn collab-view-more" aria-label="View more from Grandmark Furniture Hub">View More</a>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -167,6 +175,10 @@
 						<div class="photo"><img src="images/ELEGANT9.avif" alt="Elegant gallery 9"></div>
 						<div class="photo"><img src="images/ELEGANT10.avif" alt="Elegant gallery 10"></div>
 						<div class="photo"><img src="images/ELEGANT11.avif" alt="Elegant gallery 11"></div>
+					</div>
+					<div class="collab-gallery-actions">
+						<a href="https://wa.me/254725718815" class="view-more-btn collab-contact-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat with Elegant Designs on WhatsApp">Contact</a>
+						<a href="#" class="view-more-btn collab-view-more" aria-label="View more from Elegant Designs">View More</a>
 					</div>
 				</div>
 			</div>
@@ -314,17 +326,13 @@
 			});
 		});
 
-		// Add a 'View More' button under each .collab-gallery that opens only its section media
+		// Wire each section's 'View More' button to open only its local gallery
 		const collabSections = Array.from(document.querySelectorAll('.collab-gallery'));
 		collabSections.forEach(section => {
 			const localMedia = Array.from(section.querySelectorAll('.gallery-grid .photo img, .gallery-grid .photo video'));
-			if(localMedia.length){
-				const btn = document.createElement('a');
-				btn.href = '#';
-				btn.className = 'view-more-btn collab-view-more';
-				btn.textContent = 'View More';
-				btn.addEventListener('click', (e) => { e.preventDefault(); showMediaInGallery(localMedia, 0); });
-				section.appendChild(btn);
+			const viewMoreBtn = section.querySelector('.collab-view-more');
+			if(localMedia.length && viewMoreBtn){
+				viewMoreBtn.addEventListener('click', (e) => { e.preventDefault(); showMediaInGallery(localMedia, 0); });
 			}
 		});
 
