@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build && cd admin && npm install && npm run build",
   "installCommand": "npm install",
   "redirects": [
     {
@@ -54,6 +54,14 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/admin/index.html"
+    },
     {
       "source": "/about",
       "destination": "/about.html"
