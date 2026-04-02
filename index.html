@@ -20,21 +20,22 @@
     </a>
 
     <div class="site-title">
-        <span>THE VINTAGE REALTORS</span>
+        <a href="/"><span>THE VINTAGE REALTORS</span></a>
     </div>
 
-    <div class="contact-phone">
-        <a href="tel:+254722865306">
-            <img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
-            <span class="phone-number">+254722865306</span>
-        </a>
+    <div class="nav-actions">
+        <div class="contact-phone">
+            <a href="tel:+254722865306">
+                <img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
+                <span class="phone-number">+254722865306</span>
+            </a>
+        </div>
+        <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
-
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
 </nav>
 
 <div id="menu" class="menu-drawer" aria-hidden="true">
@@ -417,8 +418,8 @@
 <script>
     // 1. Connect to Contentful
     const client = contentful.createClient({
-        space: '34evf5vfv8l3',
-        accessToken: 'N3qApTKSnKxqG1GJ2BxlA6j-uLGCz3PxE_ifNPTniNY'
+        space: '__CONTENTFUL_SPACE_ID__',
+        accessToken: '__CONTENTFUL_ACCESS_TOKEN__'
     });
 
     // 2. Fetch the 3 most recent properties
@@ -442,15 +443,12 @@
             
             const price = p.price ? p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
 
-            // Match exact HTML structure for slider
+            // Match exact HTML structure for slider - whole card is clickable
             const card = `
-                <div class="property-card">
+                <a href="/property?id=${item.sys.id}" class="property-card">
                     <div class="property-image">
                         <span class="property-status ${p.status === 'For Sale' ? 'sale' : 'rent'}">${p.status}</span>
-                        <a href="/property?id=${item.sys.id}">
-                            <img src="${imageUrl}" alt="${p.title}">
-                        </a>
-                        <a class="view-link" href="/property?id=${item.sys.id}">View Details</a>
+                        <img src="${imageUrl}" alt="${p.title}">
                     </div>
                     <div class="property-details">
                         <p class="property-price">KES ${price}</p>
@@ -461,7 +459,7 @@
                             <span>🛁 ${p.bathrooms} Baths</span>
                         </div>
                     </div>
-                </div>
+                </a>
             `;
             container.innerHTML += card;
         });

@@ -130,3 +130,309 @@ if (hamburger && menu) {
         if (e.key === 'ArrowLeft') showPrev();
     });
 })();
+
+/* =========================================
+   4. CONTACT FORM HANDLING
+   ========================================= */
+(function() {
+    const contactForm = document.querySelector('.form-contact');
+    if (!contactForm) return;
+
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    if (!submitBtn) return;
+
+    let isSubmitting = false;
+
+    function createStatusMessage(form, message, isError = false) {
+        let statusEl = form.querySelector('.form-status-message');
+        if (!statusEl) {
+            statusEl = document.createElement('div');
+            statusEl.className = 'form-status-message';
+            statusEl.setAttribute('role', 'status');
+            statusEl.setAttribute('aria-live', 'polite');
+            const btnRow = form.querySelector('.form-row:last-child') || form.querySelector('button[type="submit"]').parentElement;
+            btnRow.parentNode.insertBefore(statusEl, btnRow.nextSibling);
+        }
+        statusEl.textContent = message;
+        statusEl.className = `form-status-message ${isError ? 'error' : 'success'}`;
+        statusEl.style.display = 'block';
+        return statusEl;
+    }
+
+    function clearStatusMessage(form) {
+        const statusEl = form.querySelector('.form-status-message');
+        if (statusEl) {
+            statusEl.style.display = 'none';
+            statusEl.textContent = '';
+        }
+    }
+
+    function setButtonState(btn, disabled, text) {
+        btn.disabled = disabled;
+        if (text) btn.textContent = text;
+    }
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (isSubmitting) return;
+
+        clearStatusMessage(contactForm);
+
+        const nameInput = contactForm.querySelector('#name');
+        const emailInput = contactForm.querySelector('#email');
+        const phoneInput = contactForm.querySelector('#phone');
+        const messageInput = contactForm.querySelector('#message');
+
+        const name = nameInput ? nameInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+        const phone = phoneInput ? phoneInput.value.trim() : '';
+        const message = messageInput ? messageInput.value.trim() : '';
+
+        if (!name) {
+            createStatusMessage(contactForm, 'Please enter your name.', true);
+            if (nameInput) nameInput.focus();
+            return;
+        }
+
+        if (!email) {
+            createStatusMessage(contactForm, 'Please enter your email address.', true);
+            if (emailInput) emailInput.focus();
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            createStatusMessage(contactForm, 'Please enter a valid email address.', true);
+            if (emailInput) emailInput.focus();
+            return;
+        }
+
+        if (!message) {
+            createStatusMessage(contactForm, 'Please enter your message.', true);
+            if (messageInput) messageInput.focus();
+            return;
+        }
+
+        isSubmitting = true;
+        const originalBtnText = submitBtn.textContent;
+        setButtonState(submitBtn, true, 'Sending...');
+
+        try {
+            let result = null;
+            let usedFallback = false;
+            let validationError = null;
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    result = data;
+                } else if (response.status === 400) {
+                    if (data.details && Array.isArray(data.details)) {
+                        validationError = data.details.join('. ');
+                    } else {
+                        validationError = data.error || 'Validation failed. Please check your input.';
+                    }
+                } else if (response.status === 429) {
+                    validationError = 'Too many requests. Please wait a minute and try again.';
+                } else if (!response.ok) {
+                    throw new Error(data.error || 'Server error. Please try again.');
+                }
+            } catch (apiError) {
+                console.warn('API endpoint failed, attempting fallback:', apiError.message);
+                
+                if (window.TVR && window.TVR.db) {
+                    result = await window.TVR.db.submitContact({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        message: message
+                    });
+                    usedFallback = true;
+                } else {
+                    throw apiError;
+                }
+            }
+
+            if (validationError) {
+                createStatusMessage(contactForm, validationError, true);
+                setButtonState(submitBtn, false, originalBtnText);
+                return;
+            }
+
+            if (result && result.success) {
+                const successMsg = usedFallback 
+                    ? 'Thank you! Your message has been saved. We will get back to you soon.'
+                    : 'Thank you! Your message has been sent. We will get back to you soon.';
+                createStatusMessage(contactForm, successMsg);
+                contactForm.reset();
+                setButtonState(submitBtn, true, 'Sent');
+                
+                setTimeout(() => {
+                    setButtonState(submitBtn, false, originalBtnText);
+                }, 3000);
+            } else {
+                createStatusMessage(contactForm, (result && result.error) || 'Failed to send message. Please try again.', true);
+                setButtonState(submitBtn, false, originalBtnText);
+            }
+        } catch (error) {
+            console.error('Contact form error:', error);
+            createStatusMessage(contactForm, error.message || 'An error occurred. Please try again later.', true);
+            setButtonState(submitBtn, false, originalBtnText);
+        } finally {
+            isSubmitting = false;
+        }
+    });
+})();
+
+/* =========================================
+   5. NEWSLETTER FORM HANDLING (Contact Page)
+   ========================================= */
+(function() {
+    const subscribeForm = document.getElementById('subscribeForm');
+    if (!subscribeForm) return;
+
+    const submitBtn = subscribeForm.querySelector('button[type="submit"]');
+    const msgEl = document.getElementById('subscribeMessage');
+    if (!submitBtn) return;
+
+    let isSubmitting = false;
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    subscribeForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (isSubmitting) return;
+
+        const nameInput = subscribeForm.querySelector('#sub_name');
+        const emailInput = subscribeForm.querySelector('#sub_email');
+
+        const name = nameInput ? nameInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+
+        if (!email || !validateEmail(email)) {
+            if (msgEl) {
+                msgEl.textContent = 'Please enter a valid email address.';
+                msgEl.style.color = 'crimson';
+            }
+            if (emailInput) emailInput.focus();
+            return;
+        }
+
+        isSubmitting = true;
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Subscribing...';
+
+        try {
+            let result = null;
+            let validationError = null;
+
+            try {
+                const response = await fetch('/api/newsletter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name || 'Subscriber',
+                        email: email
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    result = data;
+                } else if (response.status === 400) {
+                    if (data.details && Array.isArray(data.details)) {
+                        validationError = data.details.join('. ');
+                    } else {
+                        validationError = data.error || 'Validation failed. Please check your input.';
+                    }
+                } else if (response.status === 429) {
+                    validationError = 'Too many requests. Please wait a minute and try again.';
+                } else if (!response.ok) {
+                    throw new Error(data.error || 'Server error. Please try again.');
+                }
+            } catch (apiError) {
+                console.warn('Newsletter API failed, attempting fallback:', apiError.message);
+                
+                if (window.TVR && window.TVR.db) {
+                    result = await window.TVR.db.subscribe({
+                        name: name || 'Subscriber',
+                        email: email
+                    });
+                } else {
+                    throw apiError;
+                }
+            }
+
+            if (validationError) {
+                if (msgEl) {
+                    msgEl.textContent = validationError;
+                    msgEl.style.color = 'crimson';
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+                return;
+            }
+
+            if (result && result.success) {
+                if (msgEl) {
+                    msgEl.textContent = result.message || 'Thank you! Check your inbox for confirmation.';
+                    msgEl.style.color = '';
+                }
+                subscribeForm.reset();
+                submitBtn.textContent = 'Subscribed';
+                submitBtn.classList.add('subscribed');
+                
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    submitBtn.classList.remove('subscribed');
+                    if (msgEl) msgEl.textContent = '';
+                }, 5000);
+            } else {
+                if (msgEl) {
+                    msgEl.textContent = (result && result.error) || 'Failed to subscribe. Please try again.';
+                    msgEl.style.color = 'crimson';
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }
+        } catch (error) {
+            console.error('Newsletter subscription error:', error);
+            if (msgEl) {
+                msgEl.textContent = error.message || 'An error occurred. Please try again.';
+                msgEl.style.color = 'crimson';
+            }
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+        } finally {
+            isSubmitting = false;
+        }
+    });
+})();

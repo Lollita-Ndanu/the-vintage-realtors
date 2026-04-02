@@ -9,13 +9,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <main style="max-width:900px;margin:60px auto;padding:24px;">
-        <h1>Legal</h1>
-        <p>This Legal page contains important legal notices. Replace this placeholder text with your organisation's legal information and disclaimers.</p>
-        <p><a href="/" class="btn-secondary">Return Home</a></p>
-    </main>
+    <nav>
+        <a href="/" class="logo-container">
+            <img src="images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
+        </a>
+        <div class="site-title"><a href="/"><span>THE VINTAGE REALTORS</span></a></div>
+        <div class="nav-actions">
+            <div class="contact-phone">
+                <a href="tel:+254722865306">
+                    <img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
+                    <span class="phone-number">+254722865306</span>
+                </a>
+            </div>
+            <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
 
-    <!-- Shared menu drawer for site navigation -->
     <div id="menu" class="menu-drawer" aria-hidden="true">
         <button class="close" aria-label="Close menu">&times;</button>
         <nav class="drawer-nav">
@@ -30,6 +43,12 @@
     </div>
 
     <div class="menu-overlay"></div>
+
+    <main style="max-width:900px;margin:60px auto;padding:24px;">
+        <h1>Legal</h1>
+        <p>This Legal page contains important legal notices. Replace this placeholder text with your organisation's legal information and disclaimers.</p>
+        <p><a href="/" class="btn-secondary">Return Home</a></p>
+    </main>
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-logo">

@@ -13,12 +13,20 @@
 		<a href="/" class="logo-container">
 			<img src="images/logo.avif" alt="The Vintage Realtors logo" class="logo-img">
 		</a>
-		<div class="site-title"><span>THE VINTAGE REALTORS</span></div>
-		<button class="hamburger" aria-label="Open menu" aria-expanded="false">
-			<span></span>
-			<span></span>
-			<span></span>
-		</button>
+		<div class="site-title"><a href="/"><span>THE VINTAGE REALTORS</span></a></div>
+		<div class="nav-actions">
+			<div class="contact-phone">
+				<a href="tel:+254722865306">
+					<img src="images/phone-icon.avif" alt="Phone" class="phone-icon">
+					<span class="phone-number">+254722865306</span>
+				</a>
+			</div>
+			<button class="hamburger" aria-label="Open menu" aria-expanded="false">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+		</div>
 	</nav>
 
 	<!-- Menu Drawer (shared) -->
@@ -180,37 +188,8 @@
 		<img src="images/whatsapp.avif" alt="Chat on WhatsApp" class="whatsapp-icon">
 	</a>
 
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+	<script src="supabase-config.js"></script>
 	<script src="script.js"></script>
-
-	<script>
-	document.addEventListener('DOMContentLoaded', function(){
-	    const form = document.getElementById('subscribeForm');
-	    const msg = document.getElementById('subscribeMessage');
-	    if(!form) return;
-	    form.addEventListener('submit', function(e){
-	        e.preventDefault();
-	        const btn = form.querySelector('button[type="submit"]');
-	        const name = document.getElementById('sub_name').value.trim();
-	        const email = document.getElementById('sub_email').value.trim();
-	        if(!email) {
-	            msg.textContent = 'Please enter a valid email address.';
-	            msg.style.color = 'crimson';
-	            return;
-	        }
-	        btn.disabled = true;
-	        const original = btn.textContent;
-	        btn.textContent = 'Subscribing...';
-
-	        // Simulate async subscribe request (replace with real integration)
-	        setTimeout(() => {
-	            msg.textContent = 'Thank you — check your inbox for confirmation.';
-	            msg.style.color = '';
-	            btn.textContent = 'Subscribed';
-	            btn.classList.add('subscribed');
-	            form.reset();
-	        }, 900);
-	    });
-	});
-	</script>
 </body>
 </html>
