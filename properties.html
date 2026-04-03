@@ -155,15 +155,15 @@
                         <span id="typing" aria-live="polite">Your next space awaits</span>
                         <span class="type-cursor" aria-hidden="true"></span>
                     </h1>
-                    <p class="lead">Find homes, offices and spaces that fit your life — curated listings across Nairobi.</p>
+                    <p class="lead">Find houses, apartments, Airbnb stays, land and investment opportunities across Nairobi.</p>
 
                     <div class="property-types">
                         <a href="#houses" class="btn-secondary">Houses</a>
                         <a href="#apartments" class="btn-secondary">Apartments</a>
-                        <a href="#offices" class="btn-secondary">Offices</a>
+                        <a href="#airbnb" class="btn-secondary">Airbnb</a>
                         <a href="#land" class="btn-secondary">Land</a>
+                        <a href="#off-plan-investments" class="btn-secondary">Off Plan Investments</a>
                         <a href="#warehouses" class="btn-secondary">Warehouses</a>
-                        <a href="#commercials" class="btn-secondary">Commercials</a>
                     </div>
 
                     <div class="search-bar" role="search" aria-label="Search properties">
@@ -192,12 +192,12 @@
                 <h2>All Properties</h2>
 
                 <!-- Empty groups — populated dynamically from the CMS in this order -->
-                <div class="properties-group" id="houses"><h3>Houses</h3><div class="properties-grid" data-group="Houses"></div></div>
-                <div class="properties-group" id="apartments"><h3>Apartments</h3><div class="properties-grid" data-group="Apartments"></div></div>
-                <div class="properties-group" id="offices"><h3>Offices</h3><div class="properties-grid" data-group="Offices"></div></div>
-                <div class="properties-group" id="land"><h3>Land</h3><div class="properties-grid" data-group="Land"></div></div>
-                <div class="properties-group" id="warehouses"><h3>Warehouses</h3><div class="properties-grid" data-group="Warehouses"></div></div>
-                <div class="properties-group" id="commercials"><h3>Commercials</h3><div class="properties-grid" data-group="Commercials"></div></div>
+                <div class="properties-group" id="houses"><h3>Houses</h3><div class="properties-grid" data-group="Houses"></div></div>
+                <div class="properties-group" id="apartments"><h3>Apartments</h3><div class="properties-grid" data-group="Apartments"></div></div>
+                <div class="properties-group" id="airbnb"><h3>Airbnb</h3><div class="properties-grid" data-group="Airbnb"></div></div>
+                <div class="properties-group" id="land"><h3>Land</h3><div class="properties-grid" data-group="Land"></div></div>
+                <div class="properties-group" id="off-plan-investments"><h3>Off Plan Investments</h3><div class="properties-grid" data-group="Off Plan Investments"></div></div>
+                <div class="properties-group" id="warehouses"><h3>Warehouses</h3><div class="properties-grid" data-group="Warehouses"></div></div>
             </section>
     </main>
 
@@ -254,8 +254,21 @@
             accessToken: '__CONTENTFUL_ACCESS_TOKEN__'
         });
 
-        // Order of groups to display
-        const groups = ['Houses','Apartments','Offices','Land','Warehouses','Commercials'];
+        // Order of groups to display
+        const groups = ['Houses','Apartments','Airbnb','Land','Off Plan Investments','Warehouses'];
+
+        function normalizeType(rawType) {
+            const normalized = (rawType || '').toString().trim().toLowerCase().replace(/&/g, 'and');
+            if (!normalized) return null;
+            if (['house', 'houses'].includes(normalized)) return 'Houses';
+            if (['apartment', 'apartments'].includes(normalized)) return 'Apartments';
+            if (['airbnb', 'air bnb', 'air-bnb', 'short stay', 'short-stay', 'short stay apartment', 'short stay apartments'].includes(normalized)) return 'Airbnb';
+            if (['land', 'plot', 'plots'].includes(normalized)) return 'Land';
+            if (['off plan investment', 'off plan investments', 'off-plan investment', 'off-plan investments', 'offplan investment', 'offplan investments'].includes(normalized)) return 'Off Plan Investments';
+            if (['warehouse', 'warehouses'].includes(normalized)) return 'Warehouses';
+            if (['office', 'offices', 'commercial', 'commercials'].includes(normalized)) return null;
+            return null;
+        }
 
         // Small helper to determine type field on the entry
         function getType(fields) {
@@ -281,7 +294,7 @@
             response.items.forEach(item => {
                 const p = item.fields;
                 if(p.location) locationsSet.add(p.location.toString().trim());
-                const type = getType(p) || 'Other';
+                const type = normalizeType(getType(p));
 
                 // Build card
                 let imageUrl = '';
@@ -311,14 +324,10 @@
                     </div>
                 `;
 
-                // Append to matching group if found, otherwise to first group
-                if(containers[type]) {
-                    containers[type].appendChild(card);
-                } else {
-                    // if type missing or unknown, append to first group (Houses) as fallback
-                    const fallback = containers[groups[0]];
-                    if(fallback) fallback.appendChild(card);
-                }
+                // Append only to supported property groups shown on this page
+                if(containers[type]) {
+                    containers[type].appendChild(card);
+                }
             });
             // Build the locations buttons (preferred ones first)
             const locationsListEl = document.getElementById('locationsList');
