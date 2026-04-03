@@ -52,6 +52,7 @@
     .property-types { display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:nowrap; overflow:auto; -webkit-overflow-scrolling:touch; padding:6px 8px; }
     .property-types a { flex:0 0 auto; background: rgba(255,255,255,0.08); color: var(--brand-white); padding:10px 16px; border-radius: 999px; text-decoration:none; font-weight:700; border:1px solid rgba(255,255,255,0.06); transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease; white-space:nowrap; }
     .property-types a:hover { transform: translateY(-3px); background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.08)); box-shadow: 0 12px 30px rgba(11,7,30,0.32); }
+    .property-types a[aria-disabled="true"] { opacity: 0.55; }
 
     /* All Properties container */
     .all-properties { max-width: 1200px; margin: 36px auto; padding: 28px; background: linear-gradient(180deg,#fff,#fbfbff); border-radius: 14px; box-shadow: 0 18px 54px rgba(16,12,8,0.06); border:1px solid rgba(16,12,8,0.04); }
@@ -155,15 +156,17 @@
                         <span id="typing" aria-live="polite">Your next space awaits</span>
                         <span class="type-cursor" aria-hidden="true"></span>
                     </h1>
-                    <p class="lead">Find houses, apartments, Airbnb stays, land and investment opportunities across Nairobi.</p>
+                    <p class="lead">Find houses, apartments, land, Airbnb stays, offplan investments, offices, warehouses and commercials across Nairobi.</p>
 
                     <div class="property-types">
-                        <a href="#houses" class="btn-secondary">Houses</a>
-                        <a href="#apartments" class="btn-secondary">Apartments</a>
-                        <a href="#airbnb" class="btn-secondary">Airbnb</a>
-                        <a href="#land" class="btn-secondary">Land</a>
-                        <a href="#off-plan-investments" class="btn-secondary">Off Plan Investments</a>
-                        <a href="#warehouses" class="btn-secondary">Warehouses</a>
+                        <a href="#houses" class="btn-secondary" data-group="Houses" aria-disabled="true">Houses</a>
+                        <a href="#apartments" class="btn-secondary" data-group="Apartments" aria-disabled="true">Apartments</a>
+                        <a href="#land" class="btn-secondary" data-group="Land" aria-disabled="true">Land</a>
+                        <a href="#airbnb" class="btn-secondary" data-group="Airbnb" aria-disabled="true">Airbnb</a>
+                        <a href="#offplan-investments" class="btn-secondary" data-group="Offplan Investments" aria-disabled="true">Offplan Investments</a>
+                        <a href="#offices" class="btn-secondary" data-group="Offices" aria-disabled="true">Offices</a>
+                        <a href="#warehouses" class="btn-secondary" data-group="Warehouses" aria-disabled="true">Warehouses</a>
+                        <a href="#commercials" class="btn-secondary" data-group="Commercials" aria-disabled="true">Commercials</a>
                     </div>
 
                     <div class="search-bar" role="search" aria-label="Search properties">
@@ -192,12 +195,14 @@
                 <h2>All Properties</h2>
 
                 <!-- Empty groups — populated dynamically from the CMS in this order -->
-                <div class="properties-group" id="houses"><h3>Houses</h3><div class="properties-grid" data-group="Houses"></div></div>
-                <div class="properties-group" id="apartments"><h3>Apartments</h3><div class="properties-grid" data-group="Apartments"></div></div>
-                <div class="properties-group" id="airbnb"><h3>Airbnb</h3><div class="properties-grid" data-group="Airbnb"></div></div>
-                <div class="properties-group" id="land"><h3>Land</h3><div class="properties-grid" data-group="Land"></div></div>
-                <div class="properties-group" id="off-plan-investments"><h3>Off Plan Investments</h3><div class="properties-grid" data-group="Off Plan Investments"></div></div>
-                <div class="properties-group" id="warehouses"><h3>Warehouses</h3><div class="properties-grid" data-group="Warehouses"></div></div>
+                <div class="properties-group" id="houses" hidden><h3>Houses</h3><div class="properties-grid" data-group="Houses"></div></div>
+                <div class="properties-group" id="apartments" hidden><h3>Apartments</h3><div class="properties-grid" data-group="Apartments"></div></div>
+                <div class="properties-group" id="land" hidden><h3>Land</h3><div class="properties-grid" data-group="Land"></div></div>
+                <div class="properties-group" id="airbnb" hidden><h3>Airbnb</h3><div class="properties-grid" data-group="Airbnb"></div></div>
+                <div class="properties-group" id="offplan-investments" hidden><h3>Offplan Investments</h3><div class="properties-grid" data-group="Offplan Investments"></div></div>
+                <div class="properties-group" id="offices" hidden><h3>Offices</h3><div class="properties-grid" data-group="Offices"></div></div>
+                <div class="properties-group" id="warehouses" hidden><h3>Warehouses</h3><div class="properties-grid" data-group="Warehouses"></div></div>
+                <div class="properties-group" id="commercials" hidden><h3>Commercials</h3><div class="properties-grid" data-group="Commercials"></div></div>
             </section>
     </main>
 
@@ -255,7 +260,17 @@
         });
 
         // Order of groups to display
-        const groups = ['Houses','Apartments','Airbnb','Land','Off Plan Investments','Warehouses'];
+        const groups = ['Houses','Apartments','Land','Airbnb','Offplan Investments','Offices','Warehouses','Commercials'];
+        const groupAnchors = {
+            'Houses': 'houses',
+            'Apartments': 'apartments',
+            'Land': 'land',
+            'Airbnb': 'airbnb',
+            'Offplan Investments': 'offplan-investments',
+            'Offices': 'offices',
+            'Warehouses': 'warehouses',
+            'Commercials': 'commercials'
+        };
 
         function normalizeType(rawType) {
             const normalized = (rawType || '')
@@ -267,13 +282,14 @@
                 .replace(/\s+/g, ' ');
 
             if (!normalized) return null;
-            if (/\bapartments?\b/.test(normalized)) return 'Apartments';
-            if (/\bair\s*bnbs?\b|\bairbnbs?\b|\bshort\s*(stay|stays|term|terms)\b/.test(normalized)) return 'Airbnb';
-            if (/\boff\s*plan\b|\boffplan\b/.test(normalized)) return 'Off Plan Investments';
-            if (/\bland\b|\bplots?\b/.test(normalized)) return 'Land';
-            if (/\bwarehouses?\b/.test(normalized)) return 'Warehouses';
             if (/\bhouses?\b|\btownhouses?\b|\bmaisonettes?\b|\bvillas?\b/.test(normalized)) return 'Houses';
-            if (/\boffices?\b|\bcommercials?\b/.test(normalized)) return null;
+            if (/\bapartments?\b/.test(normalized)) return 'Apartments';
+            if (/\bland\b|\bplots?\b/.test(normalized)) return 'Land';
+            if (/\bair\s*bnbs?\b|\bairbnbs?\b|\bshort\s*(stay|stays|term|terms)\b/.test(normalized)) return 'Airbnb';
+            if (/\boff\s*plan\b|\boffplan\b/.test(normalized)) return 'Offplan Investments';
+            if (/\boffices?\b/.test(normalized)) return 'Offices';
+            if (/\bwarehouses?\b/.test(normalized)) return 'Warehouses';
+            if (/\bcommercials?\b/.test(normalized)) return 'Commercials';
             return null;
         }
 
@@ -302,6 +318,7 @@
                 const p = item.fields;
                 if(p.location) locationsSet.add(p.location.toString().trim());
                 const type = normalizeType(getType(p));
+                if(!type) return;
 
                 // Build card
                 let imageUrl = '';
@@ -335,7 +352,7 @@
                 if(containers[type]) {
                     containers[type].appendChild(card);
                 }
-            });
+			});
             // Build the locations buttons (preferred ones first)
             const locationsListEl = document.getElementById('locationsList');
             if(locationsListEl){
@@ -354,15 +371,22 @@
                     locationsListEl.appendChild(a);
                 });
             }
-            // Hide any groups that ended up empty for a cleaner layout
-            Object.keys(containers).forEach(name => {
-                const grid = containers[name];
-                if(grid && grid.children.length === 0) {
-                    const groupEl = grid.closest('.properties-group');
-                    if(groupEl) groupEl.style.display = 'none';
-                }
-            });
-        })
+			// Show only categories that have properties and activate matching shortcut buttons
+			Object.keys(containers).forEach(name => {
+				const grid = containers[name];
+				const groupEl = grid ? grid.closest('.properties-group') : null;
+				const anchorId = groupAnchors[name];
+				const linkEl = anchorId ? document.querySelector(`.property-types a[href="#${anchorId}"]`) : null;
+
+				if(grid && grid.children.length > 0) {
+					if(groupEl) groupEl.hidden = false;
+					if(linkEl) linkEl.setAttribute('aria-disabled', 'false');
+				} else {
+					if(groupEl) groupEl.hidden = true;
+					if(linkEl) linkEl.setAttribute('aria-disabled', 'true');
+				}
+			});
+		})
         .catch(err => console.error('Contentful error:', err));
     })();
     </script>
@@ -492,12 +516,16 @@
         window.addEventListener('load', waitForContentAndCenter);
         window.addEventListener('hashchange', () => { setTimeout(() => tryCenterHash(), 40); });
 
-        // Intercept same-page hash clicks and center the target (preserve history)
-        document.addEventListener('click', (e) => {
-            const a = e.target.closest('a[href*="#"]');
-            if(!a) return;
-            try {
-                const url = new URL(a.getAttribute('href'), location.href);
+		// Intercept same-page hash clicks and center the target only when a category is available
+		document.addEventListener('click', (e) => {
+			const a = e.target.closest('a[href*="#"]');
+			if(!a) return;
+			if(a.matches('.property-types a[aria-disabled="true"]')) {
+				e.preventDefault();
+				return;
+			}
+			try {
+				const url = new URL(a.getAttribute('href'), location.href);
                 if(url.pathname === location.pathname){
                     const id = url.hash.replace('#','');
                     const target = document.getElementById(id);
