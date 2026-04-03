@@ -157,7 +157,14 @@
                     </h1>
                     <p class="lead">Find houses, apartments, Airbnb stays, land and investment opportunities across Nairobi.</p>
 
-                    <div class="property-types" id="propertyTypeLinks" aria-label="Property type shortcuts"></div>
+                    <div class="property-types">
+                        <a href="#houses" class="btn-secondary">Houses</a>
+                        <a href="#apartments" class="btn-secondary">Apartments</a>
+                        <a href="#airbnb" class="btn-secondary">Airbnb</a>
+                        <a href="#land" class="btn-secondary">Land</a>
+                        <a href="#off-plan-investments" class="btn-secondary">Off Plan Investments</a>
+                        <a href="#warehouses" class="btn-secondary">Warehouses</a>
+                    </div>
 
                     <div class="search-bar" role="search" aria-label="Search properties">
                         <input id="propSearch" type="search" placeholder="Search by title, location or neighbourhood…" aria-label="Search properties">
@@ -185,7 +192,12 @@
                 <h2>All Properties</h2>
 
                 <!-- Empty groups — populated dynamically from the CMS in this order -->
-                <div id="propertyGroups"></div>
+                <div class="properties-group" id="houses"><h3>Houses</h3><div class="properties-grid" data-group="Houses"></div></div>
+                <div class="properties-group" id="apartments"><h3>Apartments</h3><div class="properties-grid" data-group="Apartments"></div></div>
+                <div class="properties-group" id="airbnb"><h3>Airbnb</h3><div class="properties-grid" data-group="Airbnb"></div></div>
+                <div class="properties-group" id="land"><h3>Land</h3><div class="properties-grid" data-group="Land"></div></div>
+                <div class="properties-group" id="off-plan-investments"><h3>Off Plan Investments</h3><div class="properties-grid" data-group="Off Plan Investments"></div></div>
+                <div class="properties-group" id="warehouses"><h3>Warehouses</h3><div class="properties-grid" data-group="Warehouses"></div></div>
             </section>
     </main>
 
@@ -242,38 +254,8 @@
             accessToken: '__CONTENTFUL_ACCESS_TOKEN__'
         });
 
-        const typeOrder = ['Houses','Apartments','Airbnb','Land','Off Plan Investments','Warehouses'];
-        const typeLinkContainer = document.getElementById('propertyTypeLinks');
-        const propertyGroupsContainer = document.getElementById('propertyGroups');
-
-        function slugifyType(typeName) {
-            return typeName.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-        }
-
-        function createPropertyGroup(typeName) {
-            const section = document.createElement('div');
-            section.className = 'properties-group';
-            section.id = slugifyType(typeName);
-
-            const heading = document.createElement('h3');
-            heading.textContent = typeName;
-
-            const grid = document.createElement('div');
-            grid.className = 'properties-grid';
-            grid.dataset.group = typeName;
-
-            section.appendChild(heading);
-            section.appendChild(grid);
-            return section;
-        }
-
-        function createTypeLink(typeName) {
-            const link = document.createElement('a');
-            link.href = `#${slugifyType(typeName)}`;
-            link.className = 'btn-secondary';
-            link.textContent = typeName;
-            return link;
-        }
+        // Order of groups to display
+        const groups = ['Houses','Apartments','Airbnb','Land','Off Plan Investments','Warehouses'];
 
         function normalizeType(rawType) {
             const normalized = (rawType || '')
@@ -292,7 +274,7 @@
             if (/\bwarehouses?\b/.test(normalized)) return 'Warehouses';
             if (/\bhouses?\b|\btownhouses?\b|\bmaisonettes?\b|\bvillas?\b/.test(normalized)) return 'Houses';
             if (/\boffices?\b|\bcommercials?\b/.test(normalized)) return null;
-            return rawType.toString().trim();
+            return null;
         }
 
         // Small helper to determine type field on the entry
@@ -307,16 +289,19 @@
 
         client.getEntries({ content_type: 'property', order: '-sys.createdAt', limit: 100 })
         .then((response) => {
-            const locationsSet = new Set();
-            const groupedItems = new Map();
+            // collect unique locations to build the Locations buttons
+            const locationsSet = new Set();
+            // Map group name to container element
+            const containers = {};
+            groups.forEach(name => {
+                const el = document.querySelector(`.properties-grid[data-group="${name}"]`);
+                if(el) containers[name] = el;
+            });
 
             response.items.forEach(item => {
                 const p = item.fields;
                 if(p.location) locationsSet.add(p.location.toString().trim());
                 const type = normalizeType(getType(p));
-                if(!type) return;
-
-                if(!groupedItems.has(type)) groupedItems.set(type, []);
 
                 // Build card
                 let imageUrl = '';
@@ -346,34 +331,11 @@
                     </div>
                 `;
 
-                groupedItems.get(type).push(card);
-			});
-
-            const orderedTypes = [];
-            const seenTypes = new Set();
-            typeOrder.forEach(typeName => {
-                if(groupedItems.has(typeName) && groupedItems.get(typeName).length) {
-                    orderedTypes.push(typeName);
-                    seenTypes.add(typeName);
+                // Append only to supported property groups shown on this page
+                if(containers[type]) {
+                    containers[type].appendChild(card);
                 }
-            });
-            Array.from(groupedItems.keys()).sort((a, b) => a.localeCompare(b)).forEach(typeName => {
-                if(!seenTypes.has(typeName) && groupedItems.get(typeName).length) {
-                    orderedTypes.push(typeName);
-                    seenTypes.add(typeName);
-                }
-            });
-
-            if(typeLinkContainer) typeLinkContainer.innerHTML = '';
-            if(propertyGroupsContainer) propertyGroupsContainer.innerHTML = '';
-
-            orderedTypes.forEach(typeName => {
-                if(typeLinkContainer) typeLinkContainer.appendChild(createTypeLink(typeName));
-                const groupEl = createPropertyGroup(typeName);
-                const grid = groupEl.querySelector('.properties-grid');
-                groupedItems.get(typeName).forEach(card => grid.appendChild(card));
-                if(propertyGroupsContainer) propertyGroupsContainer.appendChild(groupEl);
-            });
+            });
             // Build the locations buttons (preferred ones first)
             const locationsListEl = document.getElementById('locationsList');
             if(locationsListEl){
@@ -392,7 +354,15 @@
                     locationsListEl.appendChild(a);
                 });
             }
-		})
+            // Hide any groups that ended up empty for a cleaner layout
+            Object.keys(containers).forEach(name => {
+                const grid = containers[name];
+                if(grid && grid.children.length === 0) {
+                    const groupEl = grid.closest('.properties-group');
+                    if(groupEl) groupEl.style.display = 'none';
+                }
+            });
+        })
         .catch(err => console.error('Contentful error:', err));
     })();
     </script>
