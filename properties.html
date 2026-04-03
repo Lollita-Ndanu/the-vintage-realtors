@@ -258,15 +258,22 @@
         const groups = ['Houses','Apartments','Airbnb','Land','Off Plan Investments','Warehouses'];
 
         function normalizeType(rawType) {
-            const normalized = (rawType || '').toString().trim().toLowerCase().replace(/&/g, 'and');
+            const normalized = (rawType || '')
+                .toString()
+                .trim()
+                .toLowerCase()
+                .replace(/&/g, 'and')
+                .replace(/-/g, ' ')
+                .replace(/\s+/g, ' ');
+
             if (!normalized) return null;
-            if (['house', 'houses'].includes(normalized)) return 'Houses';
-            if (['apartment', 'apartments'].includes(normalized)) return 'Apartments';
-            if (['airbnb', 'air bnb', 'air-bnb', 'short stay', 'short-stay', 'short stay apartment', 'short stay apartments'].includes(normalized)) return 'Airbnb';
-            if (['land', 'plot', 'plots'].includes(normalized)) return 'Land';
-            if (['off plan investment', 'off plan investments', 'off-plan investment', 'off-plan investments', 'offplan investment', 'offplan investments'].includes(normalized)) return 'Off Plan Investments';
-            if (['warehouse', 'warehouses'].includes(normalized)) return 'Warehouses';
-            if (['office', 'offices', 'commercial', 'commercials'].includes(normalized)) return null;
+            if (/\bapartments?\b/.test(normalized)) return 'Apartments';
+            if (/\bair\s*bnbs?\b|\bairbnbs?\b|\bshort\s*(stay|stays|term|terms)\b/.test(normalized)) return 'Airbnb';
+            if (/\boff\s*plan\b|\boffplan\b/.test(normalized)) return 'Off Plan Investments';
+            if (/\bland\b|\bplots?\b/.test(normalized)) return 'Land';
+            if (/\bwarehouses?\b/.test(normalized)) return 'Warehouses';
+            if (/\bhouses?\b|\btownhouses?\b|\bmaisonettes?\b|\bvillas?\b/.test(normalized)) return 'Houses';
+            if (/\boffices?\b|\bcommercials?\b/.test(normalized)) return null;
             return null;
         }
 
