@@ -92,189 +92,131 @@
     .price-badge { position:absolute; right:12px; top:12px; background: linear-gradient(180deg, var(--brand-purple), #3e1760); color:#fff; padding:6px 10px; border-radius:8px; font-weight:800; font-size:0.85rem; box-shadow: 0 8px 22px rgba(75,0,130,0.18); }
 
     /* Locations section styling */
-    .locations-section { max-width: 1200px; margin: 24px auto 0; padding: 0 20px; }
+    .locations-section { max-width: 1180px; margin: 20px auto 0; padding: 0 20px; }
     .locations-inner {
         position: relative;
-        padding: 32px;
-        border-radius: 28px;
-        background:
-            linear-gradient(135deg, rgba(10,10,12,0.98) 0%, rgba(24,16,33,0.98) 52%, rgba(43,28,21,0.96) 100%);
-        border: 1px solid rgba(139,94,60,0.32);
-        box-shadow: 0 28px 64px rgba(0,0,0,0.28);
+        display: grid;
+        grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+        gap: 22px;
+        align-items: start;
+        padding: 24px 26px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(91,42,134,0.08), rgba(139,94,60,0.12));
+        border: 1px solid rgba(139,94,60,0.24);
+        box-shadow: 0 18px 34px rgba(91,42,134,0.1);
         overflow: hidden;
     }
-    .locations-inner::before,
-    .locations-inner::after {
+    .locations-inner::before {
         content: '';
         position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(91,42,134,0.06), rgba(139,94,60,0.03), rgba(91,42,134,0.06));
         pointer-events: none;
-    }
-    .locations-inner::before {
-        inset: 16px;
-        border-radius: 20px;
-        border: 1px solid rgba(91,42,134,0.24);
-    }
-    .locations-inner::after {
-        width: 280px;
-        height: 280px;
-        top: -120px;
-        right: -80px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(91,42,134,0.34) 0%, rgba(91,42,134,0) 72%);
     }
     .locations-heading {
         position: relative;
         z-index: 1;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        gap: 18px;
-        flex-wrap: wrap;
-        padding-bottom: 18px;
-        border-bottom: 1px solid rgba(139,94,60,0.2);
+        display: grid;
+        gap: 12px;
+        align-content: start;
+        padding-right: 22px;
+        border-right: 1px solid rgba(139,94,60,0.18);
     }
     .locations-copy { max-width: 640px; }
     .locations-kicker {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        padding: 7px 14px;
+        gap: 8px;
+        padding: 6px 12px;
         border-radius: 999px;
-        background: rgba(91,42,134,0.18);
-        border: 1px solid rgba(139,94,60,0.34);
-        color: rgba(255,255,255,0.82);
+        background: rgba(91,42,134,0.12);
+        border: 1px solid rgba(139,94,60,0.22);
+        color: var(--brand-purple);
         font-size: 0.74rem;
         font-weight: 800;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
     }
     .locations-kicker::before {
         content: '';
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
         background: var(--vintage-ochre);
-        box-shadow: 0 0 0 6px rgba(139,94,60,0.16);
     }
     .locations-title {
-        margin: 14px 0 0;
+        margin: 2px 0 0;
         font-family: 'Playfair Display', serif;
-        font-size: 2.2rem;
-        color: #fff;
+        font-size: 1.8rem;
+        color: var(--brand-purple);
     }
     .locations-intro {
-        margin: 10px 0 0;
-        color: rgba(255,255,255,0.72);
-        max-width: 560px;
-        line-height: 1.7;
+        margin: 0;
+        color: var(--vintage-ochre);
+        max-width: 320px;
+        line-height: 1.55;
+        font-size: 0.94rem;
     }
     .locations-list {
         position: relative;
         z-index: 1;
-        display: grid;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-        gap: 16px;
-        margin-top: 24px;
-        align-items: stretch;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-content: flex-start;
+        padding-top: 2px;
     }
     .location-btn {
-        grid-column: span 2;
         position: relative;
-        display: grid;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
         gap: 14px;
-        min-height: 128px;
-        padding: 18px 18px 20px;
-        border-radius: 22px;
+        min-height: 58px;
+        padding: 14px 16px;
+        flex: 1 1 180px;
+        border-radius: 18px;
         text-decoration: none;
-        background:
-            linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)) padding-box,
-            linear-gradient(145deg, rgba(91,42,134,0.36), rgba(139,94,60,0.26)) border-box,
-            linear-gradient(145deg, rgba(15,13,18,0.98), rgba(34,24,27,0.96));
-        border: 1px solid transparent;
-        box-shadow: 0 18px 36px rgba(0,0,0,0.24);
-        transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
-        overflow: hidden;
-    }
-    .location-btn::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(125deg, rgba(91,42,134,0.18), rgba(91,42,134,0) 38%, rgba(139,94,60,0.16) 100%);
-        opacity: 0.9;
-        pointer-events: none;
+        background: linear-gradient(135deg, rgba(91,42,134,0.94), rgba(139,94,60,0.88));
+        border: 1px solid rgba(139,94,60,0.18);
+        box-shadow: 0 10px 22px rgba(91,42,134,0.14);
+        transition: transform 180ms ease, box-shadow 180ms ease;
     }
     .location-btn::after {
         content: '';
         position: absolute;
-        left: 18px;
-        right: 18px;
-        bottom: 0;
-        height: 4px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, var(--brand-purple), var(--vintage-ochre));
+        inset: 1px;
+        border-radius: inherit;
+        border: 1px solid rgba(255,255,255,0.14);
+        pointer-events: none;
     }
-    .location-btn:nth-child(5n + 1),
-    .location-btn:nth-child(5n + 4) {
-        grid-column: span 3;
-    }
-    .location-btn:nth-child(3n + 2) {
-        background:
-            linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)) padding-box,
-            linear-gradient(145deg, rgba(139,94,60,0.34), rgba(91,42,134,0.3)) border-box,
-            linear-gradient(145deg, rgba(18,15,18,0.98), rgba(45,28,23,0.96));
+    .location-btn:nth-child(even) {
+        background: linear-gradient(135deg, rgba(139,94,60,0.94), rgba(91,42,134,0.9));
     }
     .location-btn:nth-child(3n + 3) {
-        background:
-            linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)) padding-box,
-            linear-gradient(145deg, rgba(91,42,134,0.34), rgba(139,94,60,0.28)) border-box,
-            linear-gradient(145deg, rgba(14,12,19,0.98), rgba(28,18,37,0.96));
+        flex-basis: 220px;
     }
     .location-btn:hover {
-        transform: translateY(-7px);
-        box-shadow: 0 26px 48px rgba(0,0,0,0.32);
-    }
-    .location-btn > * {
-        position: relative;
-        z-index: 1;
-    }
-    .location-btn-index {
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: rgba(255,255,255,0.52);
+        transform: translateY(-3px);
+        box-shadow: 0 16px 28px rgba(91,42,134,0.18);
     }
     .location-btn-name {
-        font-size: 1.12rem;
-        font-weight: 800;
+        font-size: 0.98rem;
+        font-weight: 700;
         color: #fff;
         line-height: 1.3;
-    }
-    .location-btn-meta {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        color: rgba(255,255,255,0.76);
-        font-size: 0.88rem;
-    }
-    .location-btn-label {
-        color: rgba(255,255,255,0.72);
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        font-size: 0.76rem;
     }
     .location-btn-arrow {
         display: inline-grid;
         place-items: center;
-        width: 36px;
-        height: 36px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
-        background: linear-gradient(145deg, rgba(91,42,134,0.3), rgba(139,94,60,0.32));
+        background: rgba(255,255,255,0.14);
         color: #fff;
-        font-size: 1rem;
+        font-size: 0.92rem;
         font-weight: 800;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.18);
     }
 
     /* Responsive adjustments */
@@ -282,19 +224,17 @@
         .properties-hero { padding: 48px 14px; }
         .properties-hero h1 { font-size: 2rem; }
         .properties-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-        .locations-inner { padding: 26px; }
-        .locations-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .location-btn,
-        .location-btn:nth-child(5n + 1),
-        .location-btn:nth-child(5n + 4) { grid-column: span 1; }
+        .locations-inner { grid-template-columns: 1fr; padding: 22px; }
+        .locations-heading { padding-right: 0; border-right: 0; border-bottom: 1px solid rgba(139,94,60,0.18); padding-bottom: 14px; }
+        .location-btn { flex-basis: calc(50% - 12px); }
     }
     @media (max-width: 480px) {
         .properties-hero h1 { font-size: 1.6rem; }
         .property-types { gap:10px; }
-        .locations-inner { padding: 22px 18px; }
-        .locations-title { font-size: 1.8rem; }
-        .locations-list { grid-template-columns: 1fr; }
-        .location-btn { min-height: 108px; }
+        .locations-inner { padding: 20px 16px; }
+        .locations-title { font-size: 1.55rem; }
+        .locations-intro { max-width: none; }
+        .location-btn { flex-basis: 100%; min-height: 54px; }
     }
     </style>
 
@@ -379,7 +319,7 @@
 		             <div class="locations-copy">
 		                 <span class="locations-kicker">Explore by area</span>
 		                 <h2 class="locations-title">Our Locations</h2>
-		                 <p class="locations-intro">Browse our active neighborhoods through a more curated city grid that keeps every location easy to scan while still feeling elevated.</p>
+		                 <p class="locations-intro">A polished location rail for browsing our active neighborhoods with ease.</p>
 		             </div>
 		         </div>
 		         <div class="locations-list" id="locationsList" aria-live="polite">
@@ -568,12 +508,8 @@
 				     a.className = 'location-btn';
                 a.href = `/location?loc=${encodeURIComponent(loc)}`;
 				     a.innerHTML = `
-                    <span class="location-btn-index">Area ${String(locationsListEl.children.length + 1).padStart(2, '0')}</span>
                     <span class="location-btn-name">${loc}</span>
-                    <span class="location-btn-meta">
-                        <span class="location-btn-label">See listings</span>
-                        <span class="location-btn-arrow" aria-hidden="true">&rarr;</span>
-                    </span>
+                    <span class="location-btn-arrow" aria-hidden="true">&rarr;</span>
                 `;
 				     locationsListEl.appendChild(a);
 				 });
