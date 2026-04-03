@@ -282,14 +282,14 @@
                 .replace(/\s+/g, ' ');
 
             if (!normalized) return null;
-            if (/\bhouses?\b|\btownhouses?\b|\bmaisonettes?\b|\bvillas?\b/.test(normalized)) return 'Houses';
-            if (/\bapartments?\b/.test(normalized)) return 'Apartments';
-            if (/\bland\b|\bplots?\b/.test(normalized)) return 'Land';
             if (/\bair\s*bnbs?\b|\bairbnbs?\b|\bshort\s*(stay|stays|term|terms)\b/.test(normalized)) return 'Airbnb';
             if (/\boff\s*plan\b|\boffplan\b/.test(normalized)) return 'Offplan Investments';
+            if (/\bhouses?\b|\btownhouses?\b|\bmaisonettes?\b|\bvillas?\b/.test(normalized)) return 'Houses';
+            if (/\bapartments?\b/.test(normalized)) return 'Apartments';
+            if (/\bfarms?\b|\bland\b|\bplots?\b/.test(normalized)) return 'Land';
             if (/\boffices?\b/.test(normalized)) return 'Offices';
             if (/\bwarehouses?\b/.test(normalized)) return 'Warehouses';
-            if (/\bcommercials?\b/.test(normalized)) return 'Commercials';
+            if (/\bcommercials?\b|\bcommercial\b/.test(normalized)) return 'Commercials';
             return null;
         }
 
@@ -314,10 +314,13 @@
                 if(el) containers[name] = el;
             });
 
-            response.items.forEach(item => {
-                const p = item.fields;
-                if(p.location) locationsSet.add(p.location.toString().trim());
-                const type = normalizeType(getType(p));
+			response.items.forEach(item => {
+				const p = item.fields;
+				if(p.location) locationsSet.add(p.location.toString().trim());
+                const rawType = Array.isArray(p.category)
+                    ? p.category.join(' ')
+                    : getType(p);
+                const type = normalizeType(rawType);
                 if(!type) return;
 
                 // Build card

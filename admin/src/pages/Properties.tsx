@@ -14,7 +14,7 @@ import { getSpace } from '../lib/contentful';
 import type { Property } from '../types';
 import toast from 'react-hot-toast';
 
-const PROPERTY_CATEGORIES = ['Houses', 'Apartments', 'Commercial', 'Offices', 'Farms & Land', 'Warehouses'];
+const PROPERTY_CATEGORIES = ['Houses', 'Apartments', 'Land', 'Airbnb', 'Offplan Investments', 'Offices', 'Warehouses', 'Commercials'];
 const PROPERTY_STATUS = ['For sale', 'For rent', 'Sold', 'Rented'];
 
 export default function Properties() {
