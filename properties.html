@@ -91,195 +91,255 @@
 
     .price-badge { position:absolute; right:12px; top:12px; background: linear-gradient(180deg, var(--brand-purple), #3e1760); color:#fff; padding:6px 10px; border-radius:8px; font-weight:800; font-size:0.85rem; box-shadow: 0 8px 22px rgba(75,0,130,0.18); }
 
-    /* Locations section styling */
-    .locations-section { max-width: 1160px; margin: 18px auto 0; padding: 0 20px; }
+    /* ─── OUR LOCATIONS — VINTAGE ESTATE REDESIGN ──────────────────────── */
+    .locations-section {
+        max-width: 1200px;
+        margin: 44px auto 0;
+        padding: 0 20px;
+    }
     .locations-inner {
         position: relative;
-        display: grid;
-        grid-template-columns: 240px minmax(0, 1fr);
-        gap: 18px;
-        align-items: start;
-        padding: 22px;
-        border-radius: 22px;
+        padding: 52px 48px 48px;
+        border-radius: 3px;
         background:
-            linear-gradient(140deg, rgba(10,8,16,0.98), rgba(18,12,24,0.96)),
-            repeating-linear-gradient(90deg, rgba(122,75,168,0.05) 0 1px, transparent 1px 34px);
-        border: 1px solid rgba(122,75,168,0.22);
-        box-shadow: 0 18px 36px rgba(24,10,39,0.18);
+            radial-gradient(ellipse at 25% 0%, rgba(91,42,134,0.16) 0%, transparent 55%),
+            radial-gradient(ellipse at 80% 100%, rgba(91,42,134,0.10) 0%, transparent 50%),
+            linear-gradient(160deg, #080608 0%, #0e0a16 50%, #080608 100%);
+        border: 1px solid rgba(139,94,60,0.32);
+        box-shadow:
+            0 0 0 5px #050405,
+            0 0 0 6px rgba(139,94,60,0.16),
+            0 32px 72px rgba(0,0,0,0.65),
+            inset 0 0 100px rgba(0,0,0,0.25);
         overflow: hidden;
     }
+    /* Noise grain texture */
     .locations-inner::before {
         content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(120deg, rgba(91,42,134,0.14), rgba(91,42,134,0.02) 38%, rgba(91,42,134,0.1) 100%);
+        position: absolute; inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+        opacity: 0.4;
         pointer-events: none;
+        z-index: 0;
     }
+    /* Purple atmosphere glow */
+    .locations-inner::after {
+        content: '';
+        position: absolute;
+        top: -80px; left: 50%;
+        width: 600px; height: 240px;
+        transform: translateX(-50%);
+        background: radial-gradient(ellipse, rgba(91,42,134,0.28) 0%, transparent 68%);
+        pointer-events: none;
+        z-index: 0;
+    }
+    /* Corner ornaments */
+    .loc-corner {
+        position: absolute;
+        width: 26px; height: 26px;
+        border-color: rgba(139,94,60,0.60);
+        border-style: solid;
+        z-index: 2;
+    }
+    .loc-corner--tl { top: 16px; left: 16px; border-width: 1.5px 0 0 1.5px; }
+    .loc-corner--tr { top: 16px; right: 16px; border-width: 1.5px 1.5px 0 0; }
+    .loc-corner--bl { bottom: 16px; left: 16px; border-width: 0 0 1.5px 1.5px; }
+    .loc-corner--br { bottom: 16px; right: 16px; border-width: 0 1.5px 1.5px 0; }
+    /* Heading block */
     .locations-heading {
         position: relative;
         z-index: 1;
         display: flex;
         align-items: center;
-        min-height: 100%;
-        padding-right: 18px;
-        border-right: 1px solid rgba(122,75,168,0.16);
+        gap: 22px;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 0;
     }
-    .locations-copy { max-width: 220px; }
+    .loc-ornament-line {
+        flex: 1;
+        max-width: 180px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(139,94,60,0.55), transparent);
+    }
+    .locations-copy { text-align: center; }
     .locations-kicker {
-        display: inline-block;
-        padding: 5px 11px;
-        border-radius: 999px;
-        background: rgba(91,42,134,0.14);
-        border: 1px solid rgba(122,75,168,0.22);
-        color: #c8b0e7;
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
+        display: block;
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 0.80rem;
+        letter-spacing: 0.24em;
+        color: rgba(200,176,231,0.72);
+        margin-bottom: 12px;
     }
     .locations-title {
-        margin: 14px 0 8px;
         font-family: 'Playfair Display', serif;
-        font-size: 1.72rem;
-        line-height: 1.05;
-        color: #efe5ff;
+        font-size: 2.8rem;
+        font-weight: 700;
+        line-height: 1.0;
+        color: #f6f1ff;
+        margin: 0 0 10px;
+        letter-spacing: 0.03em;
+        text-shadow: 0 4px 48px rgba(91,42,134,0.55), 0 1px 0 rgba(139,94,60,0.30);
     }
     .locations-intro {
+        font-size: 0.87rem;
+        font-style: italic;
+        color: rgba(220,205,242,0.55);
+        letter-spacing: 0.05em;
         margin: 0;
-        color: rgba(217,199,242,0.74);
-        line-height: 1.55;
-        font-size: 0.92rem;
     }
+    /* Ornamental divider */
+    .loc-divider {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin: 28px 0 32px;
+        padding: 0 4px;
+    }
+    .loc-divider span {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(139,94,60,0.38),
+            rgba(91,42,134,0.28),
+            rgba(139,94,60,0.38),
+            transparent
+        );
+    }
+    .loc-divider svg { flex-shrink: 0; opacity: 0.85; }
+    /* Location buttons grid */
     .locations-list {
         position: relative;
         z-index: 1;
         display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-auto-flow: dense;
-        gap: 12px;
-        align-items: start;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
         counter-reset: location-tally;
     }
+    /* The button itself */
     .location-btn {
-        grid-column: span 4;
         position: relative;
-        display: grid;
-        grid-template-columns: auto 1fr auto;
+        display: flex;
         align-items: center;
-        gap: 12px;
-        min-height: 62px;
-        padding: 12px 14px;
-        border-radius: 16px;
+        gap: 14px;
+        padding: 17px 18px;
+        border-radius: 3px;
         text-decoration: none;
-        background: linear-gradient(180deg, rgba(8,7,12,0.98), rgba(19,14,27,0.98));
-        border: 1px solid rgba(122,75,168,0.22);
-        box-shadow: inset 0 1px 0 rgba(122,75,168,0.12), 0 10px 18px rgba(0,0,0,0.18);
-        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
-        animation: locationReveal 460ms cubic-bezier(.2,.9,.25,1) both;
-        animation-delay: calc(var(--stagger, 0) * 60ms);
+        background: #07060a;
+        border: 1px solid rgba(91,42,134,0.28);
+        border-bottom: 2px solid rgba(139,94,60,0.35);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.025);
+        transition: transform 210ms ease, box-shadow 210ms ease, border-color 210ms ease, background 210ms ease;
+        animation: locationReveal 520ms cubic-bezier(.22,.9,.26,1) both;
+        animation-delay: calc(var(--stagger, 0) * 65ms);
+        overflow: hidden;
     }
+    /* Hover shimmer */
+    .location-btn .loc-shimmer {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(130deg, rgba(91,42,134,0) 0%, rgba(91,42,134,0.10) 100%);
+        opacity: 0;
+        transition: opacity 210ms ease;
+        pointer-events: none;
+    }
+    .location-btn:hover .loc-shimmer { opacity: 1; }
+    /* Number badge via CSS counter */
     .location-btn::before {
         counter-increment: location-tally;
         content: counter(location-tally, decimal-leading-zero);
+        flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 12px;
-        background: linear-gradient(145deg, rgba(91,42,134,0.96), rgba(58,28,88,0.98));
-        color: #f4ecff;
-        font-size: 0.7rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+        width: 34px;
+        height: 34px;
+        border-radius: 2px;
+        background: linear-gradient(145deg, #1c1028, #0e0916);
+        border: 1px solid rgba(91,42,134,0.58);
+        color: rgba(200,176,231,0.90);
+        font-family: 'Playfair Display', serif;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        box-shadow: inset 0 1px 0 rgba(122,75,168,0.18);
+        position: relative;
+        z-index: 1;
     }
-    .location-btn::after {
-        content: '';
-        position: absolute;
-        left: 14px;
-        right: 14px;
-        bottom: 0;
-        height: 2px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, rgba(122,75,168,0.88), rgba(122,75,168,0));
-        opacity: 0.95;
-    }
-    .location-btn:nth-child(4n + 1) { grid-column: span 5; }
-    .location-btn:nth-child(4n + 2) { grid-column: span 3; }
-    .location-btn:nth-child(4n + 4) { grid-column: span 4; }
     .location-btn:hover {
-        transform: translateY(-3px);
-        border-color: rgba(163,120,214,0.36);
-        box-shadow: inset 0 1px 0 rgba(163,120,214,0.14), 0 14px 24px rgba(24,10,39,0.26);
-        background: linear-gradient(180deg, rgba(14,10,20,0.98), rgba(28,18,38,0.98));
+        transform: translateY(-4px);
+        background: #0d0a15;
+        border-color: rgba(122,75,168,0.55);
+        border-bottom-color: rgba(139,94,60,0.65);
+        box-shadow:
+            0 14px 36px rgba(0,0,0,0.60),
+            0 0 0 1px rgba(91,42,134,0.14),
+            inset 0 1px 0 rgba(255,255,255,0.04);
     }
     .location-btn-name {
-        font-size: 0.98rem;
+        flex: 1;
+        position: relative;
+        z-index: 1;
+        font-family: 'Playfair Display', serif;
+        font-size: 0.97rem;
         font-weight: 700;
-        color: #fff;
-        letter-spacing: 0.02em;
-        line-height: 1.3;
+        color: #ede6ff;
+        letter-spacing: 0.03em;
+        line-height: 1.25;
     }
     .location-btn-arrow {
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
         display: inline-grid;
         place-items: center;
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
-        background: rgba(91,42,134,0.18);
-        border: 1px solid rgba(122,75,168,0.24);
-        color: #dccaf5;
-        font-size: 0.92rem;
-        font-weight: 800;
-        transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+        background: rgba(91,42,134,0.12);
+        border: 1px solid rgba(91,42,134,0.32);
+        color: rgba(200,176,231,0.70);
+        font-size: 0.85rem;
+        transition: transform 210ms ease, background 210ms ease, color 210ms ease, border-color 210ms ease;
     }
     .location-btn:hover .location-btn-arrow {
-        transform: translateX(2px);
-        background: rgba(91,42,134,0.28);
-        color: #f2eaff;
+        transform: translateX(3px);
+        background: rgba(91,42,134,0.30);
+        color: #e6d6ff;
+        border-color: rgba(122,75,168,0.58);
     }
     @keyframes locationReveal {
-        from { opacity: 0; transform: translateY(12px); }
-        to { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
-
-    /* Responsive adjustments */
+    /* Responsive */
     @media (max-width: 900px) {
         .properties-hero { padding: 48px 14px; }
         .properties-hero h1 { font-size: 2rem; }
         .properties-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-        .locations-inner { grid-template-columns: 1fr; padding: 20px; gap: 14px; }
-        .locations-heading { padding-right: 0; border-right: 0; border-bottom: 1px solid rgba(122,75,168,0.16); padding-bottom: 14px; }
-        .locations-copy { max-width: none; }
-        .locations-list { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-        .location-btn,
-        .location-btn:nth-child(4n + 1),
-        .location-btn:nth-child(4n + 2),
-        .location-btn:nth-child(4n + 4) { grid-column: span 3; }
+        .locations-inner { padding: 36px 24px 32px; }
+        .locations-list { grid-template-columns: repeat(2, 1fr); }
+        .locations-title { font-size: 2.2rem; }
+        .loc-ornament-line { max-width: 100px; }
     }
     @media (max-width: 480px) {
         .properties-hero h1 { font-size: 1.6rem; }
         .property-types { gap:10px; }
-        .locations-inner { padding: 18px 16px; }
-        .locations-title { font-size: 1.5rem; }
+        .locations-inner { padding: 28px 16px 24px; }
+        .locations-title { font-size: 1.8rem; }
         .locations-list { grid-template-columns: 1fr; }
-        .location-btn,
-        .location-btn:nth-child(4n + 1),
-        .location-btn:nth-child(4n + 2),
-        .location-btn:nth-child(4n + 4) { grid-column: span 1; }
+        .loc-ornament-line { max-width: 50px; }
+        .loc-divider { padding: 0; }
     }
     @media (prefers-reduced-motion: reduce) {
-        .location-btn {
-            animation: none;
-            transition: none;
-        }
-        .location-btn:hover {
-            transform: none;
-        }
-        .location-btn:hover .location-btn-arrow {
-            transform: none;
-        }
+        .location-btn { animation: none; transition: none; }
+        .location-btn:hover { transform: none; }
+        .location-btn:hover .location-btn-arrow { transform: none; }
     }
     </style>
 
@@ -357,21 +417,37 @@
                 </div>
             </div>
         </header>
-        <!-- Our Locations: injected buttons (slide-in title + vintage buttons) -->
-		 <section class="locations-section" aria-label="Our Locations">
-		     <div class="locations-inner">
-		         <div class="locations-heading">
-		             <div class="locations-copy">
-		                 <span class="locations-kicker">Explore by area</span>
-		                 <h2 class="locations-title">Our Locations</h2>
-		                 <p class="locations-intro">A quieter directory of the neighborhoods currently in focus.</p>
-		             </div>
-		         </div>
-		         <div class="locations-list" id="locationsList" aria-live="polite">
-		             <!-- Buttons will be populated from Contentful results -->
-		         </div>
-		     </div>
-		 </section>
+        <!-- Our Locations — Vintage Estate Section -->
+        <section class="locations-section" aria-label="Our Locations">
+            <div class="locations-inner">
+                <!-- Corner ornaments -->
+                <span class="loc-corner loc-corner--tl" aria-hidden="true"></span>
+                <span class="loc-corner loc-corner--tr" aria-hidden="true"></span>
+                <span class="loc-corner loc-corner--bl" aria-hidden="true"></span>
+                <span class="loc-corner loc-corner--br" aria-hidden="true"></span>
+                <!-- Heading -->
+                <div class="locations-heading">
+                    <div class="loc-ornament-line" aria-hidden="true"></div>
+                    <div class="locations-copy">
+                        <span class="locations-kicker">— Explore by Area —</span>
+                        <h2 class="locations-title">Our Locations</h2>
+                        <p class="locations-intro">A curated directory of the finest neighbourhoods currently in focus.</p>
+                    </div>
+                    <div class="loc-ornament-line" aria-hidden="true"></div>
+                </div>
+                <!-- Ornamental divider -->
+                <div class="loc-divider" aria-hidden="true">
+                    <span></span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="8,1 15,8 8,15 1,8" stroke="rgba(139,94,60,0.75)" stroke-width="1.2" fill="rgba(91,42,134,0.22)"/>
+                        <polygon points="8,4 12,8 8,12 4,8" stroke="rgba(91,42,134,0.60)" stroke-width="0.8" fill="rgba(91,42,134,0.10)"/>
+                    </svg>
+                    <span></span>
+                </div>
+                <!-- Location buttons — populated by JS -->
+                <div class="locations-list" id="locationsList" aria-live="polite"></div>
+            </div>
+        </section>
             <!-- All Properties (populated from Content Manager) -->
             <section class="all-properties" aria-label="All properties">
                 <h2>All Properties</h2>
@@ -548,17 +624,18 @@
                 preferred.forEach(name => { if(!seen.has(name)){ ordered.push(name); seen.add(name); } });
                 locations.forEach(name => { if(!seen.has(name)){ ordered.push(name); seen.add(name); } });
 
-				 ordered.forEach(loc => {
-				     const a = document.createElement('a');
-				     a.className = 'location-btn';
+                ordered.forEach(loc => {
+                    const a = document.createElement('a');
+                    a.className = 'location-btn';
                     a.style.setProperty('--stagger', String(locationsListEl.children.length));
-                a.href = `/location?loc=${encodeURIComponent(loc)}`;
-				     a.innerHTML = `
-                    <span class="location-btn-name">${loc}</span>
-                    <span class="location-btn-arrow" aria-hidden="true">&rarr;</span>
-                `;
-				     locationsListEl.appendChild(a);
-				 });
+                    a.href = `/location?loc=${encodeURIComponent(loc)}`;
+                    a.innerHTML = `
+                        <span class="loc-shimmer" aria-hidden="true"></span>
+                        <span class="location-btn-name">${loc}</span>
+                        <span class="location-btn-arrow" aria-hidden="true">&rarr;</span>
+                    `;
+                    locationsListEl.appendChild(a);
+                });
             }
 			// Show only categories that have properties and activate matching shortcut buttons
 			Object.keys(containers).forEach(name => {
