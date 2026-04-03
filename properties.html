@@ -93,124 +93,107 @@
 
     /* ─── OUR LOCATIONS ────────────────────────────────────────────────── */
     .locations-section {
-        max-width: 1100px;
-        margin: 48px auto 0;
-        padding: 0 24px;
-    }
-    .locations-inner {
-        display: grid;
-        grid-template-columns: 200px 1fr;
-        gap: 0;
-        border: 1px solid rgba(142,100,190,0.18);
-        border-radius: 6px;
-        background: rgba(248,245,255,0.55);
+        margin: 52px 0 0;
+        padding: 48px 0 44px;
+        background: linear-gradient(180deg,
+            rgba(245,238,228,0) 0%,
+            rgba(242,234,222,0.62) 20%,
+            rgba(242,234,222,0.62) 80%,
+            rgba(245,238,228,0) 100%
+        );
+        border-top: 1px solid rgba(139,94,60,0.13);
+        border-bottom: 1px solid rgba(139,94,60,0.10);
         overflow: hidden;
     }
-    /* Left label panel */
-    .locations-label {
-        padding: 36px 28px;
-        background: rgba(237,228,255,0.55);
-        border-right: 1px solid rgba(142,100,190,0.16);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 10px;
+    .locations-header {
+        text-align: center;
+        margin-bottom: 34px;
+        padding: 0 24px;
     }
     .locations-eyebrow {
+        display: block;
         font-family: 'Playfair Display', serif;
         font-style: italic;
-        font-size: 0.72rem;
-        font-weight: 400;
-        letter-spacing: 0.22em;
+        font-size: 0.78rem;
+        letter-spacing: 0.26em;
         color: #b49fcc;
-        text-transform: lowercase;
+        margin-bottom: 10px;
     }
     .locations-title {
         font-family: 'Playfair Display', serif;
-        font-size: 1.55rem;
+        font-size: 1.9rem;
         font-weight: 700;
-        line-height: 1.15;
         color: #6b44a0;
         margin: 0;
-        letter-spacing: 0.01em;
+        letter-spacing: 0.02em;
+        line-height: 1.1;
     }
-    .locations-sub {
-        font-size: 0.78rem;
-        color: #b09bca;
-        line-height: 1.5;
-        margin: 0;
-        font-style: italic;
+    /* Ticker track */
+    .locations-ticker-wrap {
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
     }
-    /* Right buttons panel */
-    .locations-body {
-        padding: 32px 28px;
+    .locations-ticker {
+        display: inline-flex;
+        gap: 14px;
+        padding: 6px 7px;
+        width: max-content;
+        animation: locTicker 26s linear infinite;
     }
-    .locations-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
+    .locations-ticker:hover {
+        animation-play-state: paused;
     }
+    @keyframes locTicker {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+    }
+    /* Vintage brown buttons */
     .location-btn {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 10px 20px;
+        padding: 11px 26px;
         border-radius: 4px;
         text-decoration: none;
-        background: #111;
-        color: #fff;
+        background: #7a4a28;
+        color: #fdf4e8;
         font-family: 'Playfair Display', serif;
-        font-size: 0.88rem;
+        font-size: 0.92rem;
         font-weight: 700;
-        letter-spacing: 0.05em;
-        border: none;
+        letter-spacing: 0.07em;
+        border: 1px solid rgba(139,80,40,0.40);
+        white-space: nowrap;
+        flex-shrink: 0;
         cursor: pointer;
-        transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
-        animation: locationReveal 420ms ease both;
-        animation-delay: calc(var(--stagger, 0) * 55ms);
+        transition: background 220ms ease, color 220ms ease, transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
     }
     .location-btn:hover,
     .location-btn:focus,
     .location-btn:active {
         background: #6b3fa0;
         color: #fff;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(107,63,160,0.22);
+        border-color: rgba(107,63,160,0.35);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 22px rgba(107,63,160,0.24);
         outline: none;
     }
     .location-btn-arrow { display: none; }
-    @keyframes locationReveal {
-        from { opacity: 0; transform: translateY(10px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
     /* Responsive */
     @media (max-width: 900px) {
         .properties-hero { padding: 48px 14px; }
         .properties-hero h1 { font-size: 2rem; }
         .properties-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-        .locations-inner { grid-template-columns: 1fr; }
-        .locations-label {
-            border-right: none;
-            border-bottom: 1px solid rgba(142,100,190,0.16);
-            padding: 24px 24px 20px;
-            flex-direction: row;
-            align-items: center;
-            gap: 16px;
-        }
-        .locations-sub { display: none; }
-        .locations-body { padding: 20px 24px 24px; }
+        .locations-section { padding: 36px 0 32px; }
+        .locations-title { font-size: 1.55rem; }
     }
     @media (max-width: 480px) {
         .properties-hero h1 { font-size: 1.6rem; }
         .property-types { gap: 10px; }
-        .locations-section { padding: 0 16px; }
-        .locations-label { padding: 18px 16px; }
-        .locations-title { font-size: 1.25rem; }
-        .locations-body { padding: 16px; }
-        .location-btn { font-size: 0.83rem; padding: 9px 16px; }
+        .locations-title { font-size: 1.3rem; }
+        .location-btn { font-size: 0.85rem; padding: 10px 18px; }
     }
     @media (prefers-reduced-motion: reduce) {
-        .location-btn { animation: none; transition: none; }
+        .locations-ticker { animation: none; }
         .location-btn:hover { transform: none; box-shadow: none; }
     }
     </style>
@@ -291,15 +274,12 @@
         </header>
         <!-- Our Locations -->
         <section class="locations-section" aria-label="Our Locations">
-            <div class="locations-inner">
-                <div class="locations-label">
-                    <span class="locations-eyebrow">explore by area</span>
-                    <h2 class="locations-title">Our<br>Locations</h2>
-                    <p class="locations-sub">A curated selection of Nairobi&rsquo;s finest neighbourhoods.</p>
-                </div>
-                <div class="locations-body">
-                    <div class="locations-list" id="locationsList" aria-live="polite"></div>
-                </div>
+            <div class="locations-header">
+                <span class="locations-eyebrow">&mdash; explore by neighbourhood &mdash;</span>
+                <h2 class="locations-title">Our Locations</h2>
+            </div>
+            <div class="locations-ticker-wrap">
+                <div class="locations-ticker" id="locationsList" aria-live="polite"></div>
             </div>
         </section>
             <!-- All Properties (populated from Content Manager) -->
@@ -481,10 +461,13 @@
                 ordered.forEach(loc => {
                     const a = document.createElement('a');
                     a.className = 'location-btn';
-                    a.style.setProperty('--stagger', String(locationsListEl.children.length));
                     a.href = `/location?loc=${encodeURIComponent(loc)}`;
                     a.textContent = loc;
                     locationsListEl.appendChild(a);
+                });
+                // Duplicate buttons for seamless infinite loop
+                Array.from(locationsListEl.children).forEach(child => {
+                    locationsListEl.appendChild(child.cloneNode(true));
                 });
             }
 			// Show only categories that have properties and activate matching shortcut buttons
