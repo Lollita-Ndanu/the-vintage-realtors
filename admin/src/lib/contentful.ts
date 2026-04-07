@@ -2,7 +2,6 @@ import { createClient } from 'contentful-management';
 
 const spaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID || '';
 const managementToken = import.meta.env.VITE_CONTENTFUL_MANAGEMENT_TOKEN || '';
-const deliveryToken = import.meta.env.VITE_CONTENTFUL_DELIVERY_TOKEN || '';
 
 export const contentfulClient = createClient({
   accessToken: managementToken,
@@ -10,30 +9,6 @@ export const contentfulClient = createClient({
 
 export const getSpace = async () => {
   return contentfulClient.getSpace(spaceId);
-};
-
-export const getDeliveryEntries = async (query: Record<string, unknown>) => {
-  const params = new URLSearchParams();
-  Object.entries(query).forEach(([key, value]) => {
-    if (value === undefined || value === null) return;
-    params.set(key, String(value));
-  });
-
-  const response = await fetch(
-    `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?${params.toString()}`,
-    {
-      headers: {
-        Authorization: `Bearer ${deliveryToken}`,
-      },
-    },
-  );
-
-  if (!response.ok) {
-    const payload = await response.json().catch(() => ({}));
-    throw new Error(payload.message || 'Failed to load Contentful delivery entries');
-  }
-
-  return response.json();
 };
 
 export const getEnvironment = async (environmentId: string = 'master') => {

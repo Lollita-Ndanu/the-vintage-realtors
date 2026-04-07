@@ -11,7 +11,7 @@ import {
   PhotoIcon,
   ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
-import { getDeliveryEntries, getSpace, uploadAsset } from '../lib/contentful';
+import { getSpace, uploadAsset } from '../lib/contentful';
 import type { Property } from '../types';
 import toast from 'react-hot-toast';
 
@@ -56,11 +56,6 @@ const mapAsset = (asset: ContentfulAssetLike | null) => {
   };
 };
 
-const assetMapFromIncludes = (includes: { Asset?: ContentfulAssetLike[] } | undefined) => {
-  const assets = includes?.Asset || [];
-  return new Map(assets.map((asset) => [asset.sys?.id || '', asset]));
-};
-
 const resolveIncludedAsset = (assetsById: Map<string, ContentfulAssetLike>, asset: ContentfulAssetLike | undefined) => {
   if (!asset) return null;
   if (asset.fields?.file) return asset;
@@ -84,19 +79,19 @@ type SelectedAsset = {
   type: 'image' | 'video';
 };
 
-type PropertyEntriesResponse = {
-  items: Array<{
-    sys: {
-      id: string;
-      createdAt: string;
-      updatedAt: string;
-    };
-    fields: Record<string, unknown>;
-  }>;
-  includes?: {
-    Asset?: ContentfulAssetLike[];
-  };
-};
+async function getAssetsById(environment: { getAsset: (id: string) => Promise<ContentfulAssetLike> }, assetIds: string[]) {
+  const uniqueAssetIds = Array.from(new Set(assetIds.filter(Boolean)));
+  const assetEntries = await Promise.all(uniqueAssetIds.map(async (assetId) => {
+    try {
+      const asset = await environment.getAsset(assetId);
+      return [assetId, asset] as const;
+    } catch {
+      return [assetId, null] as const;
+    }
+  }));
+
+  return new Map(assetEntries.filter((entry): entry is readonly [string, ContentfulAssetLike] => Boolean(entry[1])));
+}
 
 export default function Properties() {
   const queryClient = useQueryClient();
@@ -108,14 +103,22 @@ export default function Properties() {
   const { data: properties, isLoading } = useQuery({
     queryKey: ['properties'],
     queryFn: async () => {
-      const entries = await getDeliveryEntries({
+      const space = await getSpace();
+      const environment = await space.getEnvironment('master');
+      const entries = await environment.getEntries({
         content_type: 'property',
         order: '-sys.createdAt',
         limit: 100,
-        include: 2,
-      }) as unknown as PropertyEntriesResponse;
+      });
 
-      const assetsById = assetMapFromIncludes(entries.includes);
+      const assetIds = entries.items.flatMap((item) => {
+        const mainImageField = getLocaleValue(item.fields.mainImage as Record<string, ContentfulAssetLike> | undefined);
+        const galleryField = getLocaleValue(item.fields.gallery as Record<string, ContentfulAssetLike[]> | undefined) || [];
+
+        return [mainImageField?.sys?.id, ...galleryField.map((asset) => asset.sys?.id)].filter((value): value is string => Boolean(value));
+      });
+
+      const assetsById = await getAssetsById(environment, assetIds);
 
       return entries.items.map((item) => {
         const mainImageField = getLocaleValue(item.fields.mainImage as Record<string, ContentfulAssetLike> | undefined);
