@@ -103,12 +103,15 @@ export interface Property {
   bedrooms: number;
   bathrooms: number;
   area: number | null;
-  slug: string;
+  slug?: string;
   mainImage?: {
+    id: string;
     url: string;
     title: string;
+    type: 'image' | 'video';
   };
   gallery?: Array<{
+    id: string;
     url: string;
     title: string;
     type: 'image' | 'video';

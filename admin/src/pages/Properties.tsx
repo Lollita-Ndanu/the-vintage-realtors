@@ -9,13 +9,14 @@ import {
   EyeIcon,
   XMarkIcon,
   PhotoIcon,
+  ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
-import { getSpace } from '../lib/contentful';
+import { getSpace, uploadAsset } from '../lib/contentful';
 import type { Property } from '../types';
 import toast from 'react-hot-toast';
 
-const PROPERTY_CATEGORIES = ['Houses', 'Apartments', 'Land', 'Airbnb', 'Offplan Investments', 'Offices', 'Warehouses', 'Commercials'];
-const PROPERTY_STATUS = ['For sale', 'For rent', 'Sold', 'Rented'];
+const PROPERTY_CATEGORIES = ['Houses', 'Apartments', 'Warehouses', 'Land', 'Offplan', 'Airbnb'];
+const PROPERTY_STATUS = ['For sale', 'To Let', 'Sold'];
 
 type ContentfulAssetLike = {
   fields?: {
@@ -36,24 +37,6 @@ const normalizeAssetUrl = (url?: string) => {
   return url.startsWith('//') ? `https:${url}` : url;
 };
 
-const getResolvedAsset = async (environment: { getAsset: (id: string) => Promise<unknown> }, asset: ContentfulAssetLike | undefined) => {
-  if (!asset) return null;
-
-  if (asset.fields?.file) {
-    return asset;
-  }
-
-  if (asset.sys?.type === 'Link' && asset.sys.linkType === 'Asset' && asset.sys.id) {
-    try {
-      return (await environment.getAsset(asset.sys.id)) as ContentfulAssetLike;
-    } catch {
-      return null;
-    }
-  }
-
-  return null;
-};
-
 const mapAsset = (asset: ContentfulAssetLike | null) => {
   const file = getLocaleValue(asset?.fields?.file);
   const url = normalizeAssetUrl(file?.url);
@@ -61,9 +44,52 @@ const mapAsset = (asset: ContentfulAssetLike | null) => {
   if (!url) return undefined;
 
   return {
+    id: asset?.sys?.id || '',
     url,
     title: getLocaleValue(asset?.fields?.title) || 'Property image',
     type: file?.contentType?.startsWith('video/') ? 'video' as const : 'image' as const,
+  };
+};
+
+const assetMapFromIncludes = (includes: { Asset?: ContentfulAssetLike[] } | undefined) => {
+  const assets = includes?.Asset || [];
+  return new Map(assets.map((asset) => [asset.sys?.id || '', asset]));
+};
+
+const resolveIncludedAsset = (assetsById: Map<string, ContentfulAssetLike>, asset: ContentfulAssetLike | undefined) => {
+  if (!asset) return null;
+  if (asset.fields?.file) return asset;
+  if (asset.sys?.id) return assetsById.get(asset.sys.id) || null;
+  return null;
+};
+
+const toAssetLink = (assetId: string) => ({
+  sys: {
+    type: 'Link' as const,
+    linkType: 'Asset' as const,
+    id: assetId,
+  },
+});
+
+type SelectedAsset = {
+  id?: string;
+  url: string;
+  title: string;
+  file?: File;
+  type: 'image' | 'video';
+};
+
+type PropertyEntriesResponse = {
+  items: Array<{
+    sys: {
+      id: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+    fields: Record<string, unknown>;
+  }>;
+  includes?: {
+    Asset?: ContentfulAssetLike[];
   };
 };
 
@@ -83,14 +109,17 @@ export default function Properties() {
         content_type: 'property',
         order: '-sys.createdAt',
         limit: 100,
-      });
+        include: 2,
+      }) as unknown as PropertyEntriesResponse;
 
-      return Promise.all(entries.items.map(async (item) => {
+      const assetsById = assetMapFromIncludes(entries.includes);
+
+      return entries.items.map((item) => {
         const mainImageField = getLocaleValue(item.fields.mainImage as Record<string, ContentfulAssetLike> | undefined);
         const galleryField = getLocaleValue(item.fields.gallery as Record<string, ContentfulAssetLike[]> | undefined) || [];
 
-        const mainImage = mapAsset(await getResolvedAsset(environment, mainImageField));
-        const gallery = (await Promise.all(galleryField.map(async (asset) => mapAsset(await getResolvedAsset(environment, asset))))).filter(
+        const mainImage = mapAsset(resolveIncludedAsset(assetsById, mainImageField));
+        const gallery = galleryField.map((asset) => mapAsset(resolveIncludedAsset(assetsById, asset))).filter(
           (asset): asset is NonNullable<typeof asset> => Boolean(asset),
         );
 
@@ -105,13 +134,12 @@ export default function Properties() {
           bedrooms: (item.fields.bedrooms as Record<string, number>)?.['en-US'] || 0,
           bathrooms: (item.fields.bathrooms as Record<string, number>)?.['en-US'] || 0,
           area: (item.fields.area as Record<string, number>)?.['en-US'] || null,
-          slug: (item.fields.slug as Record<string, string>)?.['en-US'] || '',
           mainImage: mainImage || gallery[0],
           gallery,
           createdAt: item.sys.createdAt,
           updatedAt: item.sys.updatedAt,
         } satisfies Property;
-      }));
+      });
     },
   });
 
@@ -211,7 +239,7 @@ export default function Properties() {
                 )}
                 <span className={`absolute top-2 right-2 badge ${
                   property.status === 'For sale' ? 'bg-green-100 text-green-800' :
-                  property.status === 'For rent' ? 'bg-blue-100 text-blue-800' :
+                  property.status === 'To Let' ? 'bg-blue-100 text-blue-800' :
                   'bg-gray-100 text-gray-800'
                 }`}>
                   {property.status}
@@ -266,9 +294,56 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
     status: property?.status || 'For sale',
     bedrooms: property?.bedrooms || 0,
     bathrooms: property?.bathrooms || 0,
-    slug: property?.slug || '',
+    area: property?.area || 0,
   });
+  const [mainImage, setMainImage] = useState<SelectedAsset | null>(property?.mainImage ? {
+    id: property.mainImage.id,
+    url: property.mainImage.url,
+    title: property.mainImage.title,
+    type: property.mainImage.type,
+  } : null);
+  const [galleryImages, setGalleryImages] = useState<SelectedAsset[]>(
+    property?.gallery?.map((asset) => ({
+      id: asset.id,
+      url: asset.url,
+      title: asset.title,
+      type: asset.type,
+    })) || [],
+  );
   const [loading, setLoading] = useState(false);
+
+  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setMainImage({
+      file,
+      url: URL.createObjectURL(file),
+      title: file.name,
+      type: file.type.startsWith('video/') ? 'video' : 'image',
+    });
+    e.target.value = '';
+  };
+
+  const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    setGalleryImages((current) => [
+      ...current,
+      ...files.map((file) => ({
+        file,
+        url: URL.createObjectURL(file),
+        title: file.name,
+        type: (file.type.startsWith('video/') ? 'video' : 'image') as 'image' | 'video',
+      })),
+    ]);
+    e.target.value = '';
+  };
+
+  const removeGalleryAsset = (index: number) => {
+    setGalleryImages((current) => current.filter((_, currentIndex) => currentIndex !== index));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -276,7 +351,21 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
     try {
       const space = await getSpace();
       const environment = await space.getEnvironment('master');
-      const slug = formData.slug || formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const resolvedMainImageId = mainImage?.file
+        ? (await uploadAsset({ file: mainImage.file, title: mainImage.title })).sys.id
+        : mainImage?.id;
+
+      const resolvedGalleryIds = await Promise.all(
+        galleryImages.map(async (asset) => {
+          if (asset.file) {
+            const uploadedAsset = await uploadAsset({ file: asset.file, title: asset.title });
+            return uploadedAsset.sys.id;
+          }
+
+          return asset.id;
+        }),
+      );
+
       const fields = {
         title: { 'en-US': formData.title },
         description: { 'en-US': formData.description },
@@ -286,11 +375,21 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
         status: { 'en-US': formData.status },
         bedrooms: { 'en-US': Number(formData.bedrooms) },
         bathrooms: { 'en-US': Number(formData.bathrooms) },
-        slug: { 'en-US': slug },
+        ...(typeof formData.area === 'number' && !Number.isNaN(formData.area) ? { area: { 'en-US': Number(formData.area) } } : {}),
+        ...(resolvedMainImageId ? { mainImage: { 'en-US': toAssetLink(resolvedMainImageId) } } : {}),
+        gallery: { 'en-US': resolvedGalleryIds.filter((id): id is string => Boolean(id)).map(toAssetLink) },
       };
       if (property) {
         const entry = await environment.getEntry(property.id);
-        entry.fields = fields;
+        entry.fields = {
+          ...entry.fields,
+          ...fields,
+        };
+
+        if (!resolvedMainImageId) {
+          delete entry.fields.mainImage;
+        }
+
         await entry.update();
         await entry.publish();
       } else {
@@ -351,6 +450,63 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
             <div>
               <label className="label">Bathrooms</label>
               <input type="number" value={formData.bathrooms} onChange={(e) => setFormData({ ...formData, bathrooms: Number(e.target.value) })} className="input" />
+            </div>
+            <div>
+              <label className="label">Area</label>
+              <input type="number" value={formData.area} onChange={(e) => setFormData({ ...formData, area: Number(e.target.value) })} className="input" />
+            </div>
+            <div className="sm:col-span-2 space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="label mb-0">Main Image</label>
+                {mainImage && (
+                  <button type="button" onClick={() => setMainImage(null)} className="text-sm text-status-error hover:underline">
+                    Remove image
+                  </button>
+                )}
+              </div>
+              <label className="border border-dashed border-gray-300 rounded-xl p-4 flex items-center justify-center gap-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer">
+                <ArrowUpTrayIcon className="h-5 w-5" />
+                <span>{mainImage ? 'Replace main image' : 'Upload main image'}</span>
+                <input type="file" accept="image/*,video/*" onChange={handleMainImageChange} className="hidden" />
+              </label>
+              {mainImage && (
+                <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-100">
+                  {mainImage.type === 'video' ? (
+                    <video src={mainImage.url} className="w-full h-48 object-cover" controls />
+                  ) : (
+                    <img src={mainImage.url} alt={mainImage.title} className="w-full h-48 object-cover" />
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="sm:col-span-2 space-y-3">
+              <label className="label">Gallery</label>
+              <label className="border border-dashed border-gray-300 rounded-xl p-4 flex items-center justify-center gap-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer">
+                <ArrowUpTrayIcon className="h-5 w-5" />
+                <span>Add gallery images or videos</span>
+                <input type="file" accept="image/*,video/*" multiple onChange={handleGalleryChange} className="hidden" />
+              </label>
+              {galleryImages.length > 0 && (
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {galleryImages.map((asset, index) => (
+                    <div key={`${asset.id || asset.url}-${index}`} className="rounded-xl overflow-hidden border border-gray-200 bg-white">
+                      <div className="h-32 bg-gray-100">
+                        {asset.type === 'video' ? (
+                          <video src={asset.url} className="w-full h-full object-cover" controls />
+                        ) : (
+                          <img src={asset.url} alt={asset.title} className="w-full h-full object-cover" />
+                        )}
+                      </div>
+                      <div className="p-2 flex items-center justify-between gap-2">
+                        <span className="text-xs text-gray-500 truncate">{asset.title}</span>
+                        <button type="button" onClick={() => removeGalleryAsset(index)} className="text-xs text-status-error hover:underline">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <div className="flex gap-2 pt-4">
