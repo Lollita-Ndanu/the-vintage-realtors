@@ -17,6 +17,56 @@ import toast from 'react-hot-toast';
 const PROPERTY_CATEGORIES = ['Houses', 'Apartments', 'Land', 'Airbnb', 'Offplan Investments', 'Offices', 'Warehouses', 'Commercials'];
 const PROPERTY_STATUS = ['For sale', 'For rent', 'Sold', 'Rented'];
 
+type ContentfulAssetLike = {
+  fields?: {
+    title?: Record<string, string>;
+    file?: Record<string, { url?: string; contentType?: string }>;
+  };
+  sys?: {
+    id?: string;
+    type?: string;
+    linkType?: string;
+  };
+};
+
+const getLocaleValue = <T,>(value?: Record<string, T>): T | undefined => value?.['en-US'];
+
+const normalizeAssetUrl = (url?: string) => {
+  if (!url) return undefined;
+  return url.startsWith('//') ? `https:${url}` : url;
+};
+
+const getResolvedAsset = async (environment: { getAsset: (id: string) => Promise<unknown> }, asset: ContentfulAssetLike | undefined) => {
+  if (!asset) return null;
+
+  if (asset.fields?.file) {
+    return asset;
+  }
+
+  if (asset.sys?.type === 'Link' && asset.sys.linkType === 'Asset' && asset.sys.id) {
+    try {
+      return (await environment.getAsset(asset.sys.id)) as ContentfulAssetLike;
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
+};
+
+const mapAsset = (asset: ContentfulAssetLike | null) => {
+  const file = getLocaleValue(asset?.fields?.file);
+  const url = normalizeAssetUrl(file?.url);
+
+  if (!url) return undefined;
+
+  return {
+    url,
+    title: getLocaleValue(asset?.fields?.title) || 'Property image',
+    type: file?.contentType?.startsWith('video/') ? 'video' as const : 'image' as const,
+  };
+};
+
 export default function Properties() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
@@ -35,21 +85,33 @@ export default function Properties() {
         limit: 100,
       });
 
-      return entries.items.map((item) => ({
-        id: item.sys.id,
-        title: (item.fields.title as Record<string, string>)?.['en-US'] || '',
-        description: (item.fields.description as Record<string, string>)?.['en-US'] || '',
-        price: (item.fields.price as Record<string, number>)?.['en-US'] || 0,
-        location: (item.fields.location as Record<string, string>)?.['en-US'] || '',
-        category: (item.fields.category as Record<string, string[]>)?.['en-US'] || [],
-        status: (item.fields.status as Record<string, string>)?.['en-US'] || '',
-        bedrooms: (item.fields.bedrooms as Record<string, number>)?.['en-US'] || 0,
-        bathrooms: (item.fields.bathrooms as Record<string, number>)?.['en-US'] || 0,
-        area: (item.fields.area as Record<string, number>)?.['en-US'] || null,
-        slug: (item.fields.slug as Record<string, string>)?.['en-US'] || '',
-        createdAt: item.sys.createdAt,
-        updatedAt: item.sys.updatedAt,
-      })) as Property[];
+      return Promise.all(entries.items.map(async (item) => {
+        const mainImageField = getLocaleValue(item.fields.mainImage as Record<string, ContentfulAssetLike> | undefined);
+        const galleryField = getLocaleValue(item.fields.gallery as Record<string, ContentfulAssetLike[]> | undefined) || [];
+
+        const mainImage = mapAsset(await getResolvedAsset(environment, mainImageField));
+        const gallery = (await Promise.all(galleryField.map(async (asset) => mapAsset(await getResolvedAsset(environment, asset))))).filter(
+          (asset): asset is NonNullable<typeof asset> => Boolean(asset),
+        );
+
+        return {
+          id: item.sys.id,
+          title: (item.fields.title as Record<string, string>)?.['en-US'] || '',
+          description: (item.fields.description as Record<string, string>)?.['en-US'] || '',
+          price: (item.fields.price as Record<string, number>)?.['en-US'] || 0,
+          location: (item.fields.location as Record<string, string>)?.['en-US'] || '',
+          category: (item.fields.category as Record<string, string[]>)?.['en-US'] || [],
+          status: (item.fields.status as Record<string, string>)?.['en-US'] || '',
+          bedrooms: (item.fields.bedrooms as Record<string, number>)?.['en-US'] || 0,
+          bathrooms: (item.fields.bathrooms as Record<string, number>)?.['en-US'] || 0,
+          area: (item.fields.area as Record<string, number>)?.['en-US'] || null,
+          slug: (item.fields.slug as Record<string, string>)?.['en-US'] || '',
+          mainImage: mainImage || gallery[0],
+          gallery,
+          createdAt: item.sys.createdAt,
+          updatedAt: item.sys.updatedAt,
+        } satisfies Property;
+      }));
     },
   });
 
@@ -135,9 +197,18 @@ export default function Properties() {
           {filteredProperties?.map((property) => (
             <div key={property.id} className="card overflow-hidden">
               <div className="aspect-video bg-gray-100 relative">
-                <div className="w-full h-full flex items-center justify-center">
-                  <PhotoIcon className="h-12 w-12 text-gray-300" />
-                </div>
+                {property.mainImage?.url ? (
+                  <img
+                    src={property.mainImage.url}
+                    alt={property.mainImage.title || property.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <PhotoIcon className="h-12 w-12 text-gray-300" />
+                  </div>
+                )}
                 <span className={`absolute top-2 right-2 badge ${
                   property.status === 'For sale' ? 'bg-green-100 text-green-800' :
                   property.status === 'For rent' ? 'bg-blue-100 text-blue-800' :
