@@ -299,6 +299,37 @@ export async function replaceAttachments({ supabase, messageId, attachments }) {
   return data;
 }
 
+export async function syncReceivedEmail({ supabase, resend, emailId }) {
+  const response = await resend.emails.receiving.get(emailId);
+  if (response.error || !response.data) {
+    throw new Error(response.error?.message || 'Failed to retrieve received email');
+  }
+
+  const receivedEmail = response.data;
+  const mailboxAddress = Array.isArray(receivedEmail.to) ? receivedEmail.to[0] : receivedEmail.to;
+  const mailbox = await ensureMailbox(supabase, mailboxAddress);
+
+  if (!mailbox || !getMailboxDirectionAllowsReceive(mailbox)) {
+    return null;
+  }
+
+  const thread = await upsertInboundThread({ supabase, mailbox, email: receivedEmail });
+  const message = await insertInboundMessage({ supabase, thread, mailbox, email: receivedEmail });
+  await replaceAttachments({ supabase, messageId: message.id, attachments: receivedEmail.attachments || [] });
+  return { thread, message };
+}
+
+export async function syncRecentReceivedEmails({ supabase, resend, limit = 25 }) {
+  const response = await resend.emails.receiving.list({ limit });
+  if (response.error || !response.data?.data) {
+    throw new Error(response.error?.message || 'Failed to list received emails');
+  }
+
+  for (const email of response.data.data) {
+    await syncReceivedEmail({ supabase, resend, emailId: email.id });
+  }
+}
+
 export async function logEmailEvent(supabase, eventType, externalId, payload, processedAt = null) {
   const { error } = await supabase.from('email_events').insert([{
     event_type: eventType,

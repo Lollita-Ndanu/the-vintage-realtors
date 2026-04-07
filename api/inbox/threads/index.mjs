@@ -1,4 +1,4 @@
-import { getSupabaseAdmin, mapInboxError, requireAdminUser, setCors } from '../../_lib/inbox.mjs';
+import { getResendClient, getSupabaseAdmin, mapInboxError, requireAdminUser, setCors, syncRecentReceivedEmails } from '../../_lib/inbox.mjs';
 
 export default async function handler(req, res) {
   setCors(res);
@@ -16,12 +16,15 @@ export default async function handler(req, res) {
   try {
     await requireAdminUser(req);
     const supabase = getSupabaseAdmin();
+    const resend = getResendClient();
     const page = Math.max(Number(req.query.page || 1), 1);
     const limit = Math.min(Math.max(Number(req.query.limit || 20), 1), 100);
     const mailboxId = req.query.mailboxId || null;
     const status = req.query.status || 'all';
     const search = String(req.query.search || '').trim();
     const direction = req.query.direction || 'all';
+
+    await syncRecentReceivedEmails({ supabase, resend, limit: 25 });
 
     let query = supabase
       .from('email_threads')

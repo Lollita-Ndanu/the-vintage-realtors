@@ -1,24 +1,12 @@
 import {
-  ensureMailbox,
-  getMailboxDirectionAllowsReceive,
   getResendClient,
   getSupabaseAdmin,
-  insertInboundMessage,
   logEmailEvent,
   readRawBody,
-  replaceAttachments,
   setCors,
-  upsertInboundThread,
+  syncReceivedEmail,
   verifyWebhookSignature,
 } from '../_lib/inbox.mjs';
-
-async function fetchReceivedEmail(resend, emailId) {
-  const response = await resend.emails.receiving.get(emailId);
-  if (response.error) {
-    throw new Error(response.error.message || 'Failed to retrieve received email');
-  }
-  return response.data;
-}
 
 export default async function handler(req, res) {
   setCors(res);
@@ -50,15 +38,7 @@ export default async function handler(req, res) {
     await logEmailEvent(supabase, event.type || 'unknown', event.data?.email_id || event.data?.id || null, event, new Date().toISOString());
 
     if (event.type === 'email.received' && event.data?.email_id) {
-      const mailboxAddress = Array.isArray(event.data.to) ? event.data.to[0] : event.data.to;
-      const mailbox = await ensureMailbox(supabase, mailboxAddress);
-
-      if (mailbox && getMailboxDirectionAllowsReceive(mailbox)) {
-        const receivedEmail = await fetchReceivedEmail(resend, event.data.email_id);
-        const thread = await upsertInboundThread({ supabase, mailbox, email: receivedEmail });
-        const message = await insertInboundMessage({ supabase, thread, mailbox, email: receivedEmail });
-        await replaceAttachments({ supabase, messageId: message.id, attachments: receivedEmail.attachments || [] });
-      }
+      await syncReceivedEmail({ supabase, resend, emailId: event.data.email_id });
     }
 
     if (event.type?.startsWith('email.') && event.data?.email_id && event.type !== 'email.received') {
