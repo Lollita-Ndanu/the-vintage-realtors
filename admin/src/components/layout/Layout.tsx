@@ -8,6 +8,7 @@ const getPageTitle = () => {
   const titles: Record<string, string> = {
     '/dashboard': 'Dashboard',
     '/contacts': 'Contact Requests',
+    '/inbox': 'Inbox',
     '/newsletter': 'Newsletter',
     '/properties': 'Properties',
     '/agents': 'Agents',

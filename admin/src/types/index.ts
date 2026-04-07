@@ -130,3 +130,85 @@ export interface DashboardStats {
   pendingFollowUps: number;
   recentContacts: Contact[];
 }
+
+export interface EmailMailbox {
+  id: string;
+  address: string;
+  display_name: string | null;
+  direction_mode: 'send_only' | 'receive_only' | 'send_receive';
+  is_active: boolean;
+  is_default: boolean;
+  resend_domain: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EmailAttachment {
+  id: string;
+  message_id: string;
+  resend_attachment_id: string | null;
+  filename: string;
+  content_type: string | null;
+  size: number | null;
+  content_disposition: string | null;
+  content_id: string | null;
+  created_at: string;
+}
+
+export interface EmailMessage {
+  id: string;
+  thread_id: string;
+  mailbox_id: string | null;
+  direction: 'inbound' | 'outbound';
+  resend_email_id: string | null;
+  message_id: string | null;
+  in_reply_to: string | null;
+  references_header: string | null;
+  from_address: string;
+  to_addresses: string[];
+  cc_addresses: string[];
+  bcc_addresses: string[];
+  reply_to_addresses: string[];
+  subject: string;
+  html_body: string | null;
+  text_body: string | null;
+  snippet: string | null;
+  received_at: string | null;
+  sent_at: string | null;
+  delivery_status: string | null;
+  raw_download_url: string | null;
+  headers: Record<string, unknown>;
+  metadata: Record<string, unknown>;
+  created_by: string | null;
+  created_at: string;
+  attachments?: EmailAttachment[];
+}
+
+export interface EmailThreadNote {
+  id: string;
+  thread_id: string;
+  body: string;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface EmailThread {
+  id: string;
+  mailbox_id: string | null;
+  subject: string;
+  normalized_subject: string;
+  status: 'open' | 'pending' | 'closed' | 'archived';
+  last_message_at: string;
+  unread_count: number;
+  assigned_to: string | null;
+  contact_id: string | null;
+  participants: string[];
+  metadata: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+  mailbox?: EmailMailbox | null;
+  contact?: Pick<Contact, 'id' | 'name' | 'email' | 'phone' | 'status'> | null;
+  latest_message?: EmailMessage | null;
+  messages?: EmailMessage[];
+  notes?: EmailThreadNote[];
+}

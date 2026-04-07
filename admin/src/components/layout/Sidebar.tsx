@@ -2,6 +2,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import {
   HomeIcon,
   EnvelopeIcon,
+  InboxIcon,
   NewspaperIcon,
   BuildingOfficeIcon,
   UsersIcon,
@@ -19,6 +20,7 @@ import { useState } from 'react';
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
   { name: 'Contacts', href: '/contacts', icon: EnvelopeIcon },
+  { name: 'Inbox', href: '/inbox', icon: InboxIcon },
   { name: 'Newsletter', href: '/newsletter', icon: NewspaperIcon },
   { name: 'Properties', href: '/properties', icon: BuildingOfficeIcon },
   { name: 'Agents', href: '/agents', icon: UsersIcon },
@@ -31,6 +33,7 @@ const navItems = [
 const mobileNavItems = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
   { name: 'Contacts', href: '/contacts', icon: EnvelopeIcon },
+  { name: 'Inbox', href: '/inbox', icon: InboxIcon },
   { name: 'Properties', href: '/properties', icon: BuildingOfficeIcon },
   { name: 'Content', href: '/content', icon: DocumentTextIcon },
   { name: 'More', href: '#more', icon: Bars3Icon, isMore: true },

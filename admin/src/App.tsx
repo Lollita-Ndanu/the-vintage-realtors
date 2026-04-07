@@ -5,6 +5,7 @@ import Layout from './components/layout/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Contacts from './pages/Contacts';
+import Inbox from './pages/Inbox';
 import Newsletter from './pages/Newsletter';
 import Properties from './pages/Properties';
 import Agents from './pages/Agents';
@@ -46,6 +47,7 @@ function AppRoutes() {
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="contacts" element={<Contacts />} />
+        <Route path="inbox" element={<Inbox />} />
         <Route path="newsletter" element={<Newsletter />} />
         <Route path="properties" element={<Properties />} />
         <Route path="agents" element={<Agents />} />

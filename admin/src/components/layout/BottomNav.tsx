@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   HomeIcon,
   EnvelopeIcon,
+  InboxIcon,
   BuildingOfficeIcon,
   DocumentTextIcon,
   Bars3Icon,
@@ -16,6 +17,7 @@ import {
 
 const primaryNavItems = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
+  { name: 'Inbox', href: '/inbox', icon: InboxIcon },
   { name: 'Contacts', href: '/contacts', icon: EnvelopeIcon },
   { name: 'Properties', href: '/properties', icon: BuildingOfficeIcon },
   { name: 'Content', href: '/content', icon: DocumentTextIcon },
