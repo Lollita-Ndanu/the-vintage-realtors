@@ -22,6 +22,21 @@ export function getResendClient() {
   return new Resend(requiredEnv('RESEND_API_KEY'));
 }
 
+async function resendApiRequest(pathname) {
+  const response = await fetch(`https://api.resend.com${pathname}`, {
+    headers: {
+      Authorization: `Bearer ${requiredEnv('RESEND_API_KEY')}`,
+    },
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.message || `Resend request failed for ${pathname}`);
+  }
+
+  return payload;
+}
+
 export function getCorsHeaders() {
   return {
     'Access-Control-Allow-Origin': '*',
@@ -300,12 +315,7 @@ export async function replaceAttachments({ supabase, messageId, attachments }) {
 }
 
 export async function syncReceivedEmail({ supabase, resend, emailId }) {
-  const response = await resend.emails.receiving.get(emailId);
-  if (response.error || !response.data) {
-    throw new Error(response.error?.message || 'Failed to retrieve received email');
-  }
-
-  const receivedEmail = response.data;
+  const receivedEmail = await resendApiRequest(`/emails/receiving/${emailId}`);
   const mailboxAddress = Array.isArray(receivedEmail.to) ? receivedEmail.to[0] : receivedEmail.to;
   const mailbox = await ensureMailbox(supabase, mailboxAddress);
 
@@ -320,12 +330,10 @@ export async function syncReceivedEmail({ supabase, resend, emailId }) {
 }
 
 export async function syncRecentReceivedEmails({ supabase, resend, limit = 25 }) {
-  const response = await resend.emails.receiving.list({ limit });
-  if (response.error || !response.data?.data) {
-    throw new Error(response.error?.message || 'Failed to list received emails');
-  }
+  const response = await resendApiRequest(`/emails/receiving?limit=${limit}`);
+  const emails = response.data || [];
 
-  for (const email of response.data.data) {
+  for (const email of emails) {
     await syncReceivedEmail({ supabase, resend, emailId: email.id });
   }
 }

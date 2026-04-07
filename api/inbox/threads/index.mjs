@@ -24,7 +24,11 @@ export default async function handler(req, res) {
     const search = String(req.query.search || '').trim();
     const direction = req.query.direction || 'all';
 
-    await syncRecentReceivedEmails({ supabase, resend, limit: 25 });
+    try {
+      await syncRecentReceivedEmails({ supabase, resend, limit: 25 });
+    } catch (syncError) {
+      console.error('Inbox sync failed:', syncError);
+    }
 
     let query = supabase
       .from('email_threads')
