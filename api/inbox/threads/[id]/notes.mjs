@@ -1,4 +1,4 @@
-import { getSupabaseAdmin, requireAdminUser, setCors } from '../../../_lib/inbox.mjs';
+import { getSupabaseAdmin, mapInboxError, requireAdminUser, setCors } from '../../../_lib/inbox.mjs';
 
 export default async function handler(req, res) {
   setCors(res);
@@ -33,6 +33,7 @@ export default async function handler(req, res) {
     if (error) throw error;
     res.status(200).json({ note: data });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ error: error.message || 'Failed to save note' });
+    const mappedError = mapInboxError(error, 'Failed to save note');
+    res.status(mappedError.statusCode || 500).json({ error: mappedError.message || 'Failed to save note' });
   }
 }

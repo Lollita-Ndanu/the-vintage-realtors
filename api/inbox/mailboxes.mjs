@@ -1,4 +1,4 @@
-import { getSupabaseAdmin, requireAdminUser, setCors } from '../_lib/inbox.mjs';
+import { getSupabaseAdmin, mapInboxError, requireAdminUser, setCors } from '../_lib/inbox.mjs';
 
 export default async function handler(req, res) {
   setCors(res);
@@ -25,6 +25,7 @@ export default async function handler(req, res) {
     if (error) throw error;
     res.status(200).json({ mailboxes: data || [] });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ error: error.message || 'Failed to load mailboxes' });
+    const mappedError = mapInboxError(error, 'Failed to load mailboxes');
+    res.status(mappedError.statusCode || 500).json({ error: mappedError.message || 'Failed to load mailboxes' });
   }
 }

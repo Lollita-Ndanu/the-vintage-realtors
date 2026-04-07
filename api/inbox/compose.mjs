@@ -5,6 +5,7 @@ import {
   getResendClient,
   getSupabaseAdmin,
   htmlSnippet,
+  mapInboxError,
   mergeParticipants,
   normalizeSubject,
   parseAddressList,
@@ -105,6 +106,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({ thread, message, resendId: response.data?.id || null });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ error: error.message || 'Failed to send email' });
+    const mappedError = mapInboxError(error, 'Failed to send email');
+    res.status(mappedError.statusCode || 500).json({ error: mappedError.message || 'Failed to send email' });
   }
 }

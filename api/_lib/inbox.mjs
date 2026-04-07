@@ -351,6 +351,16 @@ export function verifyWebhookSignature(rawBody, signature, timestamp) {
   return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
 }
 
+export function mapInboxError(error, fallbackMessage) {
+  const message = error?.message || fallbackMessage;
+  if (message.includes("Could not find the table 'public.email_")) {
+    const setupError = new Error('Inbox setup incomplete: run the latest supabase-schema.sql migration to create the email tables.');
+    setupError.statusCode = 503;
+    return setupError;
+  }
+  return error;
+}
+
 export function formatFromHeader(mailbox, addressOverride) {
   const address = addressOverride || mailbox.address;
   const name = mailbox.display_name || address.split('@')[0];

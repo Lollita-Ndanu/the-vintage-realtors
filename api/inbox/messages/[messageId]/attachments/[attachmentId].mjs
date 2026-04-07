@@ -1,4 +1,4 @@
-import { getResendClient, getSupabaseAdmin, requireAdminUser, setCors } from '../../../../_lib/inbox.mjs';
+import { getSupabaseAdmin, mapInboxError, requireAdminUser, setCors } from '../../../../_lib/inbox.mjs';
 
 async function resendRequest(pathname) {
   const response = await fetch(`https://api.resend.com${pathname}`, {
@@ -47,6 +47,7 @@ export default async function handler(req, res) {
     const attachment = await resendRequest(`/emails/receiving/${message.resend_email_id}/attachments/${attachmentId}`);
     res.status(200).json({ attachment });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ error: error.message || 'Failed to load attachment' });
+    const mappedError = mapInboxError(error, 'Failed to load attachment');
+    res.status(mappedError.statusCode || 500).json({ error: mappedError.message || 'Failed to load attachment' });
   }
 }

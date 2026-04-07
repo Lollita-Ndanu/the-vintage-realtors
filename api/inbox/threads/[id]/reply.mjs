@@ -4,6 +4,7 @@ import {
   getMailboxDirectionAllowsSend,
   getResendClient,
   getSupabaseAdmin,
+  mapInboxError,
   requireAdminUser,
   setCors,
 } from '../../../_lib/inbox.mjs';
@@ -118,6 +119,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({ message, resendId: response.data?.id || null });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ error: error.message || 'Failed to send reply' });
+    const mappedError = mapInboxError(error, 'Failed to send reply');
+    res.status(mappedError.statusCode || 500).json({ error: mappedError.message || 'Failed to send reply' });
   }
 }

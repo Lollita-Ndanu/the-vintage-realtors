@@ -1,4 +1,4 @@
-import { buildThreadResponse, getSupabaseAdmin, requireAdminUser, setCors } from '../../_lib/inbox.mjs';
+import { buildThreadResponse, getSupabaseAdmin, mapInboxError, requireAdminUser, setCors } from '../../_lib/inbox.mjs';
 
 async function getThreadPayload(supabase, threadId) {
   const { data: thread, error: threadError } = await supabase
@@ -68,6 +68,7 @@ export default async function handler(req, res) {
 
     res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ error: error.message || 'Failed to load thread' });
+    const mappedError = mapInboxError(error, 'Failed to load thread');
+    res.status(mappedError.statusCode || 500).json({ error: mappedError.message || 'Failed to load thread' });
   }
 }

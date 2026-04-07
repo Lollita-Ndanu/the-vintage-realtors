@@ -11,7 +11,7 @@ import {
   PhotoIcon,
   ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
-import { getSpace, uploadAsset } from '../lib/contentful';
+import { getDeliveryEntries, getSpace, uploadAsset } from '../lib/contentful';
 import type { Property } from '../types';
 import toast from 'react-hot-toast';
 
@@ -20,8 +20,8 @@ const PROPERTY_STATUS = ['For sale', 'To Let', 'Sold'];
 
 type ContentfulAssetLike = {
   fields?: {
-    title?: Record<string, string>;
-    file?: Record<string, { url?: string; contentType?: string }>;
+    title?: Record<string, string> | string;
+    file?: Record<string, { url?: string; contentType?: string }> | { url?: string; contentType?: string };
   };
   sys?: {
     id?: string;
@@ -30,7 +30,12 @@ type ContentfulAssetLike = {
   };
 };
 
-const getLocaleValue = <T,>(value?: Record<string, T>): T | undefined => value?.['en-US'];
+const getLocaleValue = <T,>(value?: Record<string, T> | T): T | undefined => {
+  if (value && typeof value === 'object' && 'en-US' in value) {
+    return (value as Record<string, T>)['en-US'];
+  }
+  return value as T | undefined;
+};
 
 const normalizeAssetUrl = (url?: string) => {
   if (!url) return undefined;
@@ -103,9 +108,7 @@ export default function Properties() {
   const { data: properties, isLoading } = useQuery({
     queryKey: ['properties'],
     queryFn: async () => {
-      const space = await getSpace();
-      const environment = await space.getEnvironment('master');
-      const entries = await environment.getEntries({
+      const entries = await getDeliveryEntries({
         content_type: 'property',
         order: '-sys.createdAt',
         limit: 100,
