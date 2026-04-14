@@ -109,7 +109,7 @@ export interface Property {
     url: string;
     title: string;
     type: 'image' | 'video';
-  };
+  } | null;
   gallery?: Array<{
     id: string;
     url: string;
