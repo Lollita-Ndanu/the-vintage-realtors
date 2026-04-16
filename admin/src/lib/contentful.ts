@@ -197,12 +197,13 @@ export const uploadAsset = async (
   const locale = options.locale || DEFAULT_CONTENTFUL_LOCALE;
   const title = options.title || file.name;
   const contentType = file.type || 'application/octet-stream';
+  const uploadBytes = new Uint8Array(await file.arrayBuffer());
 
   const upload = await contentfulRequest<{ sys: { id: string } }>(
     `${CONTENTFUL_UPLOAD_BASE}/spaces/${spaceId}/uploads`,
     {
       method: 'POST',
-      body: file,
+      body: uploadBytes,
       headers: {
         'Content-Type': 'application/octet-stream',
       },
