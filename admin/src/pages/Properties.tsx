@@ -64,10 +64,6 @@ type ContentfulAssetRecord = {
   };
 };
 
-const slugify = (value: string) => {
-  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-};
-
 const formatPrice = (price: number) => {
   return 'KES ' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
@@ -260,7 +256,6 @@ export default function Properties() {
         bedrooms: getLocalizedValue<number>(item.fields.bedrooms) || 0,
         bathrooms: getLocalizedValue<number>(item.fields.bathrooms) || 0,
         area: getLocalizedValue<number | null>(item.fields.area) ?? null,
-        slug: getLocalizedValue<string>(item.fields.slug) || '',
         mainImage: (() => {
           const asset = getLocalizedValue<ContentfulAssetRecord>(item.fields.mainImage);
           const file = asset?.fields?.file?.[DEFAULT_CONTENTFUL_LOCALE];
@@ -436,7 +431,6 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
     bedrooms: property?.bedrooms || 0,
     bathrooms: property?.bathrooms || 0,
     area: property?.area || 0,
-    slug: property?.slug || '',
   });
   const [loading, setLoading] = useState(false);
   const [mediaLoading, setMediaLoading] = useState(Boolean(property));
@@ -478,7 +472,6 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
       bedrooms: property?.bedrooms || 0,
       bathrooms: property?.bathrooms || 0,
       area: property?.area || 0,
-      slug: property?.slug || '',
     });
   }, [property]);
 
@@ -639,7 +632,6 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
     try {
       const space = await getSpace();
       const environment = await space.getEnvironment(DEFAULT_CONTENTFUL_ENVIRONMENT);
-      const slug = formData.slug || slugify(formData.title);
       const uploadCache = new WeakMap<PendingMediaItem, Promise<ContentfulAssetLink>>();
 
       const resolveAssetLink = async (item: MediaItem): Promise<ContentfulAssetLink> => {
@@ -669,7 +661,6 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
         bedrooms: { [DEFAULT_CONTENTFUL_LOCALE]: Number(formData.bedrooms) },
         bathrooms: { [DEFAULT_CONTENTFUL_LOCALE]: Number(formData.bathrooms) },
         area: { [DEFAULT_CONTENTFUL_LOCALE]: Number(formData.area) },
-        slug: { [DEFAULT_CONTENTFUL_LOCALE]: slug },
         ...(mainImageLink ? { mainImage: { [DEFAULT_CONTENTFUL_LOCALE]: mainImageLink } } : {}),
         ...(galleryLinks.length > 0 ? { gallery: { [DEFAULT_CONTENTFUL_LOCALE]: galleryLinks } } : {}),
       };
@@ -757,10 +748,6 @@ function PropertyForm({ property, onClose, onSave }: { property: Property | null
             <div>
               <label className="label">Area</label>
               <input type="number" value={formData.area} onChange={(event) => setFormData({ ...formData, area: Number(event.target.value) })} className="input" />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="label">Slug</label>
-              <input type="text" value={formData.slug} onChange={(event) => setFormData({ ...formData, slug: slugify(event.target.value) })} className="input" placeholder="auto-generated-from-title" />
             </div>
           </div>
 

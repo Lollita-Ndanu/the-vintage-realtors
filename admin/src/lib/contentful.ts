@@ -204,7 +204,7 @@ export const uploadAsset = async (
       method: 'POST',
       body: file,
       headers: {
-        'Content-Type': contentType,
+        'Content-Type': 'application/octet-stream',
       },
     },
   );
